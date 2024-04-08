@@ -19,14 +19,14 @@ export default function Layout() {
 
   // RENDER SECTION
   return (
-    <>
-      <main className='space-y-6' ref={mainContentRef}>
+    <div className='flex flex-col h-full justify-between min-h-screen'>
+      <main className='space-y-4' ref={mainContentRef}>
         <Header />
         <Suspense fallback={<LoadingSpinner />}>
           <Outlet />
         </Suspense>
       </main>
       <div>Footer</div>
-    </>
+    </div>
   );
 }

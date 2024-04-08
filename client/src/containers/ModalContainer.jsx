@@ -1,4 +1,6 @@
 import AddDepartmentModalBody from '@/common/modal/add-department/AddDepartmentModalBody';
+import AddProgramModalBody from '@/common/modal/add-program/AddProgramModalBody';
+import AddSchoolYearModalBody from '@/common/modal/add-school-year/AddSchoolYearModalBody';
 import AddStudentModalBody from '@/common/modal/add-student/AddStudentModalBody';
 import {
   Dialog,
@@ -39,21 +41,21 @@ export default function ModalContainer({
         <AddStudentModalBody payload={payload} closeModal={close} />
       );
       break;
-    // case 'add-school-year':
-    //   modalComponent = (
-    //     <AddSchoolYearModalBody payload={payload} closeModal={close} />
-    //   );
-    //   break;
+    case 'add-school-year':
+      modalComponent = (
+        <AddSchoolYearModalBody payload={payload} closeModal={close} />
+      );
+      break;
     case 'add-department':
       modalComponent = (
         <AddDepartmentModalBody payload={payload} closeModal={close} />
       );
       break;
-    // case 'add-program':
-    //   modalComponent = (
-    //     <AddProgramModalBody payload={payload} closeModal={close} />
-    //   );
-    //   break;
+    case 'add-program':
+      modalComponent = (
+        <AddProgramModalBody payload={payload} closeModal={close} />
+      );
+      break;
     default:
       modalComponent;
   }

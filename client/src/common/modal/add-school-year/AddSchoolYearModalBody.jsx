@@ -1,9 +1,13 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Save } from 'lucide-react';
+import { schoolYearSchema } from '@/lib/schema';
+import { CalendarIcon } from '@radix-ui/react-icons';
+import { INITIAL_SCHOOL_YEAR_OBJ } from '@/lib/globalConstants';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/common/ui/button';
 import {
   Form,
   FormControl,
@@ -12,13 +16,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { schoolYearSchema } from '@/lib/schema';
-import { INITIAL_SCHOOL_YEAR_OBJ } from '@/lib/globalConstants';
-import { CalendarIcon } from '@radix-ui/react-icons';
-import { Save } from 'lucide-react';
-import { ToastNotification } from '@/components/toastNotification/ToastNotification';
+} from '@/common/ui/form';
+import { Input } from '@/common/ui/input';
+import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 
 export default function AddSchoolYearModalBody() {
   const form = useForm({

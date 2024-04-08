@@ -4,6 +4,7 @@ import {
   Package2,
   Printer,
   Settings,
+  Database,
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
@@ -14,7 +15,7 @@ const NAV_LINKS = [
     icon: <LayoutDashboard className='size-4' />,
   },
   {
-    title: 'Printing',
+    title: 'Print & Validate',
     path: '/printing',
     icon: <Printer className='size-4' />,
   },
@@ -24,7 +25,12 @@ const NAV_LINKS = [
     icon: <FileText className='size-4' />,
   },
   {
-    title: 'Settings',
+    title: 'Database',
+    path: '/database',
+    icon: <Database className='size-4' />,
+  },
+  {
+    title: 'Academic Settings',
     path: '/settings',
     icon: <Settings className='size-4' />,
   },
@@ -32,7 +38,7 @@ const NAV_LINKS = [
 
 export default function NavLinks() {
   return (
-    <nav className='hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6'>
+    <nav className='hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-2 md:text-sm'>
       <NavLink
         to='#'
         className='flex items-center gap-2 text-lg font-semibold md:text-base'

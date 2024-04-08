@@ -1,10 +1,12 @@
-'use client';
-
+import { useState } from 'react';
 import { Check, ChevronsUpDown, Save } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { programSchema } from '@/lib/schema';
+import { cn } from '@/lib/utils';
+import { INITIAL_PROGRAM_OBJ } from '@/lib/globalConstants';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/common/ui/button';
 import {
   Form,
   FormControl,
@@ -13,7 +15,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from '@/common/ui/form';
 
 import {
   Command,
@@ -22,18 +24,10 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/components/ui/command';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { Input } from '@/components/ui/input';
-import { programSchema } from '@/lib/schema';
-import { ToastNotification } from '@/components/toastNotification/ToastNotification';
-import { INITIAL_PROGRAM_OBJ } from '@/lib/globalConstants';
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
+} from '@/common/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/common/ui/popover';
+import { Input } from '@/common/ui/input';
+import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 
 const departmentAvailable = [
   {

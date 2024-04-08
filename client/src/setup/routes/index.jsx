@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Layout from '@/containers/Layout';
 import {
   DashboardPage,
+  DatabasePage,
   PrintingPage,
   ReportsPage,
   SettingsPage,
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
       { index: true, element: <DashboardPage /> },
       { path: 'printing', element: <PrintingPage /> },
       { path: 'reports', element: <ReportsPage /> },
+      { path: 'database', element: <DatabasePage /> },
       { path: 'settings', element: <SettingsPage /> },
     ],
   },
