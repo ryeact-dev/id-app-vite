@@ -3,9 +3,10 @@
 import { Save } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { CalendarIcon } from '@radix-ui/react-icons';
+import { departmentSchema } from '@/lib/schema';
+import { INITIAL_DEPARTMENT_OBJ } from '@/lib/globalConstants';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/common/ui/button';
 import {
   Form,
   FormControl,
@@ -14,11 +15,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { departmentSchema } from '@/lib/schema';
-import { ToastNotification } from '@/components/toastNotification/ToastNotification';
-import { INITIAL_DEPARTMENT_OBJ } from '@/lib/globalConstants';
+} from '@/common/ui/form';
+import { Input } from '@/common/ui/input';
+import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 
 export default function AddDepartmentModalBody() {
   const form = useForm({
