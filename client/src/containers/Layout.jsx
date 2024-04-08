@@ -1,4 +1,6 @@
-import { useEffect, useRef } from 'react';
+import Header from '@/common/header/Header';
+import LoadingSpinner from '@/common/loading-spinner/LoadingSpinner';
+import { Suspense, useEffect, useRef } from 'react';
 import { Outlet } from 'react-router-dom';
 
 // import { useGetCurrentUserData } from '@/hooks/users';
@@ -17,11 +19,14 @@ export default function Layout() {
 
   // RENDER SECTION
   return (
-    <main
-      className='overflow-auto pt-8 px-2 sm:px-6 h-full min-h-screen'
-      ref={mainContentRef}
-    >
-      <Outlet />
-    </main>
+    <>
+      <main className='space-y-6' ref={mainContentRef}>
+        <Header />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Outlet />
+        </Suspense>
+      </main>
+      <div>Footer</div>
+    </>
   );
 }

@@ -1,9 +1,6 @@
-import { Suspense } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import initializeApp from './setup/init';
 import { Toaster } from 'sonner';
-
-import LoadingSpinner from './common/loadingSpinner/LoadingSpinner';
 
 import { router } from './setup/routes';
 
@@ -12,11 +9,9 @@ initializeApp();
 
 export default function App() {
   return (
-    <main className='font-poppins'>
+    <main className='font-sans overflow-auto h-full min-h-screen w-full flex flex-col justify-between'>
       <Toaster richColors position='top-center' visibleToasts={5} />
-      <Suspense fallback={<LoadingSpinner />}>
-        <RouterProvider router={router} />
-      </Suspense>
+      <RouterProvider router={router} />
     </main>
   );
 }
