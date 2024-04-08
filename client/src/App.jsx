@@ -1,34 +1,47 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import { Suspense } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import initializeApp from './setup/init';
+import { Toaster } from 'sonner';
+import ErrorBoundary from './pages/ErrorBoundary';
+import SkeletonLandingPage from './common/skeletons/SkeletonLandingPage';
+import LoadingSpinner from './common/loadingSpinner/LoadingSpinner';
+import ProtectedRoute from './common/auth/ProtectedRoute';
+import Login from './features/login/Login';
+import Layout from './containers/Layout';
+import { getCurrentUserData } from './api/users.api';
+import RootContainer from './pages/RootContainer';
 
-function App() {
-  const [count, setCount] = useState(0);
+// Initializing different libraries
+initializeApp();
+
+export default function App() {
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      loader: () => getCurrentUserData(),
+      element: <RootContainer />,
+    },
+    { path: '/login', element: <Login /> },
+    {
+      path: '/app/*',
+      errorElement: <ErrorBoundary />,
+      loader: () => getCurrentUserData(),
+      element: (
+        <Suspense fallback={<SkeletonLandingPage />}>
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        </Suspense>
+      ),
+    },
+  ]);
 
   return (
-    <>
-      <div>
-        <a href='https://vitejs.dev' target='_blank'>
-          <img src={viteLogo} className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://react.dev' target='_blank'>
-          <img src={reactLogo} className='logo react' alt='React logo' />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <main className='font-poppins'>
+      <Toaster richColors position='top-center' visibleToasts={5} />
+      <Suspense fallback={<LoadingSpinner />}>
+        <RouterProvider router={router} />
+      </Suspense>
+    </main>
   );
 }
-
-export default App;
