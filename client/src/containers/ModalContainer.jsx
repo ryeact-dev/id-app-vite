@@ -1,3 +1,4 @@
+import AddStudentModalBody from '@/common/modal/add-student/AddStudentModalBody';
 import {
   Dialog,
   DialogContent,
@@ -31,30 +32,30 @@ export default function ModalContainer({
 
   let modalComponent = <div></div>;
 
-  // switch (modalType) {
-  //   case 'add-student':
-  //     modalComponent = (
-  //       <AddStudentModalBody payload={payload} closeModal={close} />
-  //     );
-  //     break;
-  //   case 'add-school-year':
-  //     modalComponent = (
-  //       <AddSchoolYearModalBody payload={payload} closeModal={close} />
-  //     );
-  //     break;
-  //   case 'add-department':
-  //     modalComponent = (
-  //       <AddDepartmentModalBody payload={payload} closeModal={close} />
-  //     );
-  //     break;
-  //   case 'add-program':
-  //     modalComponent = (
-  //       <AddProgramModalBody payload={payload} closeModal={close} />
-  //     );
-  //     break;
-  //   default:
-  //     modalComponent;
-  // }
+  switch (modalType) {
+    case 'add-student':
+      modalComponent = (
+        <AddStudentModalBody payload={payload} closeModal={close} />
+      );
+      break;
+    // case 'add-school-year':
+    //   modalComponent = (
+    //     <AddSchoolYearModalBody payload={payload} closeModal={close} />
+    //   );
+    //   break;
+    // case 'add-department':
+    //   modalComponent = (
+    //     <AddDepartmentModalBody payload={payload} closeModal={close} />
+    //   );
+    //   break;
+    // case 'add-program':
+    //   modalComponent = (
+    //     <AddProgramModalBody payload={payload} closeModal={close} />
+    //   );
+    //   break;
+    default:
+      modalComponent;
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={close}>
