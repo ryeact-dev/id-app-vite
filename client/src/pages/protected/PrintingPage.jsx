@@ -37,7 +37,6 @@ export default function PrintingPage() {
               Validate
             </TabsTrigger>
           </TabsList>
-          <PrintingHeaderButton tabValue={tabValue} />
         </div>
 
         <TabsContent value='single-print' className='space-y-4'>

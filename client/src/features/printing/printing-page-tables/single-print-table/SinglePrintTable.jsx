@@ -2,6 +2,7 @@ import PaginationBlock from '@/common/pagination-block/PaginationBlock';
 import { Badge } from '@/common/ui/badge';
 import { Button } from '@/common/ui/button';
 import { Card, CardContent, CardFooter } from '@/common/ui/card';
+import { Input } from '@/common/ui/input';
 import {
   Table,
   TableBody,
@@ -10,6 +11,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
+
+import { Search } from 'lucide-react';
 
 const DUMMY_DATA = [
   {
@@ -89,7 +92,17 @@ const DUMMY_DATA = [
 export default function SinglePrintTable() {
   return (
     <Card>
-      <CardContent className='mt-6'>
+      <div className='flex items-center p-4'>
+        <div className='relative'>
+          <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
+          <Input
+            type='search'
+            placeholder='Search ID number...'
+            className='pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]'
+          />
+        </div>
+      </div>
+      <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
@@ -105,7 +118,7 @@ export default function SinglePrintTable() {
           </TableHeader>
           <TableBody>
             {DUMMY_DATA.map((student) => (
-              <TableRow key={student.id}>
+              <TableRow key={student.studentRef[0].idNumber}>
                 <TableCell className='font-medium'>
                   <div className='font-medium -mb-1'>
                     {`${student.studentRef[0].idNumber} - ${student.studentRef[0].firstName} ${student.studentRef[0].middleInitial}. ${student.studentRef[0].lastName}`}
