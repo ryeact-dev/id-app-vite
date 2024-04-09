@@ -20,14 +20,14 @@ const NAV_LINKS = [
     icon: <Printer className='size-4' />,
   },
   {
-    title: 'Reports',
-    path: '/reports',
-    icon: <FileText className='size-4' />,
-  },
-  {
     title: 'Database',
     path: '/database',
     icon: <Database className='size-4' />,
+  },
+  {
+    title: 'Reports',
+    path: '/reports',
+    icon: <FileText className='size-4' />,
   },
   {
     title: 'Academic Settings',
