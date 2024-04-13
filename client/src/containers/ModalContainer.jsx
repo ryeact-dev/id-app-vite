@@ -64,9 +64,9 @@ export default function ModalContainer({
     <Dialog open={isOpen} onOpenChange={close}>
       <DialogContent className={`${size}`}>
         <DialogHeader>
-          <DialogTitle className='text-center'>{title}</DialogTitle>
+          <DialogTitle className='text-center text-2xl'>{title}</DialogTitle>
         </DialogHeader>
-        <div className='my-4'>{modalComponent}</div>
+        <div>{modalComponent}</div>
       </DialogContent>
     </Dialog>
   );
