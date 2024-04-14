@@ -25,7 +25,7 @@ export default function AddStudentModalBody({ payload, closeModal }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className='flex flex-col sm:flex-row w-full gap-4'>
+        <div className='flex flex-col sm:flex-row w-full gap-3'>
           {/* Student Image Inputs - Photo and Esig */}
           <StudentImageInputs
             photo={photo}
@@ -45,7 +45,7 @@ export default function AddStudentModalBody({ payload, closeModal }) {
             <Button
               type='button'
               onClick={() => closeModal()}
-              className='flex-1 hover:bg-destructive'
+              className='flex-1 border border-destructive hover:bg-destructive'
               variant='ghost'
             >
               Cancel

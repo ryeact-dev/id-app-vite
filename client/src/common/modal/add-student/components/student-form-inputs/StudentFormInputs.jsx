@@ -26,12 +26,10 @@ export default function StudentFormInputs({ form }) {
 
   return (
     <Card className='relative flex-[2] rounded-md space-y-2'>
-      <CardHeader className='p-0 m-0 bg-primary rounded-t-md'>
-        <CardTitle className=' text-white p-2 font-normal'>
-          Student Information
-        </CardTitle>
+      <CardHeader className='p-0 m-0  rounded-t-md'>
+        <CardTitle className='px-4 pt-2'>Student Information</CardTitle>
       </CardHeader>
-      <CardContent className='space-y-2'>
+      <CardContent className='space-y-2 px-4'>
         {/* Student Name */}
         <FormField
           control={form.control}
@@ -96,9 +94,9 @@ export default function StudentFormInputs({ form }) {
             name='middleInitial'
             render={({ field }) => (
               <FormItem className='flex-1 space-y-0'>
-                <FormLabel>First Name</FormLabel>
+                <FormLabel>Middle Initial</FormLabel>
                 <FormControl>
-                  <Input placeholder='First Name' {...field} />
+                  <Input placeholder='Middle Initial' {...field} />
                 </FormControl>
 
                 {/* <FormMessage /> */}

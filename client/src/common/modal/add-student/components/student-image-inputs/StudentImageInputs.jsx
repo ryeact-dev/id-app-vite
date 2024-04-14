@@ -20,15 +20,13 @@ export default function StudentImageInputs({
   };
 
   return (
-    <div className='flex-1 px-2 space-y-2 flex flex-col items-center'>
+    <div className='flex-1 space-y-2 flex flex-col items-center'>
       {/* Student Photo */}
       <Card className='overflow-hidden rounded-md'>
         <CardHeader className='p-0'>
-          <CardTitle className='bg-secondary p-2 font-semibold'>
-            Photo
-          </CardTitle>
+          <CardTitle className='p-2'>Photo</CardTitle>
         </CardHeader>
-        <div className='relative rounded-md border border-gray-200 size-48 flex items-center justify-center'>
+        <div className='relative rounded-md size-48 flex items-center justify-center m-1 border border-dashed'>
           <ImageComponent
             alt='StudentPhoto'
             className='object-cover object-center h-full w-full'
@@ -52,11 +50,9 @@ export default function StudentImageInputs({
       {/* Student Esign */}
       <Card className='overflow-hidden rounded-md'>
         <CardHeader className='p-0'>
-          <CardTitle className='bg-secondary p-2 font-semibold'>
-            Signature
-          </CardTitle>
+          <CardTitle className='p-2'>Signature</CardTitle>
         </CardHeader>
-        <div className='relative rounded-md border border-gray-200 size-48 flex items-center justify-center'>
+        <div className='relative rounded-md size-48 flex items-center justify-center m-1 border border-dashed'>
           <ImageComponent
             alt='ESignature'
             className='object-cover object-center h-full w-full'

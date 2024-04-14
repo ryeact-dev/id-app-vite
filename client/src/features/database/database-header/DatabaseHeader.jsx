@@ -37,7 +37,7 @@ export default function DatabaseHeader({ tabValue }) {
           isOpen={isOpen}
           setIsOpen={setIsopen}
           title={'Student Info'}
-          size={'max-w-3xl'}
+          size={'max-w-2xl'}
           modalType={'add-student'}
           payload={null}
         />

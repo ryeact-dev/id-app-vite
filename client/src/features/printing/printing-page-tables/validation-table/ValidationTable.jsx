@@ -1,7 +1,14 @@
 import PaginationBlock from '@/common/pagination-block/PaginationBlock';
 import { Badge } from '@/common/ui/badge';
 import { Button } from '@/common/ui/button';
-import { Card, CardContent, CardFooter } from '@/common/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/common/ui/card';
 import { Input } from '@/common/ui/input';
 import {
   Table,
@@ -80,18 +87,24 @@ const DUMMY_DATA = [
 export default function ValidationTable() {
   return (
     <Card>
-      <div className='flex items-center justify-between gap-4 p-4'>
-        <div className='relative'>
-          <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
-          <Input
-            type='search'
-            placeholder='Search ID number...'
-            className='pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]'
-          />
+      <div className='flex items-center justify-between gap-4'>
+        <CardHeader className='space-y-0'>
+          <CardTitle>Printed ID Transactions</CardTitle>
+          <CardDescription>List of Printed ID per transaction</CardDescription>
+        </CardHeader>
+        <div className='m-4 flex items-center gap-2'>
+          <div className='relative'>
+            <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
+            <Input
+              type='search'
+              placeholder='Search ID number...'
+              className='pl-8 sm:w-[200px]'
+            />
+          </div>
+          <Button type='button' className='font-semibold' variant='outline'>
+            Manual Validate
+          </Button>
         </div>
-        <Button type='button' className='font-semibold' variant='outline'>
-          Manual Validate
-        </Button>
       </div>
       <CardContent>
         <Table>

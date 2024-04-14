@@ -20,10 +20,10 @@ const DUMMY_DATA = [
     birthDate: 'Jan 09, 1990',
     program: 'BS - Tourism Management',
     deparment: 'Dept. of Business Administration Education',
-    address:
-      'Prk. Tae, Bario Patay, Brgy. Canocotan, Tagum City, Davao Del Norte',
     guardian: 'Mr. John Doe',
     guardianContact: '09123456789',
+    guardianAddress:
+      'Prk. Tae, Bario Patay, Brgy. Canocotan, Tagum City, Davao Del Norte',
     createBy: [
       {
         fullName: 'Stap Morning',
@@ -47,12 +47,12 @@ const DUMMY_DATA = [
     firstName: 'Nayr',
     middleInitial: 'E',
     birthDate: 'Jan 09, 1980',
-    address:
+    guardian: 'Mr. Exodiac Doe',
+    guardianContact: '09123456789',
+    guardianAddress:
       'Prk. Tae, Bario Patay, Brgy. Canocotan, Tagum City, Davao Del Norte',
     program: 'BS - Criminology',
     deparment: 'Dept. of Criminal Justice Education',
-    guardian: 'Mr. Exodiac Doe',
-    guardianContact: '09123456789',
     createBy: [
       {
         fullName: 'Stap Afternoon',
@@ -76,12 +76,13 @@ const DUMMY_DATA = [
     firstName: 'Nako',
     middleInitial: 'E',
     birthDate: 'Jan 09, 1950',
-    address:
+    guardian: 'Mr. John David',
+    guardianContact: '09123456789',
+    guardianAddress:
       'Prk. Tae, Bario Patay, Brgy. Canocotan, Tagum City, Davao Del Norte',
     program: 'BSED - Mathematics',
     deparment: 'Dept. of Teacher Education',
-    guardian: 'Mr. John David',
-    guardianContact: '09123456789',
+
     createBy: [
       {
         fullName: 'Stap Morning',
@@ -101,8 +102,8 @@ export default function StudentTable() {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>BirthDate</TableHead>
-              <TableHead>Address</TableHead>
               <TableHead>Guardian</TableHead>
+              <TableHead>Guardian Address</TableHead>
               <TableHead>Added By</TableHead>
               <TableHead>Updated By</TableHead>
               <TableHead>
@@ -125,15 +126,15 @@ export default function StudentTable() {
                   <div className='font-medium -mb-1'>{student.birthDate}</div>{' '}
                 </TableCell>
                 <TableCell className='font-medium'>
-                  <div className='font-medium w-48 leading-5'>
-                    {student.address}
-                  </div>{' '}
-                </TableCell>
-                <TableCell className='font-medium'>
                   <div className='font-medium -mb-1'>{student.guardian}</div>
                   <div className='hidden text-xs text-muted-foreground md:inline'>
                     {student.guardianContact}
                   </div>
+                </TableCell>
+                <TableCell className='font-medium'>
+                  <div className='font-medium w-48 leading-5'>
+                    {student.guardianAddress}
+                  </div>{' '}
                 </TableCell>
                 <TableCell className='font-medium'>
                   <div className='font-medium -mb-1'>

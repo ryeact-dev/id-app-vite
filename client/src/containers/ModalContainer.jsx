@@ -2,6 +2,7 @@ import AddDepartmentModalBody from '@/common/modal/add-department/AddDepartmentM
 import AddProgramModalBody from '@/common/modal/add-program/AddProgramModalBody';
 import AddSchoolYearModalBody from '@/common/modal/add-school-year/AddSchoolYearModalBody';
 import AddStudentModalBody from '@/common/modal/add-student/AddStudentModalBody';
+import { Card } from '@/common/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -64,7 +65,11 @@ export default function ModalContainer({
     <Dialog open={isOpen} onOpenChange={close}>
       <DialogContent className={`${size}`}>
         <DialogHeader>
-          <DialogTitle className='text-center text-2xl'>{title}</DialogTitle>
+          <Card className='rounded-md'>
+            <DialogTitle className='text-center text-2xl p-1'>
+              {title}
+            </DialogTitle>
+          </Card>
         </DialogHeader>
         <div>{modalComponent}</div>
       </DialogContent>
