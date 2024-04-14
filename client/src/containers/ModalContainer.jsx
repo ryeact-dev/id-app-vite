@@ -63,7 +63,7 @@ export default function ModalContainer({
 
   return (
     <Dialog open={isOpen} onOpenChange={close}>
-      <DialogContent className={`${size}`}>
+      <DialogContent className={`${size} bg-background`}>
         <DialogHeader>
           <Card className='rounded-md'>
             <DialogTitle className='text-center text-2xl p-1'>

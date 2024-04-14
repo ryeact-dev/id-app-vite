@@ -15,16 +15,18 @@ export default function DatabasePage() {
     <div className='max-w-7xl mx-auto space-y-4'>
       <Tabs defaultValue={tabValue}>
         <div className='flex items-center justify-between'>
-          <TabsList className='grid grid-cols-2 w-[30%]'>
+          <TabsList className='grid grid-cols-2 w-[30%] bg-accent/10'>
             <TabsTrigger
               value='student'
               onClick={() => handleTabValueChange('student')}
+              className='data-[state=active]:bg-accent/90 data-[state=active]:text-white'
             >
               Student
             </TabsTrigger>
             <TabsTrigger
-              value='Non-Student'
+              value='non-student'
               onClick={() => handleTabValueChange('non-student')}
+              className='data-[state=active]:bg-accent/90 data-[state=active]:text-white'
             >
               Non-Student
             </TabsTrigger>
