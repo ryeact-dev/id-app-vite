@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const { shutdownPrisma } = require('./lib/utils/prismaDisconnect');
 
 // Routes
-// const userRoute = require('./routes/user.route');
+const userRoute = require('./routes/user.route');
 // const eventRoute = require('./routes/event.route');
 // const competitionRoute = require('./routes/competition.route');
 // const scoresheetRoute = require('./routes/scoresheet.route');
@@ -30,7 +30,7 @@ app.use(
 
 app.use(helmet());
 
-// app.use('/api/user', userRoute);
+app.use('/api/user', userRoute);
 // app.use('/api/event', eventRoute);
 // app.use('/api/competition', competitionRoute);
 // app.use('/api/scoresheet', scoresheetRoute);

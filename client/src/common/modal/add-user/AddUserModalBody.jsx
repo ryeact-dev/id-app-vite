@@ -5,15 +5,23 @@ import { Form } from '@/common/ui/form';
 import { INITIAL_USER_OBJ } from '@/lib/globalConstants';
 import { userSchema } from '@/lib/schema';
 import AddUserInputs from './components/add-user-inputs/AddUserInputs';
+import { useAddUser } from '@/hooks/user.hook';
 
 export default function AddUserModalBody({ payload, closeModal }) {
+  const onAddUserMutation = useAddUser(closeModal);
+
   const form = useForm({
     resolver: zodResolver(userSchema),
     defaultValues: payload !== null ? payload : INITIAL_USER_OBJ,
   });
 
   const onSubmit = (values) => {
-    console.log(values);
+    let forAddingData;
+    forAddingData = {
+      ...values,
+    };
+
+    onAddUserMutation.mutate({ forAddingData });
   };
 
   return (
