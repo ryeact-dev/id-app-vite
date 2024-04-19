@@ -8,6 +8,7 @@ import {
   ReportsPage,
   SettingsPage,
 } from './lazyComponents';
+import UsersPage from '@/pages/protected/UsersPage';
 
 export const router = createBrowserRouter([
   // { path: '/login', element: <Login /> },
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
       { path: 'reports', element: <ReportsPage /> },
       { path: 'database', element: <DatabasePage /> },
       { path: 'settings', element: <SettingsPage /> },
+      { path: 'users', element: <UsersPage /> },
     ],
   },
 ]);

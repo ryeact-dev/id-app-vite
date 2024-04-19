@@ -17,3 +17,5 @@ export const DatabasePage = lazy(() =>
 export const SettingsPage = lazy(() =>
   import('@/pages/protected/SettingsPage')
 );
+
+export const UsersPage = lazy(() => import('@/pages/protected/UsersPage'));

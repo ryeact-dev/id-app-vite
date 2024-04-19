@@ -5,6 +5,7 @@ import {
   Printer,
   Settings,
   Database,
+  Users,
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
@@ -34,19 +35,16 @@ const NAV_LINKS = [
     path: '/settings',
     icon: <Settings className='size-4' />,
   },
+  {
+    title: 'Users',
+    path: '/users',
+    icon: <Users className='size-4' />,
+  },
 ];
 
 export default function NavLinks() {
   return (
     <nav className='hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-2 md:text-sm'>
-      <NavLink
-        to='#'
-        className='flex items-center gap-2 text-lg font-semibold md:text-base'
-      >
-        <Package2 className='h-6 w-6' />
-        <span className='sr-only'>Acme Inc</span>
-      </NavLink>
-
       {NAV_LINKS.map((link) => (
         <NavLink
           key={link.path}

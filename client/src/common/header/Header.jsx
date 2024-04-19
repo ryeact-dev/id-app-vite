@@ -16,7 +16,17 @@ import {
 export default function Header() {
   return (
     <header className='sticky top-0 border-b bg-background/70 z-50 backdrop-blur-sm w-full'>
-      <div className=' flex items-center gap-4 px-4 h-16 mx-auto md:px-0 max-w-7xl'>
+      <div className='flex items-center gap-4 px-4 h-16 mx-auto md:px-0 max-w-7xl'>
+        <div className='flex-1'>
+          <NavLink
+            to='#'
+            className='flex items-center gap-2 text-lg font-semibold md:text-base'
+          >
+            <Package2 className='h-6 w-6' />
+            <p>UMTC ID</p>
+            <span className='sr-only'>Acme Inc</span>
+          </NavLink>
+        </div>
         <NavLinks />
         <Sheet>
           <SheetTrigger asChild>
