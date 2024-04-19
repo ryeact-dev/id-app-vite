@@ -1,3 +1,10 @@
+export const INITIAL_USER_OBJ = {
+  username: '',
+  fullName: '',
+  email: '',
+  role: '',
+};
+
 export const INITIAL_STUDENT_OBJ = {
   idNumber: '',
   lastName: '',

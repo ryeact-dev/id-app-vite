@@ -2,6 +2,7 @@ import AddDepartmentModalBody from '@/common/modal/add-department/AddDepartmentM
 import AddProgramModalBody from '@/common/modal/add-program/AddProgramModalBody';
 import AddSchoolYearModalBody from '@/common/modal/add-school-year/AddSchoolYearModalBody';
 import AddStudentModalBody from '@/common/modal/add-student/AddStudentModalBody';
+import AddUserModalBody from '@/common/modal/add-user/AddUserModalBody';
 import { Card } from '@/common/ui/card';
 import {
   Dialog,
@@ -55,6 +56,11 @@ export default function ModalContainer({
     case 'add-program':
       modalComponent = (
         <AddProgramModalBody payload={payload} closeModal={close} />
+      );
+      break;
+    case 'add-user':
+      modalComponent = (
+        <AddUserModalBody payload={payload} closeModal={close} />
       );
       break;
     default:

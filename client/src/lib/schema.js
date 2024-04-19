@@ -29,7 +29,10 @@ export const userSchema = z.object({
     message: 'Role must not be empty.',
   }),
 
-  email: z.string().trim().email({ message: 'Please provide a correct email' }),
+  email: z
+    .string()
+    .email({ message: 'Please provide a correct email' })
+    .min(5, { message: 'Email must not be empty.' }),
 });
 
 // Student Schema
