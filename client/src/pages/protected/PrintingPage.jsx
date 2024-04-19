@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/common/ui/tabs';
-import PrintingHeaderButton from '@/features/printing/printing-header/PrintingHeaderButton';
+
 import PrintManyTable from '@/features/printing/printing-page-tables/print-many-table/PrintManyTable';
 import SinglePrintTable from '@/features/printing/printing-page-tables/single-print-table/SinglePrintTable';
 import ValidationTable from '@/features/printing/printing-page-tables/validation-table/ValidationTable';
+import PrintHeader from '@/features/printing/printing-header/PrintingHeader';
 
 export default function PrintingPage() {
   const [tabValue, setTabValue] = useState('single-print');
@@ -39,6 +40,7 @@ export default function PrintingPage() {
               Validate
             </TabsTrigger>
           </TabsList>
+          <PrintHeader />
         </div>
 
         <TabsContent value='single-print' className='space-y-4'>

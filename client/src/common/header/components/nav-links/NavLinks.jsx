@@ -13,32 +13,32 @@ const NAV_LINKS = [
   {
     title: 'Dashboard',
     path: '/',
-    icon: <LayoutDashboard className='size-4' />,
+    icon: <LayoutDashboard className='size-4' strokeWidth={2} />,
   },
   {
     title: 'Print & Validate',
     path: '/printing',
-    icon: <Printer className='size-4' />,
+    icon: <Printer className='size-4' strokeWidth={2} />,
   },
   {
     title: 'Database',
     path: '/database',
-    icon: <Database className='size-4' />,
+    icon: <Database className='size-4' strokeWidth={2} />,
   },
   {
     title: 'Reports',
     path: '/reports',
-    icon: <FileText className='size-4' />,
+    icon: <FileText className='size-4' strokeWidth={2} />,
   },
   {
     title: 'Academic Settings',
     path: '/settings',
-    icon: <Settings className='size-4' />,
+    icon: <Settings className='size-4' strokeWidth={2} />,
   },
   {
     title: 'Users',
     path: '/users',
-    icon: <Users className='size-4' />,
+    icon: <Users className='size-4' strokeWidth={2} />,
   },
 ];
 
@@ -51,8 +51,10 @@ export default function NavLinks() {
           to={link.path}
           className={({ isActive }) =>
             `${
-              isActive ? 'bg-primary rounded-md text-background ' : ''
-            } min-w-24 max-w-fit font-semibold px-3 py-1 text-center my-auto flex gap-1 items-center justify-center `
+              isActive
+                ? 'bg-primary rounded-md text-background text-white '
+                : ''
+            } min-w-24 max-w-fit font-semibold px-3 py-1 text-center my-auto flex gap-1 items-center justify-center  `
           }
         >
           {link.icon} {link.title}
