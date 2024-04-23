@@ -1,9 +1,14 @@
 const express = require('express');
-const { addUser, loginUser } = require('../controllers/user.controller');
+const {
+  addUser,
+  loginUser,
+  getCurrentUser,
+} = require('../controllers/user.controller');
+const { verifyToken } = require('../lib/helpers/verifyToken');
 
 const router = express.Router();
 
-// router.get('/get-question', getAllQuestions);
+router.get('/current', verifyToken, getCurrentUser);
 
 router.post('/add', addUser);
 router.post('/login', loginUser);

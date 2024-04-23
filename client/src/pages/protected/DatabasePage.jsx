@@ -3,9 +3,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/common/ui/tabs';
 import PrintManyTable from '@/features/printing/printing-page-tables/print-many-table/PrintManyTable';
 import StudentTable from '@/features/database/student-table/StudentTable';
 import DatabaseHeader from '@/features/database/database-header/DatabaseHeader';
+import { useCurrentUser } from '@/hooks/user.hook';
+import { Navigate } from 'react-router-dom';
 
 export default function DatabasePage() {
   const [tabValue, setTabValue] = useState('student');
+  const { isLoading, data: currentUser } = useCurrentUser();
+
+  if (!isLoading && !currentUser) {
+    return <Navigate to='/login' replace />;
+  }
 
   const handleTabValueChange = (tabValue) => {
     setTabValue(tabValue);

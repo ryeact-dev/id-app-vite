@@ -3,10 +3,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/common/ui/tabs';
 import ReportHeader from '@/features/reports/report-header/ReportHeader';
 import PrintReportTable from '@/features/reports/report-page-tables/print-report-table/PrintReportTable';
 import ValidationReportTable from '@/features/reports/report-page-tables/validation-report-table/ValidationReportTable';
+import { useCurrentUser } from '@/hooks/user.hook';
+import { Navigate } from 'react-router-dom';
 
 export default function ReportsPage() {
   const [tabValue, setTabValue] = useState('print');
+  const { isLoading, data: currentUser } = useCurrentUser();
 
+  if (!isLoading && !currentUser) {
+    return <Navigate to='/login' replace />;
+  }
   const handleTabValueChange = (tabValue) => {
     setTabValue(tabValue);
   };

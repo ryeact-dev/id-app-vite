@@ -5,10 +5,16 @@ import PrintManyTable from '@/features/printing/printing-page-tables/print-many-
 import SinglePrintTable from '@/features/printing/printing-page-tables/single-print-table/SinglePrintTable';
 import ValidationTable from '@/features/printing/printing-page-tables/validation-table/ValidationTable';
 import PrintHeader from '@/features/printing/printing-header/PrintingHeader';
+import { useCurrentUser } from '@/hooks/user.hook';
+import { Navigate } from 'react-router-dom';
 
 export default function PrintingPage() {
   const [tabValue, setTabValue] = useState('single-print');
+  const { isLoading, data: currentUser } = useCurrentUser();
 
+  if (!isLoading && !currentUser) {
+    return <Navigate to='/login' replace />;
+  }
   const handleTabValueChange = (tabValue) => {
     setTabValue(tabValue);
   };

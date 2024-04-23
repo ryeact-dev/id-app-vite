@@ -10,20 +10,22 @@ import {
   SettingsPage,
 } from './lazyComponents';
 import UsersPage from '@/pages/protected/UsersPage';
+import ErrorBoundary from '@/pages/ErrorBoundary';
+import { getCurrentUser } from '@/api/user.api';
+import RootContainer from '@/pages/RootContainer';
 
 export const router = createBrowserRouter([
-  { path: '/login', element: <LoginPage /> },
   {
     path: '/',
-    // loader: () => getCurrentUserData(),
     element: <Layout />,
     children: [
-      { index: true, element: <DashboardPage /> },
+      { path: 'dashboard', element: <DashboardPage /> },
       { path: 'printing', element: <PrintingPage /> },
       { path: 'reports', element: <ReportsPage /> },
       { path: 'database', element: <DatabasePage /> },
       { path: 'settings', element: <SettingsPage /> },
       { path: 'users', element: <UsersPage /> },
+      { path: 'login', element: <LoginPage /> },
     ],
   },
 ]);

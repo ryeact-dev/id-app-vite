@@ -13,6 +13,13 @@ const expirationDate = new Date(
   currentDate.getDate()
 );
 
+// Get Current User
+async function getCurrentUser(req, res, next) {
+  const { password, isActive, createdAt, ...rest } = req.user;
+
+  res.json(rest);
+}
+
 // Add User
 async function addUser(req, res, next) {
   const defaultPassword = 'UMTC@77';
@@ -52,6 +59,9 @@ async function loginUser(req, res, next) {
 
     if (foundUser === null) return res.status(404).send('Username not found');
 
+    if (foundUser.isActive === false)
+      return res.status(404).send('This account was deactivated');
+
     const passOk = bcrypt.compareSync(password, foundUser.password);
 
     if (passOk) {
@@ -71,3 +81,4 @@ async function loginUser(req, res, next) {
 
 exports.addUser = addUser;
 exports.loginUser = loginUser;
+exports.getCurrentUser = getCurrentUser;
