@@ -5,7 +5,8 @@ const router = express.Router();
 
 // router.get('/get-question', getAllQuestions);
 
-router.post('/add-user', addUser);
+router.post('/add', addUser);
+router.post('/login', addUser);
 
 // router.patch('/update-question', updateQuestion);
 
