@@ -4,6 +4,7 @@ import Layout from '@/containers/Layout';
 import {
   DashboardPage,
   DatabasePage,
+  LoginPage,
   PrintingPage,
   ReportsPage,
   SettingsPage,
@@ -11,7 +12,7 @@ import {
 import UsersPage from '@/pages/protected/UsersPage';
 
 export const router = createBrowserRouter([
-  // { path: '/login', element: <Login /> },
+  { path: '/login', element: <LoginPage /> },
   {
     path: '/',
     // loader: () => getCurrentUserData(),

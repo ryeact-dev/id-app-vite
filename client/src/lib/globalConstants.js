@@ -5,6 +5,11 @@ export const INITIAL_USER_OBJ = {
   role: '',
 };
 
+export const INITIAL_LOGIN_OBJ = {
+  username: '',
+  password: '',
+};
+
 export const INITIAL_STUDENT_OBJ = {
   idNumber: '',
   lastName: '',
