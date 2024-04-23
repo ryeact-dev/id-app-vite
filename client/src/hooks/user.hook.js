@@ -1,4 +1,4 @@
-import { addUser } from '@/api/user.api';
+import { addUser, loginUser } from '@/api/user.api';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { useMutation } from '@tanstack/react-query';
 
@@ -10,6 +10,16 @@ export function useAddUser(closeModal) {
     onSuccess: ({ data }) => {
       ToastNotification('success', data);
       closeModal();
+    },
+  });
+}
+
+export function useLoginUser() {
+  return useMutation({
+    mutationFn: loginUser,
+    onError: ({ response }) => ToastNotification('error', response.data),
+    onSuccess: ({ data }) => {
+      ToastNotification('success', data);
     },
   });
 }

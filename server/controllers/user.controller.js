@@ -6,6 +6,13 @@ const bcryptSalt = bcrypt.genSaltSync(10);
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWTSECRET;
 
+const currentDate = new Date();
+const expirationDate = new Date(
+  currentDate.getFullYear(),
+  currentDate.getMonth() + 1,
+  currentDate.getDate()
+);
+
 // Add User
 async function addUser(req, res, next) {
   const defaultPassword = 'UMTC@77';
@@ -36,17 +43,26 @@ async function addUser(req, res, next) {
 
 // Login User
 async function loginUser(req, res, next) {
+  const { password, username } = req.body;
+
   try {
     const foundUser = await prisma.user.findFirst({
-      where: {
-        email: req.body.email,
-      },
+      where: { username },
     });
 
-    if (!foundUser) return res.status(400).send('Username does not exist');
+    if (foundUser === null) return res.status(404).send('Username not found');
 
-    console.log(foundUser);
-    res.json();
+    const passOk = bcrypt.compareSync(password, foundUser.password);
+
+    if (passOk) {
+      const token = jwt.sign({ id: foundUser.id }, jwtSecret);
+
+      res.cookie('umtcid_user', token, {
+        maxAge: expirationDate,
+        httpOnly: true,
+      });
+      res.json();
+    } else return res.status(401).send('Wrong password');
   } catch (err) {
     err.tile = 'Loggin-in User';
     next(err);

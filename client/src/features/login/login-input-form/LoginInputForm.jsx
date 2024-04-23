@@ -2,16 +2,15 @@ import { Button } from '@/common/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/common/ui/form';
 import { Input } from '@/common/ui/input';
-import { Lock, LogIn, Search, User } from 'lucide-react';
+import { Lock, LogIn, User } from 'lucide-react';
 
-export default function LoginInputForm({ form, onSubmit }) {
+export default function LoginInputForm({ form, onSubmit, isPending }) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
@@ -48,6 +47,7 @@ export default function LoginInputForm({ form, onSubmit }) {
                     placeholder='password'
                     type='password'
                     className='placeholder:italic'
+                    autoComplete='password'
                     {...field}
                   />
                 </div>
@@ -57,7 +57,11 @@ export default function LoginInputForm({ form, onSubmit }) {
           )}
         />
         <div className='!mt-10'>
-          <Button type='submit' className='w-full flex items-center gap-2 py-5'>
+          <Button
+            disabled={isPending}
+            type='submit'
+            className='w-full flex items-center gap-2 py-5'
+          >
             <LogIn />
             <p className='text-lg uppercase font-bold'>Login</p>
           </Button>

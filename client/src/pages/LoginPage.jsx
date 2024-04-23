@@ -3,15 +3,18 @@ import { useForm } from 'react-hook-form';
 import LoginInputForm from '@/features/login/login-input-form/LoginInputForm';
 import { loginSchema } from '@/lib/schema';
 import { INITIAL_LOGIN_OBJ } from '@/lib/globalConstants';
+import { useLoginUser } from '@/hooks/user.hook';
 
 export function LoginPage() {
+  const onLoginUserMutation = useLoginUser();
+
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: INITIAL_LOGIN_OBJ,
   });
 
   const onSubmit = (values) => {
-    console.log(values);
+    onLoginUserMutation.mutate({ forLoginData: values });
   };
 
   return (
@@ -26,7 +29,11 @@ export function LoginPage() {
                   Enter your credentials below to login to your account
                 </p>
               </div>
-              <LoginInputForm form={form} onSubmit={onSubmit} />
+              <LoginInputForm
+                form={form}
+                onSubmit={onSubmit}
+                isPending={onLoginUserMutation.isPending}
+              />
             </div>
           </div>
           <div className='hidden bg-muted lg:block'>

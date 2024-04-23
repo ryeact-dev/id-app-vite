@@ -1,12 +1,12 @@
 const express = require('express');
-const { addUser } = require('../controllers/user.controller');
+const { addUser, loginUser } = require('../controllers/user.controller');
 
 const router = express.Router();
 
 // router.get('/get-question', getAllQuestions);
 
 router.post('/add', addUser);
-router.post('/login', addUser);
+router.post('/login', loginUser);
 
 // router.patch('/update-question', updateQuestion);
 
