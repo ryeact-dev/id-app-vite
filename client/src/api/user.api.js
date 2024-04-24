@@ -8,6 +8,10 @@ export async function getCurrentUser() {
   }
 }
 
+export async function getAllUsers() {
+  return await axios.get('/api/user/all');
+}
+
 export async function loginUser({ forLoginData }) {
   return await axios.post('/api/user/login', forLoginData);
 }

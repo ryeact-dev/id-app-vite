@@ -1,4 +1,6 @@
+import LoadingSpinner from '@/common/loading-spinner/LoadingSpinner';
 import PaginationBlock from '@/common/pagination-block/PaginationBlock';
+import NoRecordsFound from '@/common/typography/NoRecordsFound';
 import { Badge } from '@/common/ui/badge';
 import { Button } from '@/common/ui/button';
 import { Card, CardContent, CardFooter } from '@/common/ui/card';
@@ -10,41 +12,40 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
+import { useGetAllUsers } from '@/hooks/user.hook';
 
-const DUMMY_DATA = [
-  {
-    id: '1',
-    username: 'rmontoya',
-    fullName: 'Ryan P. Montoya',
-    email: 'test@gmail.com',
-    role: 'Admin',
-    createdBy: 'ShuperAhdmin',
-    createdAt: 'Jan 09, 1990',
-    isActive: true,
-  },
-  {
-    id: '2',
-    username: 'jcastro',
-    fullName: 'Jolland H. Castro',
-    email: 'test@gmail.com',
-    role: 'Admin',
-    createdBy: 'ShuperAhdmin',
-    createdAt: 'Jan 09, 1990',
-    isActive: false,
-  },
-  {
-    id: '3',
-    username: 'lJacobo',
-    fullName: 'Luther Jacobo',
-    email: 'test@gmail.com',
-    role: 'Admin',
-    createdBy: 'ShuperAhdmin',
-    createdAt: 'Jan 09, 1990',
-    isActive: true,
-  },
-];
+export default function UsersTable({
+  currentUser,
+  setModalSetting,
+  setIsopen,
+}) {
+  const { isLoading, data: users } = useGetAllUsers(currentUser);
 
-export default function UsersTable() {
+  const handleOptionsClick = (userData, isDeactivatedBtn) => {
+    let modalData;
+
+    if (isDeactivatedBtn) {
+      modalData = {
+        confirmation: 'delete-user',
+        title: 'Update Info',
+        size: 'max-w-2xl',
+        modalType: 'add-user',
+        payload: userData,
+      };
+    } else {
+      modalData = {
+        confirmation: null,
+        title: 'Update Info',
+        size: 'max-w-2xl',
+        modalType: 'add-user',
+        payload: userData,
+      };
+    }
+
+    setModalSetting(modalData);
+    setIsopen(true);
+  };
+
   return (
     <Card>
       <CardContent className='mt-6'>
@@ -52,9 +53,9 @@ export default function UsersTable() {
           <TableHeader>
             <TableRow>
               <TableHead>Username</TableHead>
+              <TableHead>Full Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
-              <TableHead>Created By</TableHead>
               <TableHead>
                 Actions
                 <span className='sr-only'>Actions</span>
@@ -62,45 +63,51 @@ export default function UsersTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {DUMMY_DATA.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>{user.username}</div>
-                  <div className='hidden text-xs text-muted-foreground md:inline'>
-                    {user.fullName}
-                  </div>
-                </TableCell>
-                <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>{user.email}</div>{' '}
-                </TableCell>
-                <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>{user.role}</div>{' '}
-                </TableCell>
-                <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>{user.createdAt}</div>
-                  <div className='hidden text-xs text-muted-foreground md:inline'>
-                    {user.createdBy}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className='flex space-x-2'>
-                    <Button size='sm' variant='outline'>
-                      Edit
-                    </Button>
-                    <Button
-                      size='sm'
-                      variant={user.isActive ? 'secondary' : 'default'}
-                      className='w-20'
-                    >
-                      {user.isActive ? 'Deactivate' : 'Active'}
-                    </Button>
-                    {/* <Button size='sm'>Print</Button> */}
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+            {!isLoading &&
+              users?.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell className='font-medium'>
+                    <div className='font-medium -mb-1'>{user.username}</div>
+                  </TableCell>
+                  <TableCell className='font-medium'>
+                    <div className='font-medium -mb-1'> {user.fullName}</div>
+                  </TableCell>
+                  <TableCell className='font-medium'>
+                    <div className='font-medium -mb-1'>{user.email}</div>
+                  </TableCell>
+                  <TableCell className='font-medium'>
+                    <div className='font-medium -mb-1'>{user.role}</div>
+                  </TableCell>
+
+                  <TableCell>
+                    <div className='flex space-x-2'>
+                      <Button
+                        size='sm'
+                        variant='outline'
+                        onClick={() => handleOptionsClick(user, false)}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        size='sm'
+                        variant={user.isActive ? 'secondary' : 'default'}
+                        className='w-20'
+                      >
+                        {user.isActive ? 'Deactivate' : 'Active'}
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          users?.length === 0 && (
+            <NoRecordsFound>No Records Found.</NoRecordsFound>
+          )
+        )}
       </CardContent>
       <CardFooter>
         <PaginationBlock />

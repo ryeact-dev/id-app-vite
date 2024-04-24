@@ -20,6 +20,17 @@ async function getCurrentUser(req, res, next) {
   res.json(rest);
 }
 
+// Get All Users
+async function getAllUsers(req, res, next) {
+  try {
+    const users = await prisma.user.findMany();
+    res.json(users);
+  } catch (err) {
+    err.tile = 'Getting All Users';
+    next(err);
+  }
+}
+
 // Add User
 async function addUser(req, res, next) {
   const defaultPassword = 'UMTC@77';
@@ -79,6 +90,7 @@ async function loginUser(req, res, next) {
   }
 }
 
+exports.getCurrentUser = getCurrentUser;
+exports.getAllUsers = getAllUsers;
 exports.addUser = addUser;
 exports.loginUser = loginUser;
-exports.getCurrentUser = getCurrentUser;

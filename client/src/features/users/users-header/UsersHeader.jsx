@@ -1,14 +1,19 @@
 import { Button } from '@/common/ui/button';
 import { Input } from '@/common/ui/input';
-import ModalContainer from '@/containers/ModalContainer';
 
 import { PlusCircle, Search } from 'lucide-react';
-import { useState } from 'react';
 
-export default function UsersHeader() {
-  const [isOpen, setIsopen] = useState(false);
-
+export default function UsersHeader({ setModalSetting, setIsopen }) {
   const handleAddStudent = () => {
+    const modalData = {
+      confirmation: null,
+      title: 'User Info',
+      size: 'max-w-2xl',
+      modalType: 'add-user',
+      payload: null,
+    };
+
+    setModalSetting(modalData);
     setIsopen(true);
   };
 
@@ -32,16 +37,6 @@ export default function UsersHeader() {
           <PlusCircle size={18} className='mr-2' /> Add User
         </Button>
       </div>
-      {isOpen === true && (
-        <ModalContainer
-          isOpen={isOpen}
-          setIsOpen={setIsopen}
-          title={'User Info'}
-          size={'max-w-2xl'}
-          modalType={'add-user'}
-          payload={null}
-        />
-      )}
     </>
   );
 }

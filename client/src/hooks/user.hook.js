@@ -1,4 +1,9 @@
-import { addUser, getCurrentUser, loginUser } from '@/api/user.api';
+import {
+  addUser,
+  getAllUsers,
+  getCurrentUser,
+  loginUser,
+} from '@/api/user.api';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -14,12 +19,26 @@ export function useCurrentUser() {
   });
 }
 
+export function useGetAllUsers(currentUser) {
+  return useQuery({
+    queryKey: ['all-users'],
+    queryFn: () => getAllUsers(),
+    select: ({ data }) => {
+      return data;
+    },
+    enabled: !!currentUser,
+  });
+}
+
 // Mutations
 export function useAddUser(closeModal) {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: addUser,
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: ({ data }) => {
+      queryClient.invalidateQueries({ queryKey: ['all-users'] });
       ToastNotification('success', data);
       closeModal();
     },

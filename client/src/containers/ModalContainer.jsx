@@ -12,14 +12,9 @@ import {
 } from '@/common/ui/dialog';
 import { useEffect, useState } from 'react';
 
-export default function ModalContainer({
-  isOpen,
-  setIsOpen,
-  modalType,
-  title,
-  size,
-  payload,
-}) {
+export default function ModalContainer({ isOpen, setIsOpen, modalSetting }) {
+  const { modalType, title, size, payload, confirmationType } = modalSetting;
+
   const [isMounted, setIsMounted] = useState(false);
 
   const close = () => {
