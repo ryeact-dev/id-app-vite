@@ -18,7 +18,7 @@ import { PenBox, Trash } from 'lucide-react';
 export default function UsersTable({
   currentUser,
   setModalSetting,
-  setIsopen,
+  setIsOpen,
   fullName,
 }) {
   const { isLoading, data: users } = useGetAllUsers(currentUser, fullName);
@@ -48,7 +48,7 @@ export default function UsersTable({
     }
 
     setModalSetting(modalData);
-    setIsopen(true);
+    setIsOpen(true);
   };
 
   const handleToggleUserStatus = (userId, userStatus) => {

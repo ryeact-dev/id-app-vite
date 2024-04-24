@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { Button } from '@/common/ui/button';
 import {
   Card,
@@ -16,7 +14,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
-import ModalContainer from '@/containers/ModalContainer';
 
 const programOffering = [
   {
@@ -85,12 +82,21 @@ const programOffering = [
   },
 ];
 
-export default function Programs() {
-  const [isOpen, setIsopen] = useState(false);
-
+export default function Programs({ setIsOpen, setModalSetting }) {
   const handleAddProgramClick = () => {
-    setIsopen(true);
+    let modalData;
+
+    modalData = {
+      title: 'Add Program',
+      size: 'max-w-md',
+      modalType: 'add-program',
+      payload: null,
+    };
+
+    setModalSetting(modalData);
+    setIsOpen(true);
   };
+
   return (
     <>
       <Card className='overflow-hidden'>
@@ -140,16 +146,6 @@ export default function Programs() {
           </Table>
         </CardContent>
       </Card>
-      {isOpen === true && (
-        <ModalContainer
-          isOpen={isOpen}
-          setIsOpen={setIsopen}
-          title={'Add Program'}
-          size={'max-w-lg'}
-          modalType={'add-program'}
-          payload={null}
-        />
-      )}
     </>
   );
 }

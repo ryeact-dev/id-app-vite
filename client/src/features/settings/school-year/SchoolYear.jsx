@@ -1,6 +1,3 @@
-import { useState } from 'react';
-
-import ModalContainer from '@/containers/ModalContainer';
 import { Button } from '@/common/ui/button';
 import {
   Card,
@@ -19,11 +16,18 @@ import {
 } from '@/common/ui/table';
 import { Badge } from '@/common/ui/badge';
 
-export default function SchoolYear() {
-  const [isOpen, setIsopen] = useState(false);
-
+export default function SchoolYear({ setIsOpen, setModalSetting }) {
   const handleAddSchoolYearClick = () => {
-    setIsopen(true);
+    let modalData;
+
+    modalData = {
+      title: 'Add School Year',
+      size: 'max-w-lg',
+      modalType: 'add-school-year',
+      payload: null,
+    };
+    setModalSetting(modalData);
+    setIsOpen(true);
   };
 
   return (
@@ -92,14 +96,6 @@ export default function SchoolYear() {
           </Table>
         </CardContent>
       </Card>
-      <ModalContainer
-        isOpen={isOpen}
-        setIsOpen={setIsopen}
-        title={'Add School Year'}
-        size={'max-w-lg'}
-        modalType={'add-school-year'}
-        payload={null}
-      />
     </>
   );
 }

@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { Button } from '@/common/ui/button';
 import {
   Card,
@@ -16,13 +14,19 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
-import ModalContainer from '@/containers/ModalContainer';
 
-export default function Departments() {
-  const [isOpen, setIsopen] = useState(false);
+export default function Departments({ setIsOpen, setModalSetting }) {
+  const handleAddDepartment = () => {
+    let modalData;
 
-  const handleAddStudent = () => {
-    setIsopen(true);
+    modalData = {
+      title: 'Add Department',
+      size: 'max-w-lg',
+      modalType: 'add-department',
+      payload: null,
+    };
+    setModalSetting(modalData);
+    setIsOpen(true);
   };
 
   return (
@@ -40,7 +44,7 @@ export default function Departments() {
               type='button'
               variant='outline'
               className='hover:bg-background hover:text-secondary-foreground'
-              onClick={handleAddStudent}
+              onClick={handleAddDepartment}
             >
               Add Department
             </Button>
@@ -89,16 +93,6 @@ export default function Departments() {
           </Table>
         </CardContent>
       </Card>
-      {isOpen === true && (
-        <ModalContainer
-          isOpen={isOpen}
-          setIsOpen={setIsopen}
-          title={'Add Department'}
-          size={'max-w-lg'}
-          modalType={'add-department'}
-          payload={null}
-        />
-      )}
     </>
   );
 }

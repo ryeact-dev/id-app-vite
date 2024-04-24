@@ -5,7 +5,7 @@ import { PlusCircle, Search } from 'lucide-react';
 
 export default function UsersHeader({
   setModalSetting,
-  setIsopen,
+  setIsOpen,
   setSearchParams,
 }) {
   const handleAddStudent = () => {
@@ -18,7 +18,7 @@ export default function UsersHeader({
     };
 
     setModalSetting(modalData);
-    setIsopen(true);
+    setIsOpen(true);
   };
 
   const handleChange = (value) => {

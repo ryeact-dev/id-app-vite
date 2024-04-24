@@ -6,6 +6,15 @@ import { useState } from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
 
 export default function UsersPage() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalSetting, setModalSetting] = useState({
+    modalType: null,
+    confirmationType: null,
+    title: null,
+    payload: null,
+    size: null,
+  });
+
   const [searchParams, setSearchParams] = useSearchParams({
     page: '1',
     fullname: '',
@@ -15,15 +24,6 @@ export default function UsersPage() {
   const fullName = searchParams.get('fullname');
 
   const { isLoading, data: currentUser } = useCurrentUser();
-
-  const [isOpen, setIsopen] = useState(false);
-  const [modalSetting, setModalSetting] = useState({
-    modalType: null,
-    confirmationType: null,
-    title: null,
-    payload: null,
-    size: null,
-  });
 
   if (!isLoading && !currentUser) {
     return <Navigate to='/login' replace />;
@@ -35,7 +35,7 @@ export default function UsersPage() {
         <div></div>
         <UsersHeader
           setModalSetting={setModalSetting}
-          setIsopen={setIsopen}
+          setIsOpen={setIsOpen}
           setSearchParams={setSearchParams}
         />
       </div>
@@ -43,14 +43,14 @@ export default function UsersPage() {
         currentUser={currentUser}
         fullName={fullName}
         setModalSetting={setModalSetting}
-        setIsopen={setIsopen}
+        setIsOpen={setIsOpen}
       />
 
       {/* Modal Container */}
       {isOpen === true && (
         <ModalContainer
           isOpen={isOpen}
-          setIsOpen={setIsopen}
+          setIsOpen={setIsOpen}
           modalSetting={modalSetting}
         />
       )}
