@@ -23,7 +23,25 @@ async function getCurrentUser(req, res, next) {
 // Get All Users
 async function getAllUsers(req, res, next) {
   try {
-    const users = await prisma.user.findMany();
+    let query = {
+      orderBy: {
+        fullName: 'asc',
+      },
+    };
+    if (req.query.fullname !== '') {
+      query = {
+        orderBy: {
+          fullName: 'asc',
+        },
+        where: {
+          fullName: {
+            contains: req.query.fullname,
+          },
+        },
+      };
+    }
+
+    const users = await prisma.user.findMany(query);
     res.json(users);
   } catch (err) {
     err.tile = 'Getting All Users';
@@ -59,6 +77,63 @@ async function addUser(req, res, next) {
   }
 }
 
+// Update User
+async function updateUser(req, res, next) {
+  const { fullName } = req.user;
+  try {
+    const foundUserByUsername = await prisma.user.findUnique({
+      where: {
+        username: req.body.username,
+      },
+    });
+
+    if (foundUserByUsername !== null) {
+      if (foundUserByUsername.id !== req.body.id)
+        return res.status(400).send('Username already exists');
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: req.body.id,
+      },
+      data: req.body,
+    });
+
+    console.log(
+      `${
+        updatedUser.fullName
+      }'s profile successfully updated by ${fullName} :: ${new Date().toDateString()}`
+    );
+
+    res
+      .status(200)
+      .send(`${updatedUser.fullName}'s profile successfully updated`);
+  } catch (err) {
+    err.tile = 'Updating User';
+    next(err);
+  }
+}
+
+// Toggle User Status
+async function toggleUserStatus(req, res, next) {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: req.body.id,
+      },
+      data: {
+        isActive: req.body.isActive,
+      },
+    });
+    res
+      .status(200)
+      .send(`${updatedUser.fullName}'s status successfully updated`);
+  } catch (err) {
+    err.tile = 'Toggling User Status';
+    next(err);
+  }
+}
+
 // Login User
 async function loginUser(req, res, next) {
   const { password, username } = req.body;
@@ -90,7 +165,34 @@ async function loginUser(req, res, next) {
   }
 }
 
+// Delete User
+async function deleteUser(req, res, next) {
+  const { fullName } = req.user;
+
+  try {
+    const deletedUser = await prisma.user.delete({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    console.log(
+      `${
+        deletedUser.fullName
+      }'s profile successfully deleted by ${fullName} :: ${new Date().toDateString()}`
+    );
+
+    res.status(200).send(`${deletedUser.fullName}'s data successfully deleted`);
+  } catch (err) {
+    err.tile = 'Toggling User Status';
+    next(err);
+  }
+}
+
 exports.getCurrentUser = getCurrentUser;
 exports.getAllUsers = getAllUsers;
 exports.addUser = addUser;
+exports.updateUser = updateUser;
+exports.toggleUserStatus = toggleUserStatus;
 exports.loginUser = loginUser;
+exports.deleteUser = deleteUser;

@@ -1,12 +1,5 @@
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '../ui/pagination';
+import { Button } from '../ui/button';
+import { Pagination, PaginationContent } from '../ui/pagination';
 
 export default function PaginationBlock() {
   return (
@@ -15,26 +8,24 @@ export default function PaginationBlock() {
         Showing <strong>1-10</strong> of <strong>32</strong> products
       </div>
       <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href='#' />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href='#'>1</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href='#' isActive>
-            2
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href='#'>3</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href='#' />
-        </PaginationItem>
+        <div className='space-x-2'>
+          <Button
+            variant='outline'
+            size='sm'
+            // onClick={() => table.previousPage()}
+            // disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant='outline'
+            size='sm'
+            // onClick={() => table.nextPage()}
+            // disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
       </PaginationContent>
     </Pagination>
   );

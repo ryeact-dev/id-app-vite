@@ -3,6 +3,7 @@ import AddProgramModalBody from '@/common/modal/add-program/AddProgramModalBody'
 import AddSchoolYearModalBody from '@/common/modal/add-school-year/AddSchoolYearModalBody';
 import AddStudentModalBody from '@/common/modal/add-student/AddStudentModalBody';
 import AddUserModalBody from '@/common/modal/add-user/AddUserModalBody';
+import ConfirmationModalBody from '@/common/modal/confirmation/ConfirmationModalBody';
 import { Card } from '@/common/ui/card';
 import {
   Dialog,
@@ -58,17 +59,32 @@ export default function ModalContainer({ isOpen, setIsOpen, modalSetting }) {
         <AddUserModalBody payload={payload} closeModal={close} />
       );
       break;
+    case 'confirmation':
+      modalComponent = (
+        <ConfirmationModalBody
+          title={title}
+          payload={payload}
+          closeModal={close}
+          confirmationType={confirmationType}
+        />
+      );
+      break;
     default:
       modalComponent;
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={close}>
-      <DialogContent className={`${size} bg-background`}>
+      <DialogContent className={`${size}`}>
         <DialogHeader>
-          <Card className='rounded-md'>
+          <Card
+            className={`rounded-md ${
+              modalType === 'confirmation' &&
+              'shadow-none bg-transparent border-none'
+            } `}
+          >
             <DialogTitle className='text-center text-2xl p-1'>
-              {title}
+              {modalType === 'confirmation' ? 'Confirmation' : title}
             </DialogTitle>
           </Card>
         </DialogHeader>

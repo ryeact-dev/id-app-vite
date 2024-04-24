@@ -6,6 +6,7 @@ import { INITIAL_USER_OBJ } from '@/lib/globalConstants';
 import { userSchema } from '@/lib/schema';
 import AddUserInputs from './components/add-user-inputs/AddUserInputs';
 import { useAddUser } from '@/hooks/user.hook';
+import { Send, XCircle } from 'lucide-react';
 
 export default function AddUserModalBody({ payload, closeModal }) {
   const onAddUserMutation = useAddUser(closeModal);
@@ -17,11 +18,21 @@ export default function AddUserModalBody({ payload, closeModal }) {
 
   const onSubmit = (values) => {
     let forAddingData;
-    forAddingData = {
-      ...values,
-    };
+    let isNew = true;
 
-    onAddUserMutation.mutate({ forAddingData });
+    if (payload === null) {
+      forAddingData = {
+        ...values,
+      };
+    } else {
+      isNew = false;
+      forAddingData = {
+        ...values,
+        id: payload.id,
+      };
+    }
+
+    onAddUserMutation.mutate({ forAddingData, isNew });
   };
 
   return (
@@ -40,13 +51,15 @@ export default function AddUserModalBody({ payload, closeModal }) {
               className='flex-1 border border-destructive hover:bg-destructive'
               variant='ghost'
             >
-              Cancel
+              <XCircle size={16} className='mr-1' /> Cancel
             </Button>
             <Button
               type='submit'
-              className='flex-1 bg-accent hover:bg-accent/90'
+              className='flex-1 bg-accent hover:bg-accent/90 px-4'
+              disabled={onAddUserMutation.isPending}
             >
-              Save
+              <Send size={16} className='mr-1' />{' '}
+              {onAddUserMutation.isPending ? 'Submitting...' : 'Submit'}
             </Button>
           </div>
         </div>

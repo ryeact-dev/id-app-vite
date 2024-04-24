@@ -1,8 +1,10 @@
 import {
   addUser,
+  deleteUser,
   getAllUsers,
   getCurrentUser,
   loginUser,
+  toggleUserStatus,
 } from '@/api/user.api';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -19,10 +21,10 @@ export function useCurrentUser() {
   });
 }
 
-export function useGetAllUsers(currentUser) {
+export function useGetAllUsers(currentUser, fullName) {
   return useQuery({
-    queryKey: ['all-users'],
-    queryFn: () => getAllUsers(),
+    queryKey: ['all-users', fullName],
+    queryFn: () => getAllUsers({ fullName }),
     select: ({ data }) => {
       return data;
     },
@@ -55,6 +57,33 @@ export function useLoginUser() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['current-user'] });
       navigate('/dashboard', { replace: true });
+    },
+  });
+}
+
+export function useToggleUserStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: toggleUserStatus,
+    onError: ({ response }) => ToastNotification('error', response.data),
+    onSuccess: ({ data }) => {
+      queryClient.invalidateQueries({ queryKey: ['all-users'] });
+      ToastNotification('success', data);
+    },
+  });
+}
+
+export function useDeleteUser(closeModal) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteUser,
+    onError: ({ response }) => ToastNotification('error', response.data),
+    onSuccess: ({ data }) => {
+      queryClient.invalidateQueries({ queryKey: ['all-users'] });
+      ToastNotification('success', data);
+      closeModal();
     },
   });
 }

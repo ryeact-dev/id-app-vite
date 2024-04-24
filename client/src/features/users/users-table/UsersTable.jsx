@@ -12,29 +12,34 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
-import { useGetAllUsers } from '@/hooks/user.hook';
+import { useGetAllUsers, useToggleUserStatus } from '@/hooks/user.hook';
+import { PenBox, Trash } from 'lucide-react';
 
 export default function UsersTable({
   currentUser,
   setModalSetting,
   setIsopen,
+  fullName,
 }) {
-  const { isLoading, data: users } = useGetAllUsers(currentUser);
+  const { isLoading, data: users } = useGetAllUsers(currentUser, fullName);
 
-  const handleOptionsClick = (userData, isDeactivatedBtn) => {
+  const onToggleUserStatusMutation = useToggleUserStatus();
+
+  const handleOptionsClick = (userData, removeUser) => {
     let modalData;
 
-    if (isDeactivatedBtn) {
+    if (removeUser) {
+      const title = `remove ${userData.username}'s account?`;
       modalData = {
-        confirmation: 'delete-user',
-        title: 'Update Info',
-        size: 'max-w-2xl',
-        modalType: 'add-user',
-        payload: userData,
+        confirmationType: 'delete-user',
+        title,
+        size: 'max-w-md',
+        modalType: 'confirmation',
+        payload: userData.id,
       };
     } else {
       modalData = {
-        confirmation: null,
+        confirmationType: null,
         title: 'Update Info',
         size: 'max-w-2xl',
         modalType: 'add-user',
@@ -46,16 +51,28 @@ export default function UsersTable({
     setIsopen(true);
   };
 
+  const handleToggleUserStatus = (userId, userStatus) => {
+    const isActive = userStatus === true ? false : true;
+
+    const forUpdatingData = {
+      id: userId,
+      isActive,
+    };
+
+    onToggleUserStatusMutation.mutate({ forUpdatingData });
+  };
+
   return (
     <Card>
       <CardContent className='mt-6'>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Username</TableHead>
               <TableHead>Full Name</TableHead>
+              <TableHead>Username</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>
                 Actions
                 <span className='sr-only'>Actions</span>
@@ -67,16 +84,32 @@ export default function UsersTable({
               users?.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell className='font-medium'>
-                    <div className='font-medium -mb-1'>{user.username}</div>
+                    <div className='font-medium -mb-1'> {user.fullName}</div>
                   </TableCell>
                   <TableCell className='font-medium'>
-                    <div className='font-medium -mb-1'> {user.fullName}</div>
+                    <div className='font-medium -mb-1'>{user.username}</div>
                   </TableCell>
                   <TableCell className='font-medium'>
                     <div className='font-medium -mb-1'>{user.email}</div>
                   </TableCell>
                   <TableCell className='font-medium'>
                     <div className='font-medium -mb-1'>{user.role}</div>
+                  </TableCell>
+                  <TableCell className='font-medium'>
+                    {currentUser.id !== user.id && (
+                      <Badge
+                        className={`${
+                          user.isActive
+                            ? 'bg-green-500 hover:bg-green-700'
+                            : 'bg-gray-700 hover:bg-gray-500'
+                        } w-20 justify-center `}
+                        onClick={() =>
+                          handleToggleUserStatus(user.id, user.isActive)
+                        }
+                      >
+                        {user.isActive ? 'Active' : 'Inactive'}
+                      </Badge>
+                    )}
                   </TableCell>
 
                   <TableCell>
@@ -86,15 +119,19 @@ export default function UsersTable({
                         variant='outline'
                         onClick={() => handleOptionsClick(user, false)}
                       >
+                        <PenBox size={14} className='mr-1' />
                         Edit
                       </Button>
-                      <Button
-                        size='sm'
-                        variant={user.isActive ? 'secondary' : 'default'}
-                        className='w-20'
-                      >
-                        {user.isActive ? 'Deactivate' : 'Active'}
-                      </Button>
+                      {currentUser.id !== user.id && (
+                        <Button
+                          size='sm'
+                          variant={'secondary'}
+                          className='w-20'
+                          onClick={() => handleOptionsClick(user, true)}
+                        >
+                          <Trash size={14} className='mr-1' /> Delete
+                        </Button>
+                      )}
                     </div>
                   </TableCell>
                 </TableRow>

@@ -1,9 +1,13 @@
+import DebounceInput from '@/common/debounce-input/DebounceInput';
 import { Button } from '@/common/ui/button';
-import { Input } from '@/common/ui/input';
 
 import { PlusCircle, Search } from 'lucide-react';
 
-export default function UsersHeader({ setModalSetting, setIsopen }) {
+export default function UsersHeader({
+  setModalSetting,
+  setIsopen,
+  setSearchParams,
+}) {
   const handleAddStudent = () => {
     const modalData = {
       confirmation: null,
@@ -17,16 +21,23 @@ export default function UsersHeader({ setModalSetting, setIsopen }) {
     setIsopen(true);
   };
 
+  const handleChange = (value) => {
+    setSearchParams(
+      (prev) => {
+        prev.set('fullname', value);
+        prev.set('page', 1);
+        return prev;
+      },
+      { replace: true }
+    );
+  };
+
   return (
     <>
       <div className='flex items-center gap-3'>
         <div className='relative'>
           <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
-          <Input
-            type='search'
-            placeholder='Search username...'
-            className='pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px] bg-white'
-          />
+          <DebounceInput setterFunction={handleChange} debounceTime={1000} />
         </div>
 
         <Button
