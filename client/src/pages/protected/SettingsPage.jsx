@@ -26,13 +26,14 @@ export default function SettingsPage() {
       <div className='flex items-start justify-center gap-4'>
         <div className='flex-1 space-y-4'>
           <SchoolYear setModalSetting={setModalSetting} setIsOpen={setIsOpen} />
-          <Semester setModalSetting={setModalSetting} setIsOpen={setIsOpen} />
-        </div>
-        <div className='flex-1 space-y-4'>
+
           <Departments
             setModalSetting={setModalSetting}
             setIsOpen={setIsOpen}
           />
+        </div>
+        <div className='flex-1 space-y-4'>
+          <Semester setModalSetting={setModalSetting} setIsOpen={setIsOpen} />
           <Programs setModalSetting={setModalSetting} setIsOpen={setIsOpen} />
         </div>
       </div>

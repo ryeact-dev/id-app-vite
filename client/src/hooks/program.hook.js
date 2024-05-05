@@ -1,22 +1,17 @@
-import {
-  addDepartment,
-  deleteDepartment,
-  getAllDepartments,
-} from '@/api/department.api';
+import { addProgram, deleteProgram, getAllPrograms } from '@/api/program.api';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Queries
-export function useGetAllDepartments() {
+export function useGetAllPrograms() {
   return useQuery({
-    queryKey: ['all-departments'],
-    queryFn: () => getAllDepartments(),
+    queryKey: ['all-programs'],
+    queryFn: () => getAllPrograms(),
     select: ({ data }) => {
-      return data.map((department) => {
+      return data.map((program) => {
         return {
-          ...department,
-          value: department.id,
-          label: department.department,
+          ...program,
+          department: program.department?.department,
         };
       });
     },
@@ -24,28 +19,28 @@ export function useGetAllDepartments() {
 }
 
 // Mutations
-export function useAddDepartment(closeModal) {
+export function useAddProgram(closeModal) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: addDepartment,
+    mutationFn: addProgram,
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: ({ data }) => {
-      queryClient.invalidateQueries({ queryKey: ['all-departments'] });
+      queryClient.invalidateQueries({ queryKey: ['all-programs'] });
       ToastNotification('success', data);
       closeModal();
     },
   });
 }
 
-export function useDeleteDepartment(closeModal) {
+export function useDeleteProgram(closeModal) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteDepartment,
+    mutationFn: deleteProgram,
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: ({ data }) => {
-      queryClient.invalidateQueries({ queryKey: ['all-departments'] });
+      queryClient.invalidateQueries({ queryKey: ['all-programs'] });
       ToastNotification('success', data);
       closeModal();
     },

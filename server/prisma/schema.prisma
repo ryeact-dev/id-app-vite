@@ -73,7 +73,7 @@ model Department {
 
 model Program {
   id           String     @id @default(uuid())
-  programName  String
+  program      String
   departmentId String
   department   Department @relation(fields: [departmentId], references: [id])
   userId       String

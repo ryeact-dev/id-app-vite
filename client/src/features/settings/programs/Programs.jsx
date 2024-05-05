@@ -14,6 +14,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
+import { useGetAllPrograms } from '@/hooks/program.hook';
+import { Trash } from 'lucide-react';
 
 const programOffering = [
   {
@@ -83,14 +85,29 @@ const programOffering = [
 ];
 
 export default function Programs({ setIsOpen, setModalSetting }) {
+  const { data: listOfPrograms } = useGetAllPrograms();
+
   const handleAddProgramClick = () => {
     let modalData;
 
     modalData = {
       title: 'Add Program',
-      size: 'max-w-md',
+      size: 'max-w-lg',
       modalType: 'add-program',
       payload: null,
+    };
+
+    setModalSetting(modalData);
+    setIsOpen(true);
+  };
+
+  const handleDeleteProgram = (program) => {
+    const modalData = {
+      confirmationType: 'delete-program',
+      title: `Delete ${program.program}?`,
+      size: 'max-w-lg',
+      modalType: 'confirmation',
+      payload: program.id,
     };
 
     setModalSetting(modalData);
@@ -127,17 +144,23 @@ export default function Programs({ setIsOpen, setModalSetting }) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {programOffering.map((program) => (
-                <TableRow key={program.value}>
+              {listOfPrograms.map((program) => (
+                <TableRow key={program.id}>
                   <TableCell className='font-medium'>
-                    <div className='font-medium -mb-1'>{program.label}</div>
+                    <div className='font-medium -mb-1'>{program.program}</div>
                   </TableCell>
                   <TableCell>
                     <div className='flex items-center gap-2'>
-                      <Button size='sm' variant='outline'>
+                      {/* <Button size='sm' variant='outline'>
                         Edit
+                      </Button> */}
+                      <Button
+                        size='sm'
+                        onClick={() => handleDeleteProgram(program)}
+                      >
+                        <Trash className='size-4 mr-1' />
+                        Delete
                       </Button>
-                      <Button size='sm'>Delete</Button>
                     </div>
                   </TableCell>
                 </TableRow>

@@ -21,7 +21,7 @@ export default function Semester() {
     <Card className='overflow-hidden'>
       <div className='p-4 bg-accent text-primary-foreground flex justify-between items-center'>
         <CardHeader className='p-0 space-y-0'>
-          <CardTitle>Programs</CardTitle>
+          <CardTitle>Semester</CardTitle>
           <CardDescription className='text-primary-foreground'>
             List of all candidates for this event
           </CardDescription>

@@ -25,38 +25,26 @@ import {
 } from '@/common/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/common/ui/popover';
 import { Input } from '@/common/ui/input';
-import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { Card, CardContent } from '@/common/ui/card';
+import { useGetAllDepartments } from '@/hooks/department.hook';
+import { useAddProgram } from '@/hooks/program.hook';
 
-const departmentAvailable = [
-  {
-    value: 'dte',
-    label: 'Dept. of Teacher Education',
-  },
-  {
-    value: 'DEE',
-    label: 'Dept. of Engineering Education',
-  },
-  {
-    value: 'dcje',
-    label: 'Dept. of Criminal Justice Education',
-  },
-  {
-    value: 'dbae',
-    label: 'Dept. of Business Administration Education',
-  },
-];
-
-export default function AddProgramModalBody({ closeModal }) {
+export default function AddProgramModalBody({ payload, closeModal }) {
   const [open, setOpen] = useState(false);
+
+  const { data: listOfDepartments = [] } = useGetAllDepartments();
+  const handleAddProgramMutation = useAddProgram(closeModal);
+
   const form = useForm({
     resolver: zodResolver(programSchema),
     defaultValues: INITIAL_PROGRAM_OBJ,
   });
 
   const onSubmit = (data) => {
-    const { program, department } = data;
-    ToastNotification('success', `${program} in ${department} has been added.`);
+    const forAddingData = {
+      ...data,
+    };
+    handleAddProgramMutation.mutate({ forAddingData });
   };
 
   const handleDepartmentValueChange = (value) => {
@@ -68,7 +56,7 @@ export default function AddProgramModalBody({ closeModal }) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card>
-          <CardContent className='space-y-4 w-full'>
+          <CardContent className='space-y-4 w-full mt-4'>
             <FormField
               control={form.control}
               name='program'
@@ -87,7 +75,7 @@ export default function AddProgramModalBody({ closeModal }) {
               name='department'
               render={({ field }) => (
                 <FormItem className='flex flex-col space-y-1'>
-                  <FormLabel>Language</FormLabel>
+                  <FormLabel>Department</FormLabel>
                   <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -100,7 +88,7 @@ export default function AddProgramModalBody({ closeModal }) {
                           )}
                         >
                           {field.value
-                            ? departmentAvailable.find(
+                            ? listOfDepartments.find(
                                 (department) => department.value === field.value
                               )?.label
                             : 'Select a department'}
@@ -117,7 +105,7 @@ export default function AddProgramModalBody({ closeModal }) {
                         <CommandList>
                           <CommandEmpty>No framework found.</CommandEmpty>
                           <CommandGroup>
-                            {departmentAvailable.map((department) => (
+                            {listOfDepartments.map((department) => (
                               <CommandItem
                                 value={department.label}
                                 key={department.value}
@@ -159,12 +147,11 @@ export default function AddProgramModalBody({ closeModal }) {
             </Button>
             <Button
               type='submit'
-              className='flex-1 bg-accent hover:bg-accent/90 px-4'
-              // disabled={onAddUserMutation.isPending}
+              className='flex-1 bg-accent hover:bg-accent/90 px-4 w-44 '
+              disabled={handleAddProgramMutation.isPending}
             >
-              <Send size={16} className='mr-1' />{' '}
-              {/* {onAddUserMutation.isPending ? 'Submitting...' : 'Submit'} */}
-              Submitting...
+              <Send size={16} className='mr-1' />
+              {handleAddProgramMutation.isPending ? 'Submitting...' : 'Submit'}
             </Button>
           </div>
         </div>

@@ -46,13 +46,13 @@ export default function Departments({ setIsOpen, setModalSetting }) {
     setIsOpen(true);
   };
 
-  const onDeleteDepartment = (id) => {
+  const handleDeleteDepartment = (department) => {
     const modalData = {
       confirmationType: 'delete-department',
-      title: 'Delete Department?',
+      title: `Delete ${department.department}?`,
       size: 'max-w-lg',
       modalType: 'confirmation',
-      payload: id,
+      payload: department.id,
     };
 
     setModalSetting(modalData);
@@ -92,9 +92,7 @@ export default function Departments({ setIsOpen, setModalSetting }) {
               {listOfDepartments?.map((department) => (
                 <TableRow key={department.id}>
                   <TableCell className='font-medium'>
-                    <div className='font-medium -mb-1'>
-                      {department.department}
-                    </div>
+                    <div className='font-medium -mb-1'>{department.label}</div>
                   </TableCell>
                   <TableCell>
                     <div className='flex items-center gap-2'>
@@ -107,7 +105,7 @@ export default function Departments({ setIsOpen, setModalSetting }) {
                       </Button> */}
                       <Button
                         size='sm'
-                        onClick={() => onDeleteDepartment(department.id)}
+                        onClick={() => handleDeleteDepartment(department)}
                       >
                         <Trash className='size-4 mr-1' />
                         Delete
