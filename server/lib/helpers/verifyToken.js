@@ -15,11 +15,12 @@ function verifyToken(req, res, next) {
         where: { id },
       });
 
+      if (!userInfo) return res.json(null);
       req.user = userInfo;
       next();
     });
   } catch (err) {
-    return res.status(500).send('Verifying User Error');
+    return res.status(500).send('Verifying User');
   }
 }
 

@@ -21,7 +21,7 @@ export default function AddDepartmentModalBody({ payload, closeModal }) {
 
   const form = useForm({
     resolver: zodResolver(departmentSchema),
-    defaultValues: INITIAL_DEPARTMENT_OBJ,
+    defaultValues: payload ? payload : INITIAL_DEPARTMENT_OBJ,
   });
 
   const onSubmit = (data) => {

@@ -1,4 +1,5 @@
 import { Button } from '@/common/ui/button';
+import { useDeleteDepartment } from '@/hooks/department.hook';
 import { useDeleteUser } from '@/hooks/user.hook';
 import { Send, XCircle } from 'lucide-react';
 
@@ -11,20 +12,21 @@ export default function ConfirmationModalBody({
   let isLoading;
 
   // Mutations
-  const onUserDeleteMutation = useDeleteUser(closeModal);
+  const handleDeleteUserMutation = useDeleteUser(closeModal);
+  const handleDeleteDepartmentMutation = useDeleteDepartment(closeModal);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
     switch (confirmationType) {
       case 'delete-user':
-        onUserDeleteMutation.mutate({ userId: payload });
-        isLoading = onUserDeleteMutation.isPending;
+        handleDeleteUserMutation.mutate({ userId: payload });
+        isLoading = handleDeleteUserMutation.isPending;
         break;
-      // case 'delete-question':
-      //   useDeleteQuestionMutation.mutate({ questionId: payload });
-      //   isLoading = useDeleteQuestionMutation.isPending;
-      //   break;
+      case 'delete-department':
+        handleDeleteDepartmentMutation.mutate({ id: payload });
+        isLoading = handleDeleteDepartmentMutation.isPending;
+        break;
       default:
         break;
     }

@@ -4,6 +4,8 @@ const { prisma } = require('../lib/utils/prismaClient');
 async function getAllDepartments(req, res, next) {
   try {
     const allDepartments = await prisma.department.findMany();
+    allDepartments.sort((a, b) => a.department.localeCompare(b.department));
+
     res.json(allDepartments);
   } catch (err) {
     err.tile = 'GET all departments';
@@ -19,9 +21,9 @@ async function addDepartment(req, res, next) {
     return res.status(400).send('Unauthorized');
 
   try {
-    const foundDepartment = await prisma.user.findFirst({
+    const foundDepartment = await prisma.department.findFirst({
       where: {
-        email: req.body.department,
+        department: req.body.department,
       },
     });
 
@@ -30,7 +32,7 @@ async function addDepartment(req, res, next) {
 
     await prisma.department.create({
       data: {
-        departmentName: req.body.department,
+        department: req.body.department,
         userId,
       },
     });
@@ -42,49 +44,12 @@ async function addDepartment(req, res, next) {
   }
 }
 
-// Update User
-async function updateUser(req, res, next) {
-  const { fullName } = req.user;
-  try {
-    const foundUserByUsername = await prisma.user.findUnique({
-      where: {
-        username: req.body.username,
-      },
-    });
-
-    if (foundUserByUsername !== null) {
-      if (foundUserByUsername.id !== req.body.id)
-        return res.status(400).send('Username already exists');
-    }
-
-    const updatedUser = await prisma.user.update({
-      where: {
-        id: req.body.id,
-      },
-      data: req.body,
-    });
-
-    console.log(
-      `${
-        updatedUser.fullName
-      }'s profile successfully updated by ${fullName} :: ${new Date().toDateString()}`
-    );
-
-    res
-      .status(200)
-      .send(`${updatedUser.fullName}'s profile successfully updated`);
-  } catch (err) {
-    err.tile = 'Updating User';
-    next(err);
-  }
-}
-
-// Delete User
-async function deleteUser(req, res, next) {
+// Delete Department
+async function deleteDepartment(req, res, next) {
   const { fullName } = req.user;
 
   try {
-    const deletedUser = await prisma.user.delete({
+    const deletedDepartment = await prisma.department.delete({
       where: {
         id: req.params.id,
       },
@@ -92,18 +57,19 @@ async function deleteUser(req, res, next) {
 
     console.log(
       `${
-        deletedUser.fullName
-      }'s profile successfully deleted by ${fullName} :: ${new Date().toDateString()}`
+        deletedDepartment.department
+      } successfully deleted by ${fullName} :: ${new Date().toDateString()}`
     );
 
-    res.status(200).send(`${deletedUser.fullName}'s data successfully deleted`);
+    res
+      .status(200)
+      .send(`${deletedDepartment.department} successfully deleted`);
   } catch (err) {
-    err.tile = 'Toggling User Status';
+    err.tile = 'DELETE department';
     next(err);
   }
 }
 
 exports.getAllDepartments = getAllDepartments;
 exports.addDepartment = addDepartment;
-exports.updateUser = updateUser;
-exports.deleteUser = deleteUser;
+exports.deleteDepartment = deleteDepartment;
