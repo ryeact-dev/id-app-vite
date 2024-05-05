@@ -10,7 +10,7 @@ const { shutdownPrisma } = require('./lib/utils/prismaDisconnect');
 
 // Routes
 const userRoute = require('./routes/user.route');
-// const eventRoute = require('./routes/event.route');
+const departmentRoute = require('./routes/department.route');
 // const competitionRoute = require('./routes/competition.route');
 // const scoresheetRoute = require('./routes/scoresheet.route');
 // const candidateRoute = require('./routes/candidate.route');
@@ -31,7 +31,7 @@ app.use(
 app.use(helmet());
 
 app.use('/api/user', userRoute);
-// app.use('/api/event', eventRoute);
+app.use('/api/department', departmentRoute);
 // app.use('/api/competition', competitionRoute);
 // app.use('/api/scoresheet', scoresheetRoute);
 // app.use('/api/candidate', candidateRoute);

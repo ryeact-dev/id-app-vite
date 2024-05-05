@@ -13,18 +13,26 @@ import {
   FormLabel,
 } from '@/common/ui/form';
 import { Input } from '@/common/ui/input';
-import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { Card, CardContent } from '@/common/ui/card';
+import { useAddDepartment } from '@/hooks/department.hook';
 
-export default function AddDepartmentModalBody({ closeModal }) {
+export default function AddDepartmentModalBody({ payload, closeModal }) {
+  const handleAddDepartmentMutation = useAddDepartment(closeModal);
+
   const form = useForm({
     resolver: zodResolver(departmentSchema),
     defaultValues: INITIAL_DEPARTMENT_OBJ,
   });
 
   const onSubmit = (data) => {
-    const { department } = data;
-    ToastNotification('success', `${department} has been added.`);
+    let forAddingData;
+    let isNew = true;
+
+    forAddingData = {
+      ...data,
+    };
+
+    handleAddDepartmentMutation.mutate({ forAddingData, isNew });
   };
 
   return (
@@ -61,11 +69,12 @@ export default function AddDepartmentModalBody({ closeModal }) {
             <Button
               type='submit'
               className='flex-1 bg-accent hover:bg-accent/90 px-4'
-              // disabled={onAddUserMutation.isPending}
+              disabled={handleAddDepartmentMutation.isPending}
             >
               <Send size={16} className='mr-1' />{' '}
-              {/* {onAddUserMutation.isPending ? 'Submitting...' : 'Submit'} */}
-              Submitting...
+              {handleAddDepartmentMutation.isPending
+                ? 'Submitting...'
+                : 'Submit'}
             </Button>
           </div>
         </div>
