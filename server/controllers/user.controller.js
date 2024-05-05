@@ -44,7 +44,7 @@ async function getAllUsers(req, res, next) {
     const users = await prisma.user.findMany(query);
     res.json(users);
   } catch (err) {
-    err.tile = 'GET All Users';
+    err.title = 'GET All Users';
     next(err);
   }
 }
@@ -72,7 +72,7 @@ async function addUser(req, res, next) {
   } catch (err) {
     if (err.code === 'P2002')
       return res.status(400).send('Username already exists');
-    err.tile = 'POST User';
+    err.title = 'POST User';
     next(err);
   }
 }
@@ -109,7 +109,7 @@ async function updateUser(req, res, next) {
       .status(200)
       .send(`${updatedUser.fullName}'s profile successfully updated`);
   } catch (err) {
-    err.tile = 'PATCH/PUT User';
+    err.title = 'PATCH/PUT User';
     next(err);
   }
 }
@@ -129,7 +129,7 @@ async function toggleUserStatus(req, res, next) {
       .status(200)
       .send(`${updatedUser.fullName}'s status successfully updated`);
   } catch (err) {
-    err.tile = 'PATCH/PUT User Status';
+    err.title = 'PATCH/PUT User Status';
     next(err);
   }
 }
@@ -160,7 +160,7 @@ async function loginUser(req, res, next) {
       res.json();
     } else return res.status(401).send('Wrong password');
   } catch (err) {
-    err.tile = 'POST Loggin-in User';
+    err.title = 'POST Loggin-in User';
     next(err);
   }
 }
@@ -184,7 +184,7 @@ async function deleteUser(req, res, next) {
 
     res.status(200).send(`${deletedUser.fullName}'s data successfully deleted`);
   } catch (err) {
-    err.tile = 'DELETE User';
+    err.title = 'DELETE User';
     next(err);
   }
 }

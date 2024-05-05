@@ -8,7 +8,7 @@ async function getAllDepartments(req, res, next) {
 
     res.json(allDepartments);
   } catch (err) {
-    err.tile = 'GET all departments';
+    err.title = 'GET all departments';
     next(err);
   }
 }
@@ -39,7 +39,7 @@ async function addDepartment(req, res, next) {
 
     res.status(200).send(`${req.body.department} successfully added`);
   } catch (err) {
-    err.tile = 'POST Department';
+    err.title = 'POST Department';
     next(err);
   }
 }
@@ -65,7 +65,7 @@ async function deleteDepartment(req, res, next) {
       .status(200)
       .send(`${deletedDepartment.department} successfully deleted`);
   } catch (err) {
-    err.tile = 'DELETE department';
+    err.title = 'DELETE department';
     next(err);
   }
 }

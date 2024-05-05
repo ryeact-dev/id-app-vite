@@ -5,9 +5,9 @@ export const ToastNotification = (toastType, message) => {
     case 'success':
       return toast.success(message, {
         style: {
-          background: '#1AB21A',
+          background: 'rgba( 26, 178, 26, 0.8)',
           borderStyle: 'solid',
-          borderColor: '#007200',
+          borderColor: '#1AB21A',
           borderWidth: '2px',
           color: 'white',
           height: '60px',
@@ -19,9 +19,9 @@ export const ToastNotification = (toastType, message) => {
     case 'error':
       return toast.error(message, {
         style: {
-          background: '#FF3434',
+          background: 'rgba( 255, 52, 52, 0.8)',
           borderStyle: 'solid',
-          borderColor: '#C50000',
+          borderColor: '#FF3434',
           borderWidth: '2px',
           color: 'white',
           height: '60px',
@@ -33,9 +33,9 @@ export const ToastNotification = (toastType, message) => {
     case 'info':
       return toast.info(message, {
         style: {
-          background: '#1960AA',
+          background: 'rgba( 25, 96, 170, 0.8)',
           borderStyle: 'solid',
-          borderColor: '#023e7d',
+          borderColor: '#1960AA',
           borderWidth: '2px',
           color: 'white',
           height: '60px',
@@ -47,9 +47,9 @@ export const ToastNotification = (toastType, message) => {
     case 'warning':
       return toast.warning(message, {
         style: {
-          background: '#ffee32',
+          background: 'rgba( 255, 238, 50, 0.8)',
           borderStyle: 'solid',
-          borderColor: '#FFD632',
+          borderColor: '#ffee32',
           borderWidth: '2px',
           color: 'black',
           height: '60px',
