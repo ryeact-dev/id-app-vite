@@ -15,17 +15,43 @@ import {
   TableRow,
 } from '@/common/ui/table';
 import { Badge } from '@/common/ui/badge';
+import { useSchoolYearToggleStatus } from '@/hooks/schoolyear.hook';
 
-export default function SchoolYear({ setIsOpen, setModalSetting }) {
-  const handleAddSchoolYearClick = () => {
-    let modalData;
+export default function SchoolYear({
+  setIsOpen,
+  setModalSetting,
+  listOfSchoolYear,
+}) {
+  const handleSchoolYearToggleStatus = useSchoolYearToggleStatus();
 
-    modalData = {
-      title: 'Add School Year',
-      size: 'max-w-lg',
-      modalType: 'add-school-year',
-      payload: null,
+  const handleToggleStatus = (schoolYear) => {
+    const forUpdatingData = {
+      id: schoolYear.id,
+      isActive: schoolYear.isActive ? false : true,
     };
+
+    handleSchoolYearToggleStatus.mutate({ forUpdatingData });
+  };
+
+  const handleAddEditSchoolYearClick = (schoolYearData) => {
+    let modalData;
+    if (schoolYearData) {
+      modalData = {
+        confirmationType: null,
+        title: 'Edit School Year',
+        size: 'max-w-lg',
+        modalType: 'add-school-year',
+        payload: schoolYearData,
+      };
+    } else {
+      modalData = {
+        confirmationType: null,
+        title: 'Add School Year',
+        size: 'max-w-lg',
+        modalType: 'add-school-year',
+        payload: null,
+      };
+    }
     setModalSetting(modalData);
     setIsOpen(true);
   };
@@ -37,14 +63,14 @@ export default function SchoolYear({ setIsOpen, setModalSetting }) {
           <CardHeader className='p-0 space-y-0'>
             <CardTitle>School Year</CardTitle>
             <CardDescription className='text-primary-foreground'>
-              List of all candidates for this event
+              List of all school year with status
             </CardDescription>
           </CardHeader>
           <div>
             <Button
               variant='outline'
               className='hover:bg-background hover:text-secondary-foreground'
-              onClick={handleAddSchoolYearClick}
+              onClick={() => handleAddEditSchoolYearClick(null)}
             >
               Add School Year
             </Button>
@@ -60,38 +86,34 @@ export default function SchoolYear({ setIsOpen, setModalSetting }) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>2023 - 24</div>
-                </TableCell>
-                <TableCell>
-                  <Badge variant='secondary'>Active</Badge>
-                </TableCell>
-                <TableCell>
-                  <div className='flex items-center gap-2'>
-                    <Button size='sm' variant='outline'>
-                      Edit
-                    </Button>
-                    <Button size='sm'>Delete</Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>2024 - 25</div>
-                </TableCell>
-                <TableCell>
-                  <Badge variant='outline'>Inactive</Badge>
-                </TableCell>
-                <TableCell>
-                  <div className='flex items-center gap-2'>
-                    <Button size='sm' variant='outline'>
-                      Edit
-                    </Button>
-                    <Button size='sm'>Delete</Button>
-                  </div>
-                </TableCell>
-              </TableRow>
+              {listOfSchoolYear?.map((schoolYear) => (
+                <TableRow key={schoolYear.id}>
+                  <TableCell className='font-medium'>
+                    <div className='font-medium -mb-1'>{`${schoolYear.schoolYearFrom} - ${schoolYear.schoolYearTo}`}</div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={schoolYear.isActive ? 'secondary' : 'outline'}
+                      onClick={() => handleToggleStatus(schoolYear)}
+                      className={'hover:cursor-pointer'}
+                    >
+                      {schoolYear.isActive ? 'Active' : 'Inactive'}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className='flex items-center gap-2'>
+                      <Button
+                        size='sm'
+                        variant='outline'
+                        onClick={() => handleAddEditSchoolYearClick(schoolYear)}
+                      >
+                        Edit
+                      </Button>
+                      <Button size='sm'>Delete</Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </CardContent>

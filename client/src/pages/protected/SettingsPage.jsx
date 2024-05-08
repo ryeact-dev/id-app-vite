@@ -3,6 +3,7 @@ import Departments from '@/features/settings/departments/Departments';
 import Programs from '@/features/settings/programs/Programs';
 import SchoolYear from '@/features/settings/school-year/SchoolYear';
 import Semester from '@/features/settings/semester/Semester';
+import { useGetListOfSchoolYear } from '@/hooks/schoolyear.hook';
 import { useCurrentUser } from '@/hooks/user.hook';
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
@@ -18,14 +19,21 @@ export default function SettingsPage() {
     size: null,
   });
 
+  const { data: listOfSchoolYear } = useGetListOfSchoolYear();
+
   if (!isLoading && !currentUser) {
     return <Navigate to='/login' replace />;
   }
+
   return (
     <div className='max-w-7xl mx-auto space-y-4'>
       <div className='flex items-start justify-center gap-4'>
         <div className='flex-1 space-y-4'>
-          <SchoolYear setModalSetting={setModalSetting} setIsOpen={setIsOpen} />
+          <SchoolYear
+            setModalSetting={setModalSetting}
+            setIsOpen={setIsOpen}
+            listOfSchoolYear={listOfSchoolYear}
+          />
 
           <Departments
             setModalSetting={setModalSetting}

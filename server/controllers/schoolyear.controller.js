@@ -51,6 +51,36 @@ async function addSchoolYear(req, res, next) {
   }
 }
 
+async function schoolYearToggleStatus(req, res, next) {
+  try {
+    const [activeSchoolYear, inActiveSchoolYear] = await prisma.$transaction([
+      prisma.schoolYear.update({
+        where: { id: req.body.id },
+        data: { isActive: req.body.isActive },
+      }),
+      prisma.schoolYear.updateMany({
+        where: {
+          id: {
+            not: req.body.id,
+          },
+        },
+        data: {
+          isActive: req.body.isActive ? false : true,
+        },
+      }),
+    ]);
+
+    res
+      .status(200)
+      .send(
+        `${activeSchoolYear.schoolYearFrom} -  ${activeSchoolYear.schoolYearTo} successfully activated`
+      );
+  } catch (err) {
+    err.title = 'PATCH School Year Toggle Status';
+    next(err);
+  }
+}
+
 // Delete School Year
 async function deleteSchoolYear(req, res, next) {
   const { fullName } = req.user;
@@ -79,4 +109,5 @@ async function deleteSchoolYear(req, res, next) {
 
 exports.getAllSchoolYear = getAllSchoolYear;
 exports.addSchoolYear = addSchoolYear;
+exports.schoolYearToggleStatus = schoolYearToggleStatus;
 exports.deleteSchoolYear = deleteSchoolYear;

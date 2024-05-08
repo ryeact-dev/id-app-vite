@@ -1,25 +1,19 @@
+import { deleteDepartment } from '@/api/department.api';
 import {
-  addDepartment,
-  deleteDepartment,
-  getAllDepartments,
-} from '@/api/department.api';
-import { addSchoolYear } from '@/api/schoolyear.api';
+  addSchoolYear,
+  getAllSchoolYear,
+  schoolYearToggleStatus,
+} from '@/api/schoolyear.api';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Queries
-export function useGetAllDepartments() {
+export function useGetListOfSchoolYear() {
   return useQuery({
-    queryKey: ['all-departments'],
-    queryFn: () => getAllDepartments(),
+    queryKey: ['list-of-school-year'],
+    queryFn: () => getAllSchoolYear(),
     select: ({ data }) => {
-      return data.map((department) => {
-        return {
-          ...department,
-          value: department.id,
-          label: department.department,
-        };
-      });
+      return data;
     },
   });
 }
@@ -32,9 +26,22 @@ export function useAddSchoolyear(closeModal) {
     mutationFn: addSchoolYear,
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: ({ data }) => {
-      queryClient.invalidateQueries({ queryKey: ['list-of-schoolyear'] });
+      queryClient.invalidateQueries({ queryKey: ['list-of-school-year'] });
       ToastNotification('success', data);
       closeModal();
+    },
+  });
+}
+
+export function useSchoolYearToggleStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: schoolYearToggleStatus,
+    onError: ({ response }) => ToastNotification('error', response.data),
+    onSuccess: ({ data }) => {
+      queryClient.invalidateQueries({ queryKey: ['list-of-school-year'] });
+      ToastNotification('success', data);
     },
   });
 }
