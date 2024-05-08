@@ -21,8 +21,8 @@ export const INITIAL_STUDENT_OBJ = {
 };
 
 export const INITIAL_SCHOOL_YEAR_OBJ = {
-  syFrom: '',
-  syTo: '',
+  schoolYearFrom: '',
+  schoolYearTo: '',
 };
 
 export const INITIAL_DEPARTMENT_OBJ = {

@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
+import { Calendar, CalendarDays } from 'lucide-react';
 
 export default function Semester() {
   return (
@@ -51,7 +52,7 @@ export default function Semester() {
               <TableCell>
                 <div className='flex items-center gap-2'>
                   <Button size='sm' variant='outline'>
-                    Set
+                    <CalendarDays className='size-4 mr-1' /> Set Dates
                   </Button>
                 </div>
               </TableCell>

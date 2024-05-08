@@ -36,8 +36,8 @@ model User {
 
 model SchoolYear {
   id             String       @id @default(uuid())
-  schoolYearFrom DateTime
-  schoolYearTo   DateTime
+  schoolYearFrom Int
+  schoolYearTo   Int
   isActive       Boolean      @default(false)
   userId         String
   user           User         @relation(fields: [userId], references: [id])
@@ -54,7 +54,7 @@ model Semester {
   semestralDateEnd   DateTime
   isActive           Boolean      @default(false)
   schoolYearId       String
-  schoolYear         SchoolYear   @relation(fields: [schoolYearId], references: [id])
+  schoolYear         SchoolYear   @relation(fields: [schoolYearId], references: [id], onDelete: Cascade)
   userId             String
   user               User         @relation(fields: [userId], references: [id])
   createdAt          DateTime     @default(now())

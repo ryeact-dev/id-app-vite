@@ -17,75 +17,8 @@ import {
 import { useGetAllPrograms } from '@/hooks/program.hook';
 import { Trash } from 'lucide-react';
 
-const programOffering = [
-  {
-    value: 'bs-ece',
-    label: 'BS-Electronics Engg',
-  },
-  {
-    value: 'bs-ee',
-    label: 'BS-Electrical Engg',
-  },
-  {
-    value: 'bs-coe',
-    label: 'BS-Computer Engg',
-  },
-  {
-    value: 'bs-it',
-    label: 'BS-Information Tech',
-  },
-  {
-    value: 'bs-cs',
-    label: 'BS-Computer Science',
-  },
-  {
-    value: 'bsba-fin',
-    label: 'BSBA-Financial Mgt',
-  },
-  {
-    value: 'bsba-mktg',
-    label: 'BSBA-Marketing Mgt',
-  },
-  {
-    value: 'bsba-hr',
-    label: 'BSBA-Human Resource Mgt',
-  },
-  {
-    value: 'bs-tm',
-    label: 'BS-Tourism Mgt',
-  },
-  {
-    value: 'bs-hm',
-    label: 'BS-Hospitality Mgt',
-  },
-  {
-    value: 'bs-crim',
-    label: 'BS-Criminology',
-  },
-  {
-    value: 'ab-eng',
-    label: 'AB-English Language',
-  },
-  {
-    value: 'bs-psy',
-    label: 'BS-Psychology',
-  },
-  {
-    value: 'beed',
-    label: 'Bachelor in Elementary Educ',
-  },
-  {
-    value: 'bsed-eng',
-    label: 'BSED-English',
-  },
-  {
-    value: 'bsed-math',
-    label: 'BSED-Mathematics',
-  },
-];
-
 export default function Programs({ setIsOpen, setModalSetting }) {
-  const { data: listOfPrograms } = useGetAllPrograms();
+  const { data: listOfPrograms = [] } = useGetAllPrograms();
 
   const handleAddProgramClick = () => {
     let modalData;
@@ -144,10 +77,15 @@ export default function Programs({ setIsOpen, setModalSetting }) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {listOfPrograms.map((program) => (
+              {listOfPrograms?.map((program) => (
                 <TableRow key={program.id}>
                   <TableCell className='font-medium'>
-                    <div className='font-medium -mb-1'>{program.program}</div>
+                    <div className='font-medium'>
+                      <p>{program.program}</p>
+                      <p className='text-xs italic opacity-50 -mt-1'>
+                        {program.department}
+                      </p>
+                    </div>
                   </TableCell>
                   <TableCell>
                     <div className='flex items-center gap-2'>

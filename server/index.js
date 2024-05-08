@@ -12,8 +12,7 @@ const { shutdownPrisma } = require('./lib/utils/prismaDisconnect');
 const userRoute = require('./routes/user.route');
 const departmentRoute = require('./routes/department.route');
 const programRoute = require('./routes/program.route');
-// const scoresheetRoute = require('./routes/scoresheet.route');
-// const candidateRoute = require('./routes/candidate.route');
+const schoolyearRoute = require('./routes/schoolyear.route');
 
 const app = express();
 
@@ -33,8 +32,7 @@ app.use(helmet());
 app.use('/api/user', userRoute);
 app.use('/api/department', departmentRoute);
 app.use('/api/program', programRoute);
-// app.use('/api/scoresheet', scoresheetRoute);
-// app.use('/api/candidate', candidateRoute);
+app.use('/api/school-year', schoolyearRoute);
 
 // Disconnect Prisma when the server exit
 process.on('SIGINT', shutdownPrisma);

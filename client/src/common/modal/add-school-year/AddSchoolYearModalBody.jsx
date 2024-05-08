@@ -1,5 +1,3 @@
-'use client';
-
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Save, Send, XCircle } from 'lucide-react';
@@ -11,26 +9,47 @@ import { Button } from '@/common/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from '@/common/ui/form';
 import { Input } from '@/common/ui/input';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { Card, CardContent } from '@/common/ui/card';
+import { useAddSchoolyear } from '@/hooks/schoolyear.hook';
 
-export default function AddSchoolYearModalBody({ closeModal }) {
+export default function AddSchoolYearModalBody({ payload, closeModal }) {
+  const handleAddSchoolYearMutation = useAddSchoolyear(closeModal);
+
   const form = useForm({
     resolver: zodResolver(schoolYearSchema),
-    defaultValues: INITIAL_SCHOOL_YEAR_OBJ,
+    defaultValues: payload ? payload : INITIAL_SCHOOL_YEAR_OBJ,
   });
 
   const onSubmit = (data) => {
-    const { syFrom, syTo } = data;
+    const { schoolYearFrom, schoolYearTo } = data;
 
-    ToastNotification('success', `SY ${syFrom}-${syTo} has been added.`);
+    if (Number(schoolYearFrom) >= Number(schoolYearTo)) {
+      return ToastNotification('error', `Invalid School Year`);
+    }
+
+    let forAddingData = {
+      schoolYearFrom: Number(schoolYearFrom),
+      schoolYearTo: Number(schoolYearTo),
+    };
+    let isNew = true;
+
+    if (payload) {
+      forAddingData = {
+        ...forAddingData,
+        id: payload.id,
+      };
+      isNew = false;
+
+      handleAddSchoolYearMutation.mutate({ forAddingData, isNew });
+    } else {
+      handleAddSchoolYearMutation.mutate({ forAddingData, isNew });
+    }
   };
 
   return (
@@ -42,7 +61,7 @@ export default function AddSchoolYearModalBody({ closeModal }) {
               <FormField
                 className='flex-1'
                 control={form.control}
-                name='syFrom'
+                name='schoolYearFrom'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>School Year From:</FormLabel>
@@ -65,7 +84,7 @@ export default function AddSchoolYearModalBody({ closeModal }) {
               <FormField
                 className='flex-1'
                 control={form.control}
-                name='syTo'
+                name='schoolYearTo'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>School Year To:</FormLabel>
@@ -100,12 +119,13 @@ export default function AddSchoolYearModalBody({ closeModal }) {
             </Button>
             <Button
               type='submit'
-              className='flex-1 bg-accent hover:bg-accent/90 px-4'
-              // disabled={onAddUserMutation.isPending}
+              className='flex-1 bg-accent hover:bg-accent/90 px-4 w-48'
+              disabled={handleAddSchoolYearMutation.isPending}
             >
               <Send size={16} className='mr-1' />{' '}
-              {/* {onAddUserMutation.isPending ? 'Submitting...' : 'Submit'} */}
-              Submitting...
+              {handleAddSchoolYearMutation.isPending
+                ? 'Submitting...'
+                : 'Submit'}
             </Button>
           </div>
         </div>

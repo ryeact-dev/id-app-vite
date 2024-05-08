@@ -66,7 +66,7 @@ export const studentSchedma = z.object({
 
 // School Year Schema
 export const schoolYearSchema = z.object({
-  syFrom: z
+  schoolYearFrom: z
     .string()
     .trim()
     .min(4, {
@@ -76,7 +76,7 @@ export const schoolYearSchema = z.object({
       message: 'Year must contains only 4 numbers.',
     }),
 
-  syTo: z
+  schoolYearTo: z
     .string()
     .trim()
     .min(4, {
