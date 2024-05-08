@@ -33,6 +33,20 @@ export default function SchoolYear({
     handleSchoolYearToggleStatus.mutate({ forUpdatingData });
   };
 
+  const handleDeleteSchoolYear = (schoolYearData) => {
+    const title = `Remove SY:${schoolYearData.schoolYearFrom}-${schoolYearData.schoolYearTo} ?`;
+
+    const modalData = {
+      confirmationType: 'delete-school-year',
+      title,
+      size: 'max-w-lg',
+      modalType: 'confirmation',
+      payload: schoolYearData.id,
+    };
+    setModalSetting(modalData);
+    setIsOpen(true);
+  };
+
   const handleAddEditSchoolYearClick = (schoolYearData) => {
     let modalData;
     if (schoolYearData) {
@@ -95,7 +109,7 @@ export default function SchoolYear({
                     <Badge
                       variant={schoolYear.isActive ? 'secondary' : 'outline'}
                       onClick={() => handleToggleStatus(schoolYear)}
-                      className={'hover:cursor-pointer'}
+                      className={'hover:cursor-pointer w-16'}
                     >
                       {schoolYear.isActive ? 'Active' : 'Inactive'}
                     </Badge>
@@ -109,7 +123,12 @@ export default function SchoolYear({
                       >
                         Edit
                       </Button>
-                      <Button size='sm'>Delete</Button>
+                      <Button
+                        size='sm'
+                        onClick={() => handleDeleteSchoolYear(schoolYear)}
+                      >
+                        Delete
+                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>

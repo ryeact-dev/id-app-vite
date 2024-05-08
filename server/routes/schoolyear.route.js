@@ -1,10 +1,11 @@
 const express = require('express');
 const { verifyToken } = require('../lib/helpers/verifyToken');
-const { updateUser, deleteUser } = require('../controllers/user.controller');
 const {
   addSchoolYear,
   getAllSchoolYear,
   schoolYearToggleStatus,
+  updateSchoolYear,
+  deleteSchoolYear,
 } = require('../controllers/schoolyear.controller');
 
 const router = express.Router();
@@ -13,9 +14,9 @@ router.get('/all', verifyToken, getAllSchoolYear);
 
 router.post('/add', verifyToken, addSchoolYear);
 
-router.patch('/update', verifyToken, updateUser);
+router.patch('/update', verifyToken, updateSchoolYear);
 router.patch('/toggle', verifyToken, schoolYearToggleStatus);
 
-router.delete('/delete/:id', verifyToken, deleteUser);
+router.delete('/delete/:id', verifyToken, deleteSchoolYear);
 
 module.exports = router;

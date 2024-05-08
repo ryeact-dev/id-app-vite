@@ -1,6 +1,6 @@
-import { deleteDepartment } from '@/api/department.api';
 import {
   addSchoolYear,
+  deleteSchoolYear,
   getAllSchoolYear,
   schoolYearToggleStatus,
 } from '@/api/schoolyear.api';
@@ -46,14 +46,14 @@ export function useSchoolYearToggleStatus() {
   });
 }
 
-export function useDeleteDepartment(closeModal) {
+export function useDeleteSchoolYear(closeModal) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteDepartment,
+    mutationFn: deleteSchoolYear,
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: ({ data }) => {
-      queryClient.invalidateQueries({ queryKey: ['all-departments'] });
+      queryClient.invalidateQueries({ queryKey: ['list-of-school-year'] });
       ToastNotification('success', data);
       closeModal();
     },

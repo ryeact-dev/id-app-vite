@@ -51,6 +51,42 @@ async function addSchoolYear(req, res, next) {
   }
 }
 
+// Update School Year
+async function updateSchoolYear(req, res, next) {
+  const { role: userRole, id: userId } = req.user;
+
+  if (userRole !== 'Admin' && userRole !== 'User')
+    return res.status(400).send('Unauthorized');
+
+  try {
+    const foundDepartment = await prisma.schoolYear.findFirst({
+      where: {
+        schoolYearFrom: req.body.schoolYearFrom,
+      },
+    });
+
+    if (foundDepartment !== null)
+      return res.status(400).send('School Year already exists');
+
+    await prisma.schoolYear.update({
+      where: {
+        id: req.body.id,
+      },
+      data: req.body,
+    });
+
+    res
+      .status(200)
+      .send(
+        `SY ${req.body.schoolYearFrom}-${req.body.schoolYearTo} successfully updated`
+      );
+  } catch (err) {
+    err.title = 'POST New School Year';
+    next(err);
+  }
+}
+
+//  Toggle School Year Status
 async function schoolYearToggleStatus(req, res, next) {
   try {
     const [activeSchoolYear, inActiveSchoolYear] = await prisma.$transaction([
@@ -86,28 +122,31 @@ async function deleteSchoolYear(req, res, next) {
   const { fullName } = req.user;
 
   try {
-    const deletedDepartment = await prisma.department.delete({
+    const deletedSchoolYear = await prisma.schoolYear.delete({
       where: {
         id: req.params.id,
       },
     });
 
     console.log(
-      `${
-        deletedDepartment.department
+      `SY ${deletedSchoolYear.schoolYearFrom} - ${
+        deletedSchoolYear.schoolYearTo
       } successfully deleted by ${fullName} :: ${new Date().toDateString()}`
     );
 
     res
       .status(200)
-      .send(`${deletedDepartment.department} successfully deleted`);
+      .send(
+        `SY ${deletedSchoolYear.schoolYearFrom} - ${deletedSchoolYear.schoolYearTo} successfully deleted`
+      );
   } catch (err) {
-    err.title = 'DELETE department';
+    err.title = 'DELETE School Year';
     next(err);
   }
 }
 
 exports.getAllSchoolYear = getAllSchoolYear;
 exports.addSchoolYear = addSchoolYear;
+exports.updateSchoolYear = updateSchoolYear;
 exports.schoolYearToggleStatus = schoolYearToggleStatus;
 exports.deleteSchoolYear = deleteSchoolYear;
