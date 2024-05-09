@@ -1,7 +1,7 @@
 import { Button } from '@/common/ui/button';
 import { Input } from '@/common/ui/input';
 
-import { Search } from 'lucide-react';
+import { Search, UserPlus } from 'lucide-react';
 
 export default function DatabaseHeader({
   tabValue,
@@ -36,11 +36,11 @@ export default function DatabaseHeader({
         </div>
 
         <Button
-          onClick={handleAddEditStudent}
+          onClick={() => handleAddEditStudent(null)}
           type='button'
           className='text-white font-semibold'
         >
-          Add Student
+          <UserPlus className='size-4 mr-1' strokeWidth={3} /> Add Student
         </Button>
       </div>
     </>

@@ -28,14 +28,13 @@ export default function AddDepartmentModalBody({ payload, closeModal }) {
     let forAddingData = {
       ...data,
     };
-    let isNew = true;
+    let isNew = payload ? false : true;
 
     if (payload) {
       forAddingData = {
         ...forAddingData,
         id: payload.id,
       };
-      isNew = false;
       handleAddDepartmentMutation.mutate({ forAddingData, isNew });
     } else {
       handleAddDepartmentMutation.mutate({ forAddingData, isNew });

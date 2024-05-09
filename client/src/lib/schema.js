@@ -53,15 +53,23 @@ export const studentSchedma = z.object({
     message: 'MI ',
   }),
 
-  fullAddress: z.string().trim().min(1, {
-    message: 'Address must not be empty.',
-  }),
-
-  program: z.string().trim().min(1, {
+  programId: z.string().trim().min(1, {
     message: 'Address must not be empty.',
   }),
 
   birthDate: z.date({ message: 'Invalid date string.' }),
+
+  address: z.string().trim().min(1, {
+    message: 'Address must not be empty.',
+  }),
+
+  guardian: z.string().trim().min(1, {
+    message: 'Guardian name must not be empty.',
+  }),
+
+  guardianContact: z.string().trim().min(1, {
+    message: 'Guardian Address must not be empty.',
+  }),
 });
 
 // School Year Schema

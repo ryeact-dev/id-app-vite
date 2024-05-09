@@ -45,14 +45,13 @@ export default function AddProgramModalBody({ payload, closeModal }) {
       ...data,
     };
 
-    let isNew = true;
+    let isNew = payload ? false : true;
 
     if (payload) {
       forAddingData = {
         ...forAddingData,
         id: payload.id,
       };
-      isNew = false;
       handleAddProgramMutation.mutate({ forAddingData, isNew });
     } else {
       handleAddProgramMutation.mutate({ forAddingData, isNew });
@@ -60,7 +59,7 @@ export default function AddProgramModalBody({ payload, closeModal }) {
   };
 
   const handleDepartmentValueChange = (value) => {
-    form.setValue('department', value);
+    form.setValue('departmentId', value);
     setOpen(false);
   };
 

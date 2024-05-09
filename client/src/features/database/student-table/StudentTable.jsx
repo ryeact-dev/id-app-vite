@@ -22,7 +22,7 @@ const DUMMY_DATA = [
     deparment: 'Dept. of Business Administration Education',
     guardian: 'Mr. John Doe',
     guardianContact: '09123456789',
-    guardianAddress:
+    address:
       'Prk. Tae, Bario Patay, Brgy. Canocotan, Tagum City, Davao Del Norte',
     createBy: [
       {
@@ -49,7 +49,7 @@ const DUMMY_DATA = [
     birthDate: 'Jan 09, 1980',
     guardian: 'Mr. Exodiac Doe',
     guardianContact: '09123456789',
-    guardianAddress:
+    address:
       'Prk. Tae, Bario Patay, Brgy. Canocotan, Tagum City, Davao Del Norte',
     program: 'BS - Criminology',
     deparment: 'Dept. of Criminal Justice Education',
@@ -78,7 +78,7 @@ const DUMMY_DATA = [
     birthDate: 'Jan 09, 1950',
     guardian: 'Mr. John David',
     guardianContact: '09123456789',
-    guardianAddress:
+    address:
       'Prk. Tae, Bario Patay, Brgy. Canocotan, Tagum City, Davao Del Norte',
     program: 'BSED - Mathematics',
     deparment: 'Dept. of Teacher Education',
@@ -132,8 +132,8 @@ export default function StudentTable() {
                   </div>
                 </TableCell>
                 <TableCell className='font-medium'>
-                  <div className='font-medium w-48 leading-5'>
-                    {student.guardianAddress}
+                  <div className='font-medium w-48 leading-4'>
+                    {student.address}
                   </div>{' '}
                 </TableCell>
                 <TableCell className='font-medium'>

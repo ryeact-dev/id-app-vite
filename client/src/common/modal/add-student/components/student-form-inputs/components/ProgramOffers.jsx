@@ -11,79 +11,19 @@ import {
   CommandItem,
   CommandList,
 } from '@/common/ui/command';
-
-const programOffering = [
-  {
-    value: 'bs-ece',
-    label: 'BS-Electronics Engg',
-  },
-  {
-    value: 'bs-ee',
-    label: 'BS-Electrical Engg',
-  },
-  {
-    value: 'bs-coe',
-    label: 'BS-Computer Engg',
-  },
-  {
-    value: 'bs-it',
-    label: 'BS-Information Tech',
-  },
-  {
-    value: 'bs-cs',
-    label: 'BS-Computer Science',
-  },
-  {
-    value: 'bsba-fin',
-    label: 'BSBA-Financial Mgt',
-  },
-  {
-    value: 'bsba-mktg',
-    label: 'BSBA-Marketing Mgt',
-  },
-  {
-    value: 'bsba-hr',
-    label: 'BSBA-Human Resource Mgt',
-  },
-  {
-    value: 'bs-tm',
-    label: 'BS-Tourism Mgt',
-  },
-  {
-    value: 'bs-hm',
-    label: 'BS-Hospitality Mgt',
-  },
-  {
-    value: 'bs-crim',
-    label: 'BS-Criminology',
-  },
-  {
-    value: 'ab-eng',
-    label: 'AB-English Language',
-  },
-  {
-    value: 'bs-psy',
-    label: 'BS-Psychology',
-  },
-  {
-    value: 'beed',
-    label: 'Bachelor in Elementary Educ',
-  },
-  {
-    value: 'bsed-eng',
-    label: 'BSED-English',
-  },
-  {
-    value: 'bsed-math',
-    label: 'BSED-Mathematics',
-  },
-];
+import { useGetAllPrograms } from '@/hooks/program.hook';
 
 export default function ProgramOffers({
   handleProgramValueChange,
   programValue,
 }) {
   const [open, setOpen] = useState(false);
+  const { data: listOfPrograms = [] } = useGetAllPrograms();
+
+  const programOffering = listOfPrograms?.map((program) => ({
+    value: program.id,
+    label: program.program,
+  }));
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -93,7 +33,9 @@ export default function ProgramOffers({
           role='combobox'
           aria-expanded={open}
           aria-label='Select Program'
-          className='w-full justify-between dark:text-white'
+          className={`w-full justify-between dark:text-white ${
+            programValue ? '' : 'text-foreground/50'
+          }`}
         >
           {programValue
             ? programOffering.find(

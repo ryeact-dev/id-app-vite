@@ -79,6 +79,7 @@ model Program {
   userId       String
   user         User       @relation(fields: [userId], references: [id])
   createdAt    DateTime   @default(now())
+  Student      Student[]
 }
 
 model Student {
@@ -90,6 +91,11 @@ model Student {
   address         String
   guardian        String
   guardianContact String
+  photoUrl        String?
+  esignUrl        String?
+  birthDate       DateTime
+  programId       String
+  program         Program         @relation(fields: [programId], references: [id])
   userId          String
   user            User            @relation(fields: [userId], references: [id])
   createdAt       DateTime        @default(now())
@@ -104,7 +110,7 @@ model StudentUpdate {
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   studentId   String
-  student     Student  @relation(fields: [studentId], references: [id])
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
 }
 
 model Printing {
@@ -112,7 +118,7 @@ model Printing {
   reprintReason    String
   printType        String
   studentId        String
-  student          Student    @relation(fields: [studentId], references: [id])
+  student          Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
   printedByUserId  String
   printedBy        User       @relation("PrintedBy", fields: [printedByUserId], references: [id])
   printedDate      DateTime   @default(now())
@@ -128,7 +134,7 @@ model Printing {
 model Validation {
   id            Int        @id @default(autoincrement())
   studentId     String
-  student       Student    @relation(fields: [studentId], references: [id])
+  student       Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
   dateValidated DateTime   @default(now())
   schoolYearId  String
   schoolYear    SchoolYear @relation(fields: [schoolYearId], references: [id])

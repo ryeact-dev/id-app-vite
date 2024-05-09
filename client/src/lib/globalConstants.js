@@ -15,9 +15,11 @@ export const INITIAL_STUDENT_OBJ = {
   lastName: '',
   firstName: '',
   middleInitial: '',
-  fullAddress: '',
-  program: '',
-  birthDate: new Date(),
+  programId: '',
+  birthDate: '',
+  guardian: '',
+  guardianContact: '',
+  address: '',
 };
 
 export const INITIAL_SCHOOL_YEAR_OBJ = {

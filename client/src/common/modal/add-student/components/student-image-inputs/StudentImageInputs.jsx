@@ -29,7 +29,7 @@ export default function StudentImageInputs({
         <div className='relative rounded-md size-48 flex items-center justify-center m-1 border border-dashed'>
           <ImageComponent
             alt='StudentPhoto'
-            className='object-cover object-center h-full w-full'
+            className='object-contain object-center h-full w-full'
             src={photo}
           />
 
@@ -55,7 +55,7 @@ export default function StudentImageInputs({
         <div className='relative rounded-md size-48 flex items-center justify-center m-1 border border-dashed'>
           <ImageComponent
             alt='ESignature'
-            className='object-cover object-center h-full w-full'
+            className='object-contain object-center h-full w-full'
             src={esign}
           />
           <label className='rounded-md size-18 absolute bottom-2 right-2 bg-accent text-white p-2 hover:cursor-pointer hover:opacity-90'>
