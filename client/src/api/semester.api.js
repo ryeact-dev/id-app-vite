@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export async function getAllSemesterDates({ schoolYearId }) {
-  return await axios.get(`/api/semester/all/${schoolYearId}`);
+export async function getAllSemesterDates() {
+  return await axios.get(`/api/semester/all`);
 }
 
 export async function setSemesterDates({ forAddingData, isNew }) {

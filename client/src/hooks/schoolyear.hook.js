@@ -27,6 +27,7 @@ export function useAddSchoolyear(closeModal) {
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: ({ data }) => {
       queryClient.invalidateQueries({ queryKey: ['list-of-school-year'] });
+      queryClient.invalidateQueries({ queryKey: ['list-of-semester'] });
       ToastNotification('success', data);
       closeModal();
     },
@@ -41,6 +42,7 @@ export function useSchoolYearToggleStatus() {
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: ({ data }) => {
       queryClient.invalidateQueries({ queryKey: ['list-of-school-year'] });
+      queryClient.invalidateQueries({ queryKey: ['list-of-semester'] });
       ToastNotification('success', data);
     },
   });
@@ -54,6 +56,7 @@ export function useDeleteSchoolYear(closeModal) {
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: ({ data }) => {
       queryClient.invalidateQueries({ queryKey: ['list-of-school-year'] });
+      queryClient.invalidateQueries({ queryKey: ['list-of-semester'] });
       ToastNotification('success', data);
       closeModal();
     },

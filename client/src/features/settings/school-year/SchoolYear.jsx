@@ -17,21 +17,26 @@ import {
 import { Badge } from '@/common/ui/badge';
 import { useSchoolYearToggleStatus } from '@/hooks/schoolyear.hook';
 import { PenBox, Trash } from 'lucide-react';
+import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 
 export default function SchoolYear({
   setIsOpen,
   setModalSetting,
   listOfSchoolYear,
 }) {
-  const handleSchoolYearToggleStatus = useSchoolYearToggleStatus();
+  const handleSchoolYearToggleStatusMutation = useSchoolYearToggleStatus();
 
-  const handleToggleStatus = (schoolYear) => {
+  const handleToggleSchoolYearStatus = (schoolYear) => {
+    if (schoolYear.isActive) {
+      return ToastNotification('error', 'This school year is already active');
+    }
+
     const forUpdatingData = {
       id: schoolYear.id,
       isActive: schoolYear.isActive ? false : true,
     };
 
-    handleSchoolYearToggleStatus.mutate({ forUpdatingData });
+    handleSchoolYearToggleStatusMutation.mutate({ forUpdatingData });
   };
 
   const handleDeleteSchoolYear = (schoolYearData) => {
@@ -49,24 +54,17 @@ export default function SchoolYear({
   };
 
   const handleAddEditSchoolYearClick = (schoolYearData) => {
-    let modalData;
-    if (schoolYearData) {
-      modalData = {
-        confirmationType: null,
-        title: 'Edit School Year',
-        size: 'max-w-lg',
-        modalType: 'add-school-year',
-        payload: schoolYearData,
-      };
-    } else {
-      modalData = {
-        confirmationType: null,
-        title: 'Add School Year',
-        size: 'max-w-lg',
-        modalType: 'add-school-year',
-        payload: null,
-      };
-    }
+    const payload = schoolYearData ? schoolYearData : null;
+    const title = schoolYearData ? 'Edit School Year' : 'Add School Year';
+
+    const modalData = {
+      confirmationType: null,
+      size: 'max-w-lg',
+      modalType: 'add-school-year',
+      title,
+      payload,
+    };
+
     setModalSetting(modalData);
     setIsOpen(true);
   };
@@ -109,7 +107,7 @@ export default function SchoolYear({
                   <TableCell>
                     <Badge
                       variant={schoolYear.isActive ? 'secondary' : 'outline'}
-                      onClick={() => handleToggleStatus(schoolYear)}
+                      onClick={() => handleToggleSchoolYearStatus(schoolYear)}
                       className={'hover:cursor-pointer w-16'}
                     >
                       {schoolYear.isActive ? 'Active' : 'Inactive'}

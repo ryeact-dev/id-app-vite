@@ -1,3 +1,4 @@
+import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { Badge } from '@/common/ui/badge';
 import { Button } from '@/common/ui/button';
 import {
@@ -15,7 +16,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
-import { useGetSemesterDates } from '@/hooks/semester.hook';
+import {
+  useGetSemesterDates,
+  useSemesterToggleStatus,
+} from '@/hooks/semester.hook';
 import { SEMESTERS_LIST } from '@/lib/globalConstants';
 import { format } from 'date-fns';
 import { CalendarDays } from 'lucide-react';
@@ -29,23 +33,33 @@ export default function Semester({
     (schoolYear) => schoolYear.isActive === true
   ).id;
 
+  const handleToggleSemesterStatusMutation = useSemesterToggleStatus();
   const { data: semesterDates = [] } = useGetSemesterDates(activeSchoolYearId);
 
+  const handleToggleSemesterStatus = (semester) => {
+    if (semester.isActive) {
+      return ToastNotification('error', 'This school year is already active');
+    }
+
+    const forUpdatingData = {
+      id: semester.id,
+      isActive: semester.isActive ? false : true,
+    };
+
+    handleToggleSemesterStatusMutation.mutate({ forUpdatingData });
+  };
+
   const handleSetSemesterDatesClick = (semester, semesterData) => {
-    // const payload = {
-    //   semester,
-    //   semestralDateStart: semesterData ? semesterData.semestralDateStart : null,
-    //   semestralDateEnd: semesterData ? semesterData.semestralDateEnd : null,
-    //   // id: semesterData ? semesterData.id : null,
-    //   schoolYearId: activeSchoolYearId,
-    // };
+    const payload = semesterData
+      ? semesterData
+      : { semester, schoolYearId: activeSchoolYearId };
 
     const modalData = {
       confirmationType: null,
       title: 'Set Semester Dates',
       size: 'max-w-lg',
       modalType: 'set-semester-dates',
-      payload: { semester, schoolYearId: activeSchoolYearId },
+      payload,
     };
 
     setModalSetting(modalData);
@@ -78,7 +92,7 @@ export default function Semester({
                 <TableCell className='font-medium'>
                   <div className='font-medium'>{sem}</div>
                   <div className='text-xs text-muted-foreground italic'>
-                    {semesterDates.length === index + 1
+                    {semesterDates[index]?.semester === sem
                       ? `${format(
                           semesterDates[index].semestralDateStart,
                           'MMM dd, yyyy'
@@ -92,9 +106,12 @@ export default function Semester({
                 <TableCell>
                   <Badge
                     variant={
-                      semesterDates[index]?.isActive ? 'Secondary' : 'Outline'
+                      semesterDates[index]?.isActive ? 'secondary' : 'outline'
                     }
-                    className={'w-18'}
+                    className={'hover:cursor-pointer w-16'}
+                    onClick={() =>
+                      handleToggleSemesterStatus(semesterDates[index])
+                    }
                   >
                     {semesterDates[index]?.isActive ? 'Active' : 'Inactive'}
                   </Badge>
@@ -104,7 +121,9 @@ export default function Semester({
                     <Button
                       size='sm'
                       variant='outline'
-                      onClick={() => handleSetSemesterDatesClick(sem)}
+                      onClick={() =>
+                        handleSetSemesterDatesClick(sem, semesterDates[index])
+                      }
                     >
                       <CalendarDays className='size-4 mr-1' /> Set Dates
                     </Button>
