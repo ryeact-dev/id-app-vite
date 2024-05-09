@@ -16,6 +16,7 @@ import {
 } from '@/common/ui/table';
 import { Badge } from '@/common/ui/badge';
 import { useSchoolYearToggleStatus } from '@/hooks/schoolyear.hook';
+import { PenBox, Trash } from 'lucide-react';
 
 export default function SchoolYear({
   setIsOpen,
@@ -121,13 +122,13 @@ export default function SchoolYear({
                         variant='outline'
                         onClick={() => handleAddEditSchoolYearClick(schoolYear)}
                       >
-                        Edit
+                        <PenBox className='size-4 mr-1' /> Edit
                       </Button>
                       <Button
                         size='sm'
                         onClick={() => handleDeleteSchoolYear(schoolYear)}
                       >
-                        Delete
+                        <Trash className='size-4 mr-1' /> Delete
                       </Button>
                     </div>
                   </TableCell>

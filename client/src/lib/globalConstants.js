@@ -33,3 +33,5 @@ export const INITIAL_PROGRAM_OBJ = {
   program: '',
   department: '',
 };
+
+export const SEMESTERS_LIST = ['First Semester', 'Second Semester', 'Summer'];

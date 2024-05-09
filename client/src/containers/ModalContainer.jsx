@@ -4,6 +4,7 @@ import AddSchoolYearModalBody from '@/common/modal/add-school-year/AddSchoolYear
 import AddStudentModalBody from '@/common/modal/add-student/AddStudentModalBody';
 import AddUserModalBody from '@/common/modal/add-user/AddUserModalBody';
 import ConfirmationModalBody from '@/common/modal/confirmation/ConfirmationModalBody';
+import SetSemesterDatesModalBody from '@/common/modal/set-semester-dates/SetSemesterDatesModalBody';
 import { Card } from '@/common/ui/card';
 import {
   Dialog,
@@ -57,6 +58,11 @@ export default function ModalContainer({ isOpen, setIsOpen, modalSetting }) {
     case 'add-user':
       modalComponent = (
         <AddUserModalBody payload={payload} closeModal={close} />
+      );
+      break;
+    case 'set-semester-dates':
+      modalComponent = (
+        <SetSemesterDatesModalBody payload={payload} closeModal={close} />
       );
       break;
     case 'confirmation':

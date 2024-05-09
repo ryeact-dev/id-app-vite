@@ -41,7 +41,11 @@ export default function SettingsPage() {
           />
         </div>
         <div className='flex-1 space-y-4'>
-          <Semester setModalSetting={setModalSetting} setIsOpen={setIsOpen} />
+          <Semester
+            setModalSetting={setModalSetting}
+            setIsOpen={setIsOpen}
+            listOfSchoolYear={listOfSchoolYear}
+          />
           <Programs setModalSetting={setModalSetting} setIsOpen={setIsOpen} />
         </div>
       </div>

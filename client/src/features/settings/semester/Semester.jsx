@@ -15,9 +15,43 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
-import { Calendar, CalendarDays } from 'lucide-react';
+import { useGetSemesterDates } from '@/hooks/semester.hook';
+import { SEMESTERS_LIST } from '@/lib/globalConstants';
+import { format } from 'date-fns';
+import { CalendarDays } from 'lucide-react';
 
-export default function Semester() {
+export default function Semester({
+  setIsOpen,
+  setModalSetting,
+  listOfSchoolYear,
+}) {
+  const activeSchoolYearId = listOfSchoolYear?.find(
+    (schoolYear) => schoolYear.isActive === true
+  ).id;
+
+  const { data: semesterDates = [] } = useGetSemesterDates(activeSchoolYearId);
+
+  const handleSetSemesterDatesClick = (semester, semesterData) => {
+    // const payload = {
+    //   semester,
+    //   semestralDateStart: semesterData ? semesterData.semestralDateStart : null,
+    //   semestralDateEnd: semesterData ? semesterData.semestralDateEnd : null,
+    //   // id: semesterData ? semesterData.id : null,
+    //   schoolYearId: activeSchoolYearId,
+    // };
+
+    const modalData = {
+      confirmationType: null,
+      title: 'Set Semester Dates',
+      size: 'max-w-lg',
+      modalType: 'set-semester-dates',
+      payload: { semester, schoolYearId: activeSchoolYearId },
+    };
+
+    setModalSetting(modalData);
+    setIsOpen(true);
+  };
+
   return (
     <Card className='overflow-hidden'>
       <div className='p-4 bg-accent text-primary-foreground flex justify-between items-center'>
@@ -39,60 +73,45 @@ export default function Semester() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className='font-medium'>
-                <div className='font-medium'>First Semester</div>
-                <div className='text-xs text-muted-foreground'>
-                  Aug 23, 2023 - Aug 30, 2023
-                </div>
-              </TableCell>
-              <TableCell>
-                <Badge variant='secondary'>Active</Badge>
-              </TableCell>
-              <TableCell>
-                <div className='flex items-center gap-2'>
-                  <Button size='sm' variant='outline'>
-                    <CalendarDays className='size-4 mr-1' /> Set Dates
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className='font-medium'>
-                <div className='font-medium'>Second Semester</div>
-                <div className='text-xs text-muted-foreground'>
-                  Aug 23, 2023 - Aug 30, 2023
-                </div>
-              </TableCell>
-              <TableCell>
-                <Badge variant='outline'>Inactive</Badge>
-              </TableCell>
-              <TableCell>
-                <div className='flex items-center gap-2'>
-                  <Button size='sm' variant='outline'>
-                    Set
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className='font-medium'>
-                <div className='font-medium'>Summer</div>
-                <div className='text-xs text-muted-foreground'>
-                  Dates not set
-                </div>
-              </TableCell>
-              <TableCell>
-                <Badge variant='outline'>Inactive</Badge>
-              </TableCell>
-              <TableCell>
-                <div className='flex items-center gap-2'>
-                  <Button size='sm' variant='outline'>
-                    Set
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
+            {SEMESTERS_LIST.map((sem, index) => (
+              <TableRow key={sem}>
+                <TableCell className='font-medium'>
+                  <div className='font-medium'>{sem}</div>
+                  <div className='text-xs text-muted-foreground italic'>
+                    {semesterDates.length === index + 1
+                      ? `${format(
+                          semesterDates[index].semestralDateStart,
+                          'MMM dd, yyyy'
+                        )} - ${format(
+                          semesterDates[index].semestralDateEnd,
+                          'MMM dd, yyyy'
+                        )}`
+                      : 'Not set'}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Badge
+                    variant={
+                      semesterDates[index]?.isActive ? 'Secondary' : 'Outline'
+                    }
+                    className={'w-18'}
+                  >
+                    {semesterDates[index]?.isActive ? 'Active' : 'Inactive'}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <div className='flex items-center gap-2'>
+                    <Button
+                      size='sm'
+                      variant='outline'
+                      onClick={() => handleSetSemesterDatesClick(sem)}
+                    >
+                      <CalendarDays className='size-4 mr-1' /> Set Dates
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </CardContent>
