@@ -16,31 +16,21 @@ import {
   TableRow,
 } from '@/common/ui/table';
 import { useGetAllDepartments } from '@/hooks/department.hook';
-import { Trash } from 'lucide-react';
+import { PenBox, Trash } from 'lucide-react';
 
 export default function Departments({ setIsOpen, setModalSetting }) {
   const { data: listOfDepartments = [] } = useGetAllDepartments();
 
-  const handleAddDepartment = (payload) => {
-    let modalData;
+  const handleAddDepartment = (departmentData) => {
+    const payload = departmentData ? departmentData : null;
 
-    if (payload) {
-      modalData = {
-        confirmationType: null,
-        title: 'Update Department',
-        size: 'max-w-lg',
-        modalType: 'add-department',
-        payload,
-      };
-    } else {
-      modalData = {
-        confirmationType: null,
-        title: 'Add Department',
-        size: 'max-w-lg',
-        modalType: 'add-department',
-        payload: null,
-      };
-    }
+    const modalData = {
+      confirmationType: null,
+      title: 'Add Department',
+      size: 'max-w-lg',
+      modalType: 'add-department',
+      payload,
+    };
 
     setModalSetting(modalData);
     setIsOpen(true);
@@ -74,7 +64,7 @@ export default function Departments({ setIsOpen, setModalSetting }) {
               type='button'
               variant='outline'
               className='hover:bg-background hover:text-secondary-foreground'
-              onClick={handleAddDepartment}
+              onClick={() => handleAddDepartment(null)}
             >
               Add Department
             </Button>
@@ -96,13 +86,13 @@ export default function Departments({ setIsOpen, setModalSetting }) {
                   </TableCell>
                   <TableCell>
                     <div className='flex items-center gap-2'>
-                      {/* <Button
+                      <Button
                         onClick={() => handleAddDepartment(department)}
                         size='sm'
                         variant='outline'
                       >
-                        Edit
-                      </Button> */}
+                        <PenBox className='size-4 mr-1' /> Edit
+                      </Button>
                       <Button
                         size='sm'
                         onClick={() => handleDeleteDepartment(department)}

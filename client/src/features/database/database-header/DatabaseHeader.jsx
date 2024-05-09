@@ -1,15 +1,26 @@
 import { Button } from '@/common/ui/button';
 import { Input } from '@/common/ui/input';
-import ModalContainer from '@/containers/ModalContainer';
 
 import { Search } from 'lucide-react';
-import { useState } from 'react';
 
-export default function DatabaseHeader({ tabValue }) {
-  const [isOpen, setIsopen] = useState(false);
+export default function DatabaseHeader({
+  tabValue,
+  setIsOpen,
+  setModalSetting,
+}) {
+  const handleAddEditStudent = (studentData) => {
+    const payload = studentData ? studentData : null;
 
-  const handleAddStudent = () => {
-    setIsopen(true);
+    const modalData = {
+      confirmationType: null,
+      title: 'Student Details',
+      size: 'max-w-2xl',
+      modalType: 'add-student',
+      payload,
+    };
+
+    setModalSetting(modalData);
+    setIsOpen(true);
   };
 
   return (
@@ -25,23 +36,13 @@ export default function DatabaseHeader({ tabValue }) {
         </div>
 
         <Button
-          onClick={handleAddStudent}
+          onClick={handleAddEditStudent}
           type='button'
           className='text-white font-semibold'
         >
           Add Student
         </Button>
       </div>
-      {isOpen === true && (
-        <ModalContainer
-          isOpen={isOpen}
-          setIsOpen={setIsopen}
-          title={'Student Info'}
-          size={'max-w-2xl'}
-          modalType={'add-student'}
-          payload={null}
-        />
-      )}
     </>
   );
 }

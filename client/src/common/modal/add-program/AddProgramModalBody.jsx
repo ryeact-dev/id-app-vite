@@ -37,14 +37,26 @@ export default function AddProgramModalBody({ payload, closeModal }) {
 
   const form = useForm({
     resolver: zodResolver(programSchema),
-    defaultValues: INITIAL_PROGRAM_OBJ,
+    defaultValues: payload ? payload : INITIAL_PROGRAM_OBJ,
   });
 
   const onSubmit = (data) => {
-    const forAddingData = {
+    let forAddingData = {
       ...data,
     };
-    handleAddProgramMutation.mutate({ forAddingData });
+
+    let isNew = true;
+
+    if (payload) {
+      forAddingData = {
+        ...forAddingData,
+        id: payload.id,
+      };
+      isNew = false;
+      handleAddProgramMutation.mutate({ forAddingData, isNew });
+    } else {
+      handleAddProgramMutation.mutate({ forAddingData, isNew });
+    }
   };
 
   const handleDepartmentValueChange = (value) => {
@@ -72,7 +84,7 @@ export default function AddProgramModalBody({ payload, closeModal }) {
 
             <FormField
               control={form.control}
-              name='department'
+              name='departmentId'
               render={({ field }) => (
                 <FormItem className='flex flex-col space-y-1'>
                   <FormLabel>Department</FormLabel>

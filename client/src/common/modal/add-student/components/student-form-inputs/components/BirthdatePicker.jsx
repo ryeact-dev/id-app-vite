@@ -5,7 +5,7 @@ import { Calendar } from 'lucide-react';
 export default function BirthdatePicker({ handleDateChange, selectedDate }) {
   return (
     <ReactDatePicker
-      className='w-48 border-2 rounded-md h-9 text-sm font-medium'
+      className='w-32 border-2 rounded-md h-9 text-sm font-medium'
       showIcon
       toggleCalendarOnIconClick
       selected={selectedDate}

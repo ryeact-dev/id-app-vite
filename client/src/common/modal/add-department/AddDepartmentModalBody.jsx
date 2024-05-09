@@ -25,14 +25,21 @@ export default function AddDepartmentModalBody({ payload, closeModal }) {
   });
 
   const onSubmit = (data) => {
-    let forAddingData;
-    let isNew = true;
-
-    forAddingData = {
+    let forAddingData = {
       ...data,
     };
+    let isNew = true;
 
-    handleAddDepartmentMutation.mutate({ forAddingData, isNew });
+    if (payload) {
+      forAddingData = {
+        ...forAddingData,
+        id: payload.id,
+      };
+      isNew = false;
+      handleAddDepartmentMutation.mutate({ forAddingData, isNew });
+    } else {
+      handleAddDepartmentMutation.mutate({ forAddingData, isNew });
+    }
   };
 
   return (
@@ -68,7 +75,7 @@ export default function AddDepartmentModalBody({ payload, closeModal }) {
             </Button>
             <Button
               type='submit'
-              className='flex-1 bg-accent hover:bg-accent/90 px-4'
+              className='flex-1 bg-accent hover:bg-accent/90 px-4 w-44'
               disabled={handleAddDepartmentMutation.isPending}
             >
               <Send size={16} className='mr-1' />{' '}

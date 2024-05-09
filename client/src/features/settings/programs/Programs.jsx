@@ -15,19 +15,20 @@ import {
   TableRow,
 } from '@/common/ui/table';
 import { useGetAllPrograms } from '@/hooks/program.hook';
-import { Trash } from 'lucide-react';
+import { PenBox, Trash } from 'lucide-react';
 
 export default function Programs({ setIsOpen, setModalSetting }) {
   const { data: listOfPrograms = [] } = useGetAllPrograms();
 
-  const handleAddProgramClick = () => {
-    let modalData;
+  const handleAddEditProgram = (programData) => {
+    const payload = programData ? programData : null;
 
-    modalData = {
-      title: 'Add Program',
+    const modalData = {
+      confirmationType: null,
+      title: 'Program Details',
       size: 'max-w-lg',
       modalType: 'add-program',
-      payload: null,
+      payload,
     };
 
     setModalSetting(modalData);
@@ -61,7 +62,7 @@ export default function Programs({ setIsOpen, setModalSetting }) {
             <Button
               variant='outline'
               className='hover:bg-background hover:text-secondary-foreground'
-              onClick={handleAddProgramClick}
+              onClick={() => handleAddEditProgram(null)}
             >
               Add Program
             </Button>
@@ -89,9 +90,13 @@ export default function Programs({ setIsOpen, setModalSetting }) {
                   </TableCell>
                   <TableCell>
                     <div className='flex items-center gap-2'>
-                      {/* <Button size='sm' variant='outline'>
-                        Edit
-                      </Button> */}
+                      <Button
+                        onClick={() => handleAddEditProgram(program)}
+                        size='sm'
+                        variant='outline'
+                      >
+                        <PenBox className='size-4 mr-1' /> Edit
+                      </Button>
                       <Button
                         size='sm'
                         onClick={() => handleDeleteProgram(program)}

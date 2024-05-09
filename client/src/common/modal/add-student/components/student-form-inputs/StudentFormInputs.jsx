@@ -124,7 +124,7 @@ export default function StudentFormInputs({ form }) {
           <div className='flex-[2]'>
             <Label
               className={`text-sm ${
-                form.formState.errors?.fullAddress ? 'text-red-500' : ''
+                form.formState.errors?.program ? 'text-red-500' : ''
               }`}
               htmlFor='course'
             >

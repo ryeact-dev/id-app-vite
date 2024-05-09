@@ -44,6 +44,39 @@ async function addDepartment(req, res, next) {
   }
 }
 
+// Add Department
+async function updateDepartment(req, res, next) {
+  const { role: userRole, id: userId } = req.user;
+
+  if (userRole !== 'Admin' && userRole !== 'User')
+    return res.status(400).send('Unauthorized');
+
+  try {
+    const foundDepartment = await prisma.department.findFirst({
+      where: {
+        AND: [{ department: req.body.department, id: { not: req.body.id } }],
+      },
+    });
+
+    if (foundDepartment !== null)
+      return res.status(400).send('Department already exists');
+
+    await prisma.department.update({
+      where: {
+        id: req.body.id,
+      },
+      data: {
+        department: req.body.department,
+      },
+    });
+
+    res.status(200).send(`${req.body.department} successfully updated`);
+  } catch (err) {
+    err.title = 'PATCH Department';
+    next(err);
+  }
+}
+
 // Delete Department
 async function deleteDepartment(req, res, next) {
   const { fullName } = req.user;
@@ -72,4 +105,5 @@ async function deleteDepartment(req, res, next) {
 
 exports.getAllDepartments = getAllDepartments;
 exports.addDepartment = addDepartment;
+exports.updateDepartment = updateDepartment;
 exports.deleteDepartment = deleteDepartment;

@@ -31,7 +31,7 @@ export const INITIAL_DEPARTMENT_OBJ = {
 
 export const INITIAL_PROGRAM_OBJ = {
   program: '',
-  department: '',
+  departmentId: '',
 };
 
 export const SEMESTERS_LIST = ['First Semester', 'Second Semester', 'Summer'];

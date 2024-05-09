@@ -99,7 +99,7 @@ export const programSchema = z.object({
   program: z.string().trim().min(1, {
     message: 'Program must not be empty.',
   }),
-  department: z.string().trim().min(1, {
+  departmentId: z.string().trim().min(1, {
     message: 'Department must not be empty.',
   }),
 });

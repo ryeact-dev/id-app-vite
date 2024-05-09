@@ -5,10 +5,20 @@ import StudentTable from '@/features/database/student-table/StudentTable';
 import DatabaseHeader from '@/features/database/database-header/DatabaseHeader';
 import { useCurrentUser } from '@/hooks/user.hook';
 import { Navigate } from 'react-router-dom';
+import ModalContainer from '@/containers/ModalContainer';
 
 export default function DatabasePage() {
   const [tabValue, setTabValue] = useState('student');
   const { isLoading, data: currentUser } = useCurrentUser();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalSetting, setModalSetting] = useState({
+    modalType: null,
+    confirmationType: null,
+    title: null,
+    payload: null,
+    size: null,
+  });
 
   if (!isLoading && !currentUser) {
     return <Navigate to='/login' replace />;
@@ -38,7 +48,10 @@ export default function DatabasePage() {
               Non-Student
             </TabsTrigger>
           </TabsList>
-          <DatabaseHeader />
+          <DatabaseHeader
+            setModalSetting={setModalSetting}
+            setIsOpen={setIsOpen}
+          />
         </div>
 
         <TabsContent value='student' className='space-y-4'>
@@ -51,6 +64,15 @@ export default function DatabasePage() {
 
         <TabsContent value='validate'>Validation Table</TabsContent>
       </Tabs>
+
+      {/* Modal Container */}
+      {isOpen === true && (
+        <ModalContainer
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          modalSetting={modalSetting}
+        />
+      )}
     </div>
   );
 }
