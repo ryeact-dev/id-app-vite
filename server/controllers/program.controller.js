@@ -6,7 +6,7 @@ async function getAllPrograms(req, res, next) {
     const allPrograms = await prisma.program.findMany({
       include: { department: true },
     });
-    allPrograms.sort((a, b) => a.program.localeCompare(b.program));
+    allPrograms.sort((a, b) => a.programName.localeCompare(b.programName));
 
     res.json(allPrograms);
   } catch (err) {
@@ -25,7 +25,7 @@ async function addProgram(req, res, next) {
   try {
     const foundProgram = await prisma.program.findFirst({
       where: {
-        program: req.body.program,
+        programName: req.body.programName,
       },
     });
 
@@ -34,13 +34,13 @@ async function addProgram(req, res, next) {
 
     await prisma.program.create({
       data: {
-        program: req.body.program,
+        programName: req.body.programName,
         userId,
         departmentId: req.body.departmentId,
       },
     });
 
-    res.status(200).send(`${req.body.program} successfully added`);
+    res.status(200).send(`${req.body.programName} successfully added`);
   } catch (err) {
     err.title = 'POST Department';
     next(err);
@@ -57,7 +57,7 @@ async function updateProgram(req, res, next) {
   try {
     const foundProgram = await prisma.program.findFirst({
       where: {
-        AND: [{ program: req.body.program }, { id: req.body.id }],
+        AND: [{ programName: req.body.programName }, { id: req.body.id }],
       },
     });
 
@@ -69,12 +69,12 @@ async function updateProgram(req, res, next) {
         id: req.body.id,
       },
       data: {
-        program: req.body.program,
+        programName: req.body.programName,
         departmentId: req.body.departmentId,
       },
     });
 
-    res.status(200).send(`${req.body.program} successfully added`);
+    res.status(200).send(`${req.body.programName} successfully added`);
   } catch (err) {
     err.title = 'PATCH Program';
     next(err);
@@ -94,11 +94,11 @@ async function deleteProgram(req, res, next) {
 
     console.log(
       `${
-        deletedProgram.program
+        deletedProgram.programName
       } successfully deleted by ${fullName} :: ${new Date().toDateString()}`
     );
 
-    res.status(200).send(`${deletedProgram.program} successfully deleted`);
+    res.status(200).send(`${deletedProgram.programName} successfully deleted`);
   } catch (err) {
     err.title = 'DELETE program';
     next(err);

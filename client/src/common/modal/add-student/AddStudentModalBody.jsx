@@ -57,8 +57,8 @@ export default function AddStudentModalBody({ payload, closeModal }) {
 
     if (payload) {
       forAddingData.append('id', payload.id);
-      forAddingData.append('current_photo', payload.photoUrl);
-      forAddingData.append('current_esign', payload.esignUrl);
+      // forAddingData.append('current_photo', payload.photoUrl);
+      // forAddingData.append('current_esign', payload.esignUrl);
       handleAddEditStudentMutation.mutate({ forAddingData, isNew });
     } else {
       handleAddEditStudentMutation.mutate({ forAddingData, isNew });

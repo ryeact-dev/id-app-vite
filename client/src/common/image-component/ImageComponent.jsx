@@ -7,7 +7,7 @@ export function ImageComponent({ src, ...rest }) {
 
   useEffect(() => {
     let objectUrl;
-    if (!src) return;
+    if (!src || src === 'null') return;
 
     if (src.toString().includes('uploads')) {
       setImgSrc(import.meta.env.VITE_LOCAL_BASE_URL + src);

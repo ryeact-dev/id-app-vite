@@ -36,6 +36,8 @@ export default function Semester({
   const handleToggleSemesterStatusMutation = useSemesterToggleStatus();
   const { data: semesterDates = [] } = useGetSemesterDates(activeSchoolYearId);
 
+  console.log(semesterDates);
+
   const handleToggleSemesterStatus = (semester) => {
     if (semester.isActive) {
       return ToastNotification('error', 'This school year is already active');
@@ -99,7 +101,7 @@ export default function Semester({
                 <TableCell className='font-medium'>
                   <div className='font-medium'>{sem}</div>
                   <div className='text-xs text-muted-foreground italic'>
-                    {semesterDates[index]?.semesterName === sem
+                    {semesterDates.length > 0
                       ? `${format(
                           semesterDates[index].semestralDateStart,
                           'MMM dd, yyyy'

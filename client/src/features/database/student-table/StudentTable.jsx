@@ -1,5 +1,4 @@
 import PaginationBlock from '@/common/pagination-block/PaginationBlock';
-import { Badge } from '@/common/ui/badge';
 import { Button } from '@/common/ui/button';
 import { Card, CardContent, CardFooter } from '@/common/ui/card';
 import {
@@ -11,93 +10,11 @@ import {
   TableRow,
 } from '@/common/ui/table';
 import { useGetPaginatedStudents } from '@/hooks/student.hook';
+import { format } from 'date-fns';
+import { PenBox } from 'lucide-react';
 
-const DUMMY_DATA = [
-  {
-    idNumber: 147489,
-    lastName: 'Montoya',
-    firstName: 'Ryan',
-    middleInitial: 'P',
-    birthDate: 'Jan 09, 1990',
-    program: 'BS - Tourism Management',
-    deparment: 'Dept. of Business Administration Education',
-    guardian: 'Mr. John Doe',
-    guardianContact: '09123456789',
-    address:
-      'Prk. Tae, Bario Patay, Brgy. Canocotan, Tagum City, Davao Del Norte',
-    createBy: [
-      {
-        fullName: 'Stap Morning',
-      },
-    ],
-    createdDate: 'Aug 09, 2019',
-    infoUpdate: [
-      {
-        fullName: 'Stap Morning',
-        updateDate: 'Sep 09, 2022',
-      },
-      {
-        fullName: 'Stap Afternoon',
-        updateDate: 'Sep 09, 2021',
-      },
-    ],
-  },
-  {
-    idNumber: 143255,
-    lastName: 'Ayotnom',
-    firstName: 'Nayr',
-    middleInitial: 'E',
-    birthDate: 'Jan 09, 1980',
-    guardian: 'Mr. Exodiac Doe',
-    guardianContact: '09123456789',
-    address:
-      'Prk. Tae, Bario Patay, Brgy. Canocotan, Tagum City, Davao Del Norte',
-    program: 'BS - Criminology',
-    deparment: 'Dept. of Criminal Justice Education',
-    createBy: [
-      {
-        fullName: 'Stap Afternoon',
-      },
-    ],
-    createdDate: 'Sep 09, 2020',
-    infoUpdate: [
-      {
-        fullName: 'Stap Morning',
-        updateDate: 'July 09, 2022',
-      },
-      {
-        fullName: 'Stap Afternoon',
-        updateDate: 'Sep 09, 2021',
-      },
-    ],
-  },
-  {
-    idNumber: 95532,
-    lastName: 'Oldies',
-    firstName: 'Nako',
-    middleInitial: 'E',
-    birthDate: 'Jan 09, 1950',
-    guardian: 'Mr. John David',
-    guardianContact: '09123456789',
-    address:
-      'Prk. Tae, Bario Patay, Brgy. Canocotan, Tagum City, Davao Del Norte',
-    program: 'BSED - Mathematics',
-    deparment: 'Dept. of Teacher Education',
-
-    createBy: [
-      {
-        fullName: 'Stap Morning',
-      },
-    ],
-    createdDate: 'Sep 09, 2018',
-    infoUpdate: [],
-  },
-];
-
-export default function StudentTable() {
+export default function StudentTable({ handleAddEditStudent }) {
   const { data: listOfStudents } = useGetPaginatedStudents();
-
-  console.log(listOfStudents);
 
   return (
     <Card>
@@ -118,17 +35,19 @@ export default function StudentTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {DUMMY_DATA.map((student) => (
-              <TableRow key={student.idNumber}>
+            {listOfStudents?.map((student) => (
+              <TableRow key={student.studentIdNumber}>
                 <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>{`${student.idNumber} - ${student.firstName} ${student.middleInitial}. ${student.lastName}`}</div>
+                  <div className='font-medium -mb-1'>{`${student.studentIdNumber} - ${student.firstName} ${student.middleInitial}. ${student.lastName}`}</div>
                   <div className='hidden text-xs text-muted-foreground md:inline'>
-                    {student.program}
+                    {student.program.programName}
                   </div>
                 </TableCell>
 
                 <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>{student.birthDate}</div>{' '}
+                  <div className='font-medium -mb-1'>
+                    {format(new Date(student.birthDate), 'MMM dd, yyyy')}
+                  </div>{' '}
                 </TableCell>
                 <TableCell className='font-medium'>
                   <div className='font-medium -mb-1'>{student.guardian}</div>
@@ -143,24 +62,33 @@ export default function StudentTable() {
                 </TableCell>
                 <TableCell className='font-medium'>
                   <div className='font-medium -mb-1'>
-                    {student.createBy[0].fullName}
+                    {student.user.fullName}
                   </div>
                   <div className='hidden text-xs text-muted-foreground md:inline'>
-                    {student.createdDate}
+                    {format(new Date(student.user.createdAt), 'MMM dd, yyyy')}
                   </div>
                 </TableCell>
                 <TableCell className='font-medium'>
                   <div className='font-medium -mb-1'>
-                    {student.infoUpdate[0]?.fullName || 'No updates'}
+                    {student.studentUpdate[0]?.user.fullName || 'No updates'}
                   </div>
                   <div className='hidden text-xs text-muted-foreground md:inline'>
-                    {student.infoUpdate[0]?.updateDate || ''}
+                    {student.studentUpdate[0]
+                      ? format(
+                          new Date(student.studentUpdate[0]?.updateDate),
+                          'MMM dd, yyyy'
+                        )
+                      : ''}
                   </div>
                 </TableCell>
                 <TableCell>
                   <div className='flex space-x-2'>
-                    <Button size='sm' variant='outline'>
-                      Edit
+                    <Button
+                      size='sm'
+                      variant='outline'
+                      onClick={() => handleAddEditStudent(student)}
+                    >
+                      <PenBox className='size-4 mr-1' /> Edit
                     </Button>
                     {/* <Button size='sm'>Print</Button> */}
                   </div>

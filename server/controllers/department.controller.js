@@ -4,7 +4,9 @@ const { prisma } = require('../lib/utils/prismaClient');
 async function getAllDepartments(req, res, next) {
   try {
     const allDepartments = await prisma.department.findMany();
-    allDepartments.sort((a, b) => a.department.localeCompare(b.department));
+    allDepartments.sort((a, b) =>
+      a.departmentName.localeCompare(b.departmentName)
+    );
 
     res.json(allDepartments);
   } catch (err) {
@@ -54,7 +56,9 @@ async function updateDepartment(req, res, next) {
   try {
     const foundDepartment = await prisma.department.findFirst({
       where: {
-        AND: [{ department: req.body.department, id: { not: req.body.id } }],
+        AND: [
+          { departmentName: req.body.departmentName, id: { not: req.body.id } },
+        ],
       },
     });
 
@@ -66,11 +70,11 @@ async function updateDepartment(req, res, next) {
         id: req.body.id,
       },
       data: {
-        department: req.body.department,
+        departmentName: req.body.departmentName,
       },
     });
 
-    res.status(200).send(`${req.body.department} successfully updated`);
+    res.status(200).send(`${req.body.departmentName} successfully updated`);
   } catch (err) {
     err.title = 'PATCH Department';
     next(err);
@@ -90,14 +94,17 @@ async function deleteDepartment(req, res, next) {
 
     console.log(
       `${
-        deletedDepartment.department
+        deletedDepartment.departmentName
       } successfully deleted by ${fullName} :: ${new Date().toDateString()}`
     );
 
     res
       .status(200)
-      .send(`${deletedDepartment.department} successfully deleted`);
+      .send(`${deletedDepartment.departmentName} successfully deleted`);
   } catch (err) {
+    if (err.code === 'P2003') {
+      return res.status(400).send('Please remove the connected programs first');
+    }
     err.title = 'DELETE department';
     next(err);
   }

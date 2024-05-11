@@ -66,6 +66,8 @@ async function addUser(req, res, next) {
       data: {
         ...req.body,
         password: hashedPassword,
+        fullName: req.body.fullName.toLowerCase(),
+        email: req.body.email.toLowerCase(),
       },
     });
     res.status(200).send('User successfully added');

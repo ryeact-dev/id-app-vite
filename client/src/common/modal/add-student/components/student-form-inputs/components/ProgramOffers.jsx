@@ -22,7 +22,7 @@ export default function ProgramOffers({
 
   const programOffering = listOfPrograms?.map((program) => ({
     value: program.id,
-    label: program.program,
+    label: program.programName,
   }));
 
   return (

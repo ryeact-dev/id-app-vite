@@ -84,7 +84,10 @@ export default function UsersTable({
               users?.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell className='font-medium'>
-                    <div className='font-medium -mb-1'> {user.fullName}</div>
+                    <div className='font-medium -mb-1 capitalize'>
+                      {' '}
+                      {user.fullName}
+                    </div>
                   </TableCell>
                   <TableCell className='font-medium'>
                     <div className='font-medium -mb-1'>{user.username}</div>
@@ -114,23 +117,25 @@ export default function UsersTable({
 
                   <TableCell>
                     <div className='flex space-x-2'>
-                      <Button
-                        size='sm'
-                        variant='outline'
-                        onClick={() => handleOptionsClick(user, false)}
-                      >
-                        <PenBox size={14} className='mr-1' />
-                        Edit
-                      </Button>
                       {currentUser.id !== user.id && (
-                        <Button
-                          size='sm'
-                          variant={'secondary'}
-                          className='w-20'
-                          onClick={() => handleOptionsClick(user, true)}
-                        >
-                          <Trash size={14} className='mr-1' /> Delete
-                        </Button>
+                        <>
+                          <Button
+                            size='sm'
+                            variant='outline'
+                            onClick={() => handleOptionsClick(user, false)}
+                          >
+                            <PenBox size={14} className='mr-1' />
+                            Edit
+                          </Button>
+                          <Button
+                            size='sm'
+                            variant={'secondary'}
+                            className='w-20'
+                            onClick={() => handleOptionsClick(user, true)}
+                          >
+                            <Trash size={14} className='mr-1' /> Delete
+                          </Button>
+                        </>
                       )}
                     </div>
                   </TableCell>

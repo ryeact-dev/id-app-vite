@@ -70,7 +70,7 @@ export default function AddProgramModalBody({ payload, closeModal }) {
           <CardContent className='space-y-4 w-full mt-4'>
             <FormField
               control={form.control}
-              name='program'
+              name='programName'
               render={({ field }) => (
                 <FormItem className='space-y-0'>
                   <FormLabel>Program Name</FormLabel>

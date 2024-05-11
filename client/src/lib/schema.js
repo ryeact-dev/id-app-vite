@@ -37,7 +37,7 @@ export const userSchema = z.object({
 
 // Student Schema
 export const studentSchedma = z.object({
-  idNumber: z.string().trim().min(6, {
+  studentIdNumber: z.string().trim().min(6, {
     message: 'Id Number must be at least 6 numbers.',
   }),
 
@@ -104,7 +104,7 @@ export const departmentSchema = z.object({
 
 // Program Schema
 export const programSchema = z.object({
-  program: z.string().trim().min(1, {
+  programName: z.string().trim().min(1, {
     message: 'Program must not be empty.',
   }),
   departmentId: z.string().trim().min(1, {

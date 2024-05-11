@@ -3,14 +3,15 @@ const { verifyToken } = require('../lib/helpers/verifyToken');
 const {
   addStudent,
   getPaginatedStudents,
+  updateStudent,
 } = require('../controllers/student.controller');
 const multer = require('multer');
 
 const router = express.Router();
 
 const multerFields = [
-  { name: 'esign', maxCount: 1 },
-  { name: 'photo', maxCount: 1 },
+  { name: 'photoUrl', maxCount: 1 },
+  { name: 'esignUrl', maxCount: 1 },
 ];
 
 // router.get('/single', verifyToken, getCurrentUser);
@@ -25,7 +26,12 @@ router.post(
   addStudent
 );
 
-// router.patch('/update', verifyToken, updateUser);
+router.patch(
+  '/update',
+  verifyToken,
+  multer({ dest: 'uploads/img/dummy' }).fields(multerFields),
+  updateStudent
+);
 
 // router.delete('/delete/:id', verifyToken, deleteUser);
 

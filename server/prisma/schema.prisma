@@ -84,7 +84,7 @@ model Program {
 
 model Student {
   id              String          @id @default(uuid())
-  idNumber        String          @unique
+  studentIdNumber String          @unique
   lastName        String
   firstName       String
   middleInitial   String

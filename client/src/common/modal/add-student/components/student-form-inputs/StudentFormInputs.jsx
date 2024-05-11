@@ -10,7 +10,7 @@ import { Textarea } from '@/common/ui/textarea';
 
 export default function StudentFormInputs({ form }) {
   const handleDateChange = (date) => {
-    form.setValue('birthDate', date);
+    form.setValue('birthDate', new Date(date));
   };
 
   const handleProgramValueChange = (value) => {
@@ -23,7 +23,7 @@ export default function StudentFormInputs({ form }) {
         {/* Student Name */}
         <FormField
           control={form.control}
-          name='idNumber'
+          name='studentIdNumber'
           render={({ field }) => (
             <FormItem className='space-y-0'>
               <FormLabel>ID Number</FormLabel>
@@ -115,7 +115,7 @@ export default function StudentFormInputs({ form }) {
             </Label>
             <ProgramOffers
               handleProgramValueChange={handleProgramValueChange}
-              programValue={form.watch('program')}
+              programValue={form.watch('programId')}
             />
           </div>
         </div>

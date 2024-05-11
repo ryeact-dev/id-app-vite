@@ -7,7 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-images
+uploads
 db_backup
 prisma/migrations/*
 node_modules

@@ -3,26 +3,7 @@ import { Input } from '@/common/ui/input';
 
 import { Search, UserPlus } from 'lucide-react';
 
-export default function DatabaseHeader({
-  tabValue,
-  setIsOpen,
-  setModalSetting,
-}) {
-  const handleAddEditStudent = (studentData) => {
-    const payload = studentData ? studentData : null;
-
-    const modalData = {
-      confirmationType: null,
-      title: 'Student Details',
-      size: 'max-w-2xl',
-      modalType: 'add-student',
-      payload,
-    };
-
-    setModalSetting(modalData);
-    setIsOpen(true);
-  };
-
+export default function DatabaseHeader({ handleAddEditStudent }) {
   return (
     <>
       <div className='flex items-center gap-3'>

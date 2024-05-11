@@ -28,6 +28,27 @@ export default function DatabasePage() {
     setTabValue(tabValue);
   };
 
+  const handleAddEditStudent = (studentData) => {
+    const reMapStudentData = {
+      ...studentData,
+      // Convert to a date object because the date is coming in as a string
+      birthDate: new Date(studentData.birthDate),
+    };
+
+    const payload = studentData ? reMapStudentData : null;
+
+    const modalData = {
+      confirmationType: null,
+      title: 'Student Details',
+      size: 'max-w-2xl',
+      modalType: 'add-student',
+      payload,
+    };
+
+    setModalSetting(modalData);
+    setIsOpen(true);
+  };
+
   return (
     <div className='max-w-7xl mx-auto space-y-4'>
       <Tabs defaultValue={tabValue}>
@@ -48,14 +69,11 @@ export default function DatabasePage() {
               Non-Student
             </TabsTrigger>
           </TabsList>
-          <DatabaseHeader
-            setModalSetting={setModalSetting}
-            setIsOpen={setIsOpen}
-          />
+          <DatabaseHeader handleAddEditStudent={handleAddEditStudent} />
         </div>
 
         <TabsContent value='student' className='space-y-4'>
-          <StudentTable />
+          <StudentTable handleAddEditStudent={handleAddEditStudent} />
         </TabsContent>
 
         <TabsContent value='non-student'>

@@ -1,3 +1,4 @@
+const { uploadedPhoto } = require('../lib/helpers/photos');
 const { prisma } = require('../lib/utils/prismaClient');
 const { connect } = require('../routes/student.route');
 
@@ -11,14 +12,17 @@ async function getPaginatedStudents(req, res, next) {
         OR: [
           { firstName: { contains: searchQuery } },
           { lastName: { contains: searchQuery } },
-          { idNumber: { contains: searchQuery } },
+          { studentIdNumber: { contains: searchQuery } },
         ],
       },
       skip: Number(page) * Number(limit),
       take: Number(limit),
+      // Include the program name, user name, and updated user name
       include: {
         program: {
-          program: true,
+          select: {
+            programName: true,
+          },
         },
         user: {
           select: {
@@ -34,12 +38,13 @@ async function getPaginatedStudents(req, res, next) {
               },
             },
           },
+          // Sort the updated records in descending order
+          orderBy: { updatedDate: 'desc' },
         },
       },
-      orderBy: { idNumber: 'asc' },
+      // Sort Student ID Numbers in ascending order
+      orderBy: { studentIdNumber: 'asc' },
     });
-
-    console.log(listOfStudents);
 
     res.json(listOfStudents);
   } catch (err) {
@@ -56,9 +61,18 @@ async function addStudent(req, res, next) {
     return res.status(400).send('Unauthorized');
 
   try {
+    const {
+      photoUrl,
+      esignUrl,
+      studentIdNumber,
+      firstName,
+      middleInitial,
+      lastName,
+    } = req.body;
+
     const foundStudentIdNumber = await prisma.student.findFirst({
       where: {
-        idNumber: req.body.idNumber,
+        studentIdNumber,
       },
     });
 
@@ -67,20 +81,37 @@ async function addStudent(req, res, next) {
 
     const foundStudentName = await prisma.student.findFirst({
       where: {
-        AND: [
-          { firstName: req.body.firstName },
-          { middleInitial: req.body.middleInitial },
-          { lastName: req.body.lastName },
-        ],
+        AND: [{ firstName }, { middleInitial }, { lastName }],
       },
     });
 
     if (foundStudentName !== null)
       return res.status(400).send('Student Name already exists');
 
+    const multerPhoto = req.files['photoUrl']
+      ? await uploadedPhoto(
+          req.files['photoUrl'][0],
+          photoUrl,
+          studentIdNumber,
+          false
+        )
+      : photoUrl;
+
+    const multerEsign = req.files['esignUrl']
+      ? await uploadedPhoto(
+          req.files['esignUrl'][0],
+          esignUrl,
+          studentIdNumber,
+          true
+        )
+      : esignUrl;
+
     await prisma.student.create({
       data: {
         ...req.body,
+        birthDate: new Date(req.body.birthDate),
+        esignUrl: multerEsign,
+        photoUrl: multerPhoto,
         userId,
       },
     });
@@ -96,33 +127,98 @@ async function addStudent(req, res, next) {
   }
 }
 
-// Add Department
-async function updateDepartment(req, res, next) {
+// Update Student Info
+async function updateStudent(req, res, next) {
   const { role: userRole, id: userId } = req.user;
 
   if (userRole !== 'Admin' && userRole !== 'User')
     return res.status(400).send('Unauthorized');
 
+  console.log(req.body);
+
   try {
-    const foundDepartment = await prisma.department.findFirst({
+    const {
+      id,
+      photoUrl,
+      esignUrl,
+      studentIdNumber,
+      firstName,
+      middleInitial,
+      lastName,
+    } = req.body;
+
+    const foundStudentIdNumber = await prisma.student.findFirst({
       where: {
-        AND: [{ department: req.body.department, id: { not: req.body.id } }],
+        AND: [{ studentIdNumber }, { id: { not: id } }],
       },
     });
 
-    if (foundDepartment !== null)
-      return res.status(400).send('Department already exists');
+    if (foundStudentIdNumber !== null)
+      return res.status(400).send('Student ID Number already exists');
 
-    await prisma.department.update({
+    const foundStudentName = await prisma.student.findFirst({
       where: {
-        id: req.body.id,
-      },
-      data: {
-        department: req.body.department,
+        AND: [
+          { firstName },
+          { middleInitial },
+          { lastName },
+          { id: { not: id } },
+        ],
       },
     });
 
-    res.status(200).send(`${req.body.department} successfully updated`);
+    if (foundStudentName !== null)
+      return res.status(400).send('Student Name already exists');
+
+    const multerPhoto = req.files['photoUrl']
+      ? await uploadedPhoto(
+          req.files['photoUrl'][0],
+          photoUrl,
+          studentIdNumber,
+          false
+        )
+      : photoUrl;
+
+    const multerEsign = req.files['esignUrl']
+      ? await uploadedPhoto(
+          req.files['esignUrl'][0],
+          esignUrl,
+          studentIdNumber,
+          true
+        )
+      : esignUrl;
+
+    const [updatedStudent, studentUpdates] = await prisma.$transaction([
+      prisma.student.update({
+        where: { id },
+        data: {
+          ...req.body,
+          birthDate: new Date(req.body.birthDate),
+          esignUrl: multerEsign,
+          photoUrl: multerPhoto,
+        },
+      }),
+      prisma.student.create({
+        data: {
+          student: {
+            connect: {
+              id,
+            },
+          },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      }),
+    ]);
+
+    res
+      .status(200)
+      .send(
+        `${updatedStudent.firstName} ${updatedStudent.middleInitial} ${updatedStudent.lastName}' info successfully updated`
+      );
   } catch (err) {
     err.title = 'PATCH Department';
     next(err);
@@ -157,5 +253,5 @@ async function deleteDepartment(req, res, next) {
 
 exports.getPaginatedStudents = getPaginatedStudents;
 exports.addStudent = addStudent;
-exports.updateDepartment = updateDepartment;
+exports.updateStudent = updateStudent;
 exports.deleteDepartment = deleteDepartment;

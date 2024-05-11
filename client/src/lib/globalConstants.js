@@ -11,7 +11,7 @@ export const INITIAL_LOGIN_OBJ = {
 };
 
 export const INITIAL_STUDENT_OBJ = {
-  idNumber: '',
+  studentIdNumber: '',
   lastName: '',
   firstName: '',
   middleInitial: '',
