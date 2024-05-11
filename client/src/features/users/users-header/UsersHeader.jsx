@@ -37,7 +37,11 @@ export default function UsersHeader({
       <div className='flex items-center gap-3'>
         <div className='relative'>
           <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
-          <DebounceInput setterFunction={handleChange} debounceTime={1000} />
+          <DebounceInput
+            setterFunction={handleChange}
+            debounceTime={1000}
+            placeholder={'Search full name...'}
+          />
         </div>
 
         <Button

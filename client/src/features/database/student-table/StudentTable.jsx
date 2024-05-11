@@ -9,13 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
-import { useGetPaginatedStudents } from '@/hooks/student.hook';
-import { format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { PenBox } from 'lucide-react';
 
-export default function StudentTable({ handleAddEditStudent }) {
-  const { data: listOfStudents } = useGetPaginatedStudents();
-
+export default function StudentTable({ handleAddEditStudent, listOfStudents }) {
   return (
     <Card>
       <CardContent className='mt-6'>
@@ -35,10 +32,10 @@ export default function StudentTable({ handleAddEditStudent }) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {listOfStudents?.map((student) => (
+            {listOfStudents?.paginatedStudents?.map((student) => (
               <TableRow key={student.studentIdNumber}>
                 <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>{`${student.studentIdNumber} - ${student.firstName} ${student.middleInitial}. ${student.lastName}`}</div>
+                  <div className='font-medium -mb-1'>{`${student.studentIdNumber} - ${student.firstName} ${student.middleInitial} ${student.lastName}`}</div>
                   <div className='hidden text-xs text-muted-foreground md:inline'>
                     {student.program.programName}
                   </div>
@@ -65,7 +62,11 @@ export default function StudentTable({ handleAddEditStudent }) {
                     {student.user.fullName}
                   </div>
                   <div className='hidden text-xs text-muted-foreground md:inline'>
-                    {format(new Date(student.user.createdAt), 'MMM dd, yyyy')}
+                    {/* OBSERVE THE DATE IF CORRECT */}
+                    {format(
+                      addDays(new Date(student.user.createdAt), -1),
+                      'MMM dd, yyyy'
+                    )}
                   </div>
                 </TableCell>
                 <TableCell className='font-medium'>
@@ -73,9 +74,9 @@ export default function StudentTable({ handleAddEditStudent }) {
                     {student.studentUpdate[0]?.user.fullName || 'No updates'}
                   </div>
                   <div className='hidden text-xs text-muted-foreground md:inline'>
-                    {student.studentUpdate[0]
+                    {student.studentUpdate.length > 0
                       ? format(
-                          new Date(student.studentUpdate[0]?.updateDate),
+                          new Date(student.studentUpdate[0]?.updatedDate),
                           'MMM dd, yyyy'
                         )
                       : ''}
@@ -99,7 +100,10 @@ export default function StudentTable({ handleAddEditStudent }) {
         </Table>
       </CardContent>
       <CardFooter>
-        <PaginationBlock />
+        <PaginationBlock
+          studentsCount={listOfStudents?.studentsCount}
+          totalStudents={listOfStudents?.totalStudents}
+        />
       </CardFooter>
     </Card>
   );

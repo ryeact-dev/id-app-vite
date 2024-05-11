@@ -1,11 +1,12 @@
 import { Button } from '../ui/button';
 import { Pagination, PaginationContent } from '../ui/pagination';
 
-export default function PaginationBlock() {
+export default function PaginationBlock({ studentsCount, totalStudents }) {
   return (
     <Pagination className='flex items-center justify-between'>
       <div className='text-xs text-muted-foreground'>
-        Showing <strong>1-10</strong> of <strong>32</strong> products
+        Showing <strong>{studentsCount}</strong> of{' '}
+        <strong>{totalStudents}</strong> students
       </div>
       <PaginationContent>
         <div className='space-x-2'>

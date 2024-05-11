@@ -36,8 +36,6 @@ export default function Semester({
   const handleToggleSemesterStatusMutation = useSemesterToggleStatus();
   const { data: semesterDates = [] } = useGetSemesterDates(activeSchoolYearId);
 
-  console.log(semesterDates);
-
   const handleToggleSemesterStatus = (semester) => {
     if (semester.isActive) {
       return ToastNotification('error', 'This school year is already active');
@@ -52,6 +50,8 @@ export default function Semester({
   };
 
   const handleSetSemesterDatesClick = (semesterName, semesterData) => {
+    console.log(semesterData);
+
     if (listOfSchoolYear?.length === 0 || !activeSchoolYearId) {
       return ToastNotification(
         'error',
@@ -59,6 +59,7 @@ export default function Semester({
       );
     }
 
+    // TODO: ADD VALIDATION FOR DATE RANGE CONFLICTS
     const payload = semesterData
       ? semesterData
       : { semesterName, schoolYearId: activeSchoolYearId };
@@ -101,12 +102,12 @@ export default function Semester({
                 <TableCell className='font-medium'>
                   <div className='font-medium'>{sem}</div>
                   <div className='text-xs text-muted-foreground italic'>
-                    {semesterDates.length > 0
+                    {semesterDates[index]?.semestralDateEnd
                       ? `${format(
-                          semesterDates[index].semestralDateStart,
+                          semesterDates[index]?.semestralDateStart,
                           'MMM dd, yyyy'
                         )} - ${format(
-                          semesterDates[index].semestralDateEnd,
+                          semesterDates[index]?.semestralDateEnd,
                           'MMM dd, yyyy'
                         )}`
                       : 'Not set'}

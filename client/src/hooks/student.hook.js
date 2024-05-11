@@ -3,7 +3,7 @@ import { ToastNotification } from '@/common/toastNotification/ToastNotification'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Queries
-export function useGetPaginatedStudents(searchQuery, limit, page) {
+export function useGetPaginatedStudents(searchQuery, page, limit) {
   return useQuery({
     queryKey: ['list-of-students', searchQuery, limit, page],
     queryFn: () => getPaginatedStudents({ searchQuery, limit, page }),

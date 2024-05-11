@@ -4,14 +4,24 @@ import PrintManyTable from '@/features/printing/printing-page-tables/print-many-
 import StudentTable from '@/features/database/student-table/StudentTable';
 import DatabaseHeader from '@/features/database/database-header/DatabaseHeader';
 import { useCurrentUser } from '@/hooks/user.hook';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import ModalContainer from '@/containers/ModalContainer';
+import { useGetPaginatedStudents } from '@/hooks/student.hook';
 
 export default function DatabasePage() {
-  const [tabValue, setTabValue] = useState('student');
+  const [isOpen, setIsOpen] = useState(false);
   const { isLoading, data: currentUser } = useCurrentUser();
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams({
+    query: '',
+    page: '1',
+    tab: 'student',
+  });
+
+  const tabValue = searchParams.get('tab');
+  const page = searchParams.get('page');
+  const searchQuery = searchParams.get('query');
+
   const [modalSetting, setModalSetting] = useState({
     modalType: null,
     confirmationType: null,
@@ -20,19 +30,35 @@ export default function DatabasePage() {
     size: null,
   });
 
+  const { data: listOfStudents = [] } = useGetPaginatedStudents(
+    searchQuery,
+    Number(page - 1),
+    2
+  );
+
   if (!isLoading && !currentUser) {
     return <Navigate to='/login' replace />;
   }
 
   const handleTabValueChange = (tabValue) => {
-    setTabValue(tabValue);
+    setSearchParams((prev) => {
+      prev.set('tab', tabValue);
+      return prev;
+    });
+  };
+
+  const onSearchValueChange = (value) => {
+    setSearchParams((prev) => {
+      prev.set('query', value);
+      return prev;
+    });
   };
 
   const handleAddEditStudent = (studentData) => {
     const reMapStudentData = {
       ...studentData,
       // Convert to a date object because the date is coming in as a string
-      birthDate: new Date(studentData.birthDate),
+      birthDate: new Date(studentData?.birthDate),
     };
 
     const payload = studentData ? reMapStudentData : null;
@@ -69,11 +95,17 @@ export default function DatabasePage() {
               Non-Student
             </TabsTrigger>
           </TabsList>
-          <DatabaseHeader handleAddEditStudent={handleAddEditStudent} />
+          <DatabaseHeader
+            handleAddEditStudent={handleAddEditStudent}
+            onSearchValueChange={onSearchValueChange}
+          />
         </div>
 
         <TabsContent value='student' className='space-y-4'>
-          <StudentTable handleAddEditStudent={handleAddEditStudent} />
+          <StudentTable
+            handleAddEditStudent={handleAddEditStudent}
+            listOfStudents={listOfStudents}
+          />
         </TabsContent>
 
         <TabsContent value='non-student'>

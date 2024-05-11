@@ -7,46 +7,51 @@ async function getPaginatedStudents(req, res, next) {
   const { searchQuery, page, limit } = req.query;
 
   try {
-    const listOfStudents = await prisma.student.findMany({
-      where: {
-        OR: [
-          { firstName: { contains: searchQuery } },
-          { lastName: { contains: searchQuery } },
-          { studentIdNumber: { contains: searchQuery } },
-        ],
-      },
-      skip: Number(page) * Number(limit),
-      take: Number(limit),
-      // Include the program name, user name, and updated user name
-      include: {
-        program: {
-          select: {
-            programName: true,
-          },
+    const [paginatedStudents, totalStudents] = await prisma.$transaction([
+      prisma.student.findMany({
+        where: {
+          OR: [
+            { firstName: { contains: searchQuery } },
+            { lastName: { contains: searchQuery } },
+            { studentIdNumber: { contains: searchQuery } },
+          ],
         },
-        user: {
-          select: {
-            fullName: true,
-            createdAt: true,
-          },
-        },
-        studentUpdate: {
-          include: {
-            user: {
-              select: {
-                fullName: true,
-              },
+        skip: Number(page) * Number(limit),
+        take: Number(limit),
+        // Include the program name, user name, and updated user name
+        include: {
+          program: {
+            select: {
+              programName: true,
             },
           },
-          // Sort the updated records in descending order
-          orderBy: { updatedDate: 'desc' },
+          user: {
+            select: {
+              fullName: true,
+              createdAt: true,
+            },
+          },
+          studentUpdate: {
+            include: {
+              user: {
+                select: {
+                  fullName: true,
+                },
+              },
+            },
+            // Sort the updated records in descending order
+            orderBy: { updatedDate: 'desc' },
+          },
         },
-      },
-      // Sort Student ID Numbers in ascending order
-      orderBy: { studentIdNumber: 'asc' },
-    });
+        // Sort Student ID Numbers in ascending order
+        orderBy: { studentIdNumber: 'asc' },
+      }),
+      prisma.student.count(),
+    ]);
 
-    res.json(listOfStudents);
+    const studentsCount = Number(page + 1) * Number(limit);
+
+    res.json({ paginatedStudents, studentsCount, totalStudents });
   } catch (err) {
     err.title = 'GET all departments';
     next(err);
@@ -134,8 +139,6 @@ async function updateStudent(req, res, next) {
   if (userRole !== 'Admin' && userRole !== 'User')
     return res.status(400).send('Unauthorized');
 
-  console.log(req.body);
-
   try {
     const {
       id,
@@ -198,7 +201,7 @@ async function updateStudent(req, res, next) {
           photoUrl: multerPhoto,
         },
       }),
-      prisma.student.create({
+      prisma.studentUpdate.create({
         data: {
           student: {
             connect: {

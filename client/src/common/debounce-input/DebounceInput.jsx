@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Input } from '../ui/input';
 
-export default function DebounceInput({ setterFunction, debounceTime = 500 }) {
+export default function DebounceInput({
+  setterFunction,
+  debounceTime = 500,
+  placeholder,
+}) {
   const [inputValue, setInputValue] = useState('');
 
   const handleChange = (evt) => {
@@ -19,7 +23,7 @@ export default function DebounceInput({ setterFunction, debounceTime = 500 }) {
   return (
     <Input
       type='search'
-      placeholder='Search full name...'
+      placeholder={placeholder}
       className='pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px] bg-white'
       onChange={handleChange}
     />
