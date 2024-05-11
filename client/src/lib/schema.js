@@ -97,7 +97,7 @@ export const schoolYearSchema = z.object({
 
 // Department Schema
 export const departmentSchema = z.object({
-  department: z.string().trim().min(1, {
+  departmentName: z.string().trim().min(1, {
     message: 'Department must not be empty.',
   }),
 });

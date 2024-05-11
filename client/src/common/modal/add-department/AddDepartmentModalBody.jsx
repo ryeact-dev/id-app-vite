@@ -49,7 +49,7 @@ export default function AddDepartmentModalBody({ payload, closeModal }) {
             <FormField
               className='flex-1'
               control={form.control}
-              name='department'
+              name='departmentName'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Department Name</FormLabel>

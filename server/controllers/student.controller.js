@@ -1,12 +1,47 @@
 const { prisma } = require('../lib/utils/prismaClient');
+const { connect } = require('../routes/student.route');
 
 // Get All Users
-async function getAllDepartments(req, res, next) {
-  try {
-    const allDepartments = await prisma.department.findMany();
-    allDepartments.sort((a, b) => a.department.localeCompare(b.department));
+async function getPaginatedStudents(req, res, next) {
+  const { searchQuery, page, limit } = req.query;
 
-    res.json(allDepartments);
+  try {
+    const listOfStudents = await prisma.student.findMany({
+      where: {
+        OR: [
+          { firstName: { contains: searchQuery } },
+          { lastName: { contains: searchQuery } },
+          { idNumber: { contains: searchQuery } },
+        ],
+      },
+      skip: Number(page) * Number(limit),
+      take: Number(limit),
+      include: {
+        program: {
+          program: true,
+        },
+        user: {
+          select: {
+            fullName: true,
+            createdAt: true,
+          },
+        },
+        studentUpdate: {
+          include: {
+            user: {
+              select: {
+                fullName: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { idNumber: 'asc' },
+    });
+
+    console.log(listOfStudents);
+
+    res.json(listOfStudents);
   } catch (err) {
     err.title = 'GET all departments';
     next(err);
@@ -120,7 +155,7 @@ async function deleteDepartment(req, res, next) {
   }
 }
 
-exports.getAllDepartments = getAllDepartments;
+exports.getPaginatedStudents = getPaginatedStudents;
 exports.addStudent = addStudent;
 exports.updateDepartment = updateDepartment;
 exports.deleteDepartment = deleteDepartment;

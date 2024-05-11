@@ -1,3 +1,4 @@
+import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { Button } from '@/common/ui/button';
 import {
   Card,
@@ -17,10 +18,18 @@ import {
 import { useGetAllPrograms } from '@/hooks/program.hook';
 import { PenBox, Trash } from 'lucide-react';
 
-export default function Programs({ setIsOpen, setModalSetting }) {
+export default function Programs({
+  setIsOpen,
+  setModalSetting,
+  listOfDepartments,
+}) {
   const { data: listOfPrograms = [] } = useGetAllPrograms();
 
   const handleAddEditProgram = (programData) => {
+    if (listOfDepartments?.length === 0) {
+      return ToastNotification('error', 'Please add a department first');
+    }
+
     const payload = programData ? programData : null;
 
     const modalData = {
@@ -82,9 +91,9 @@ export default function Programs({ setIsOpen, setModalSetting }) {
                 <TableRow key={program.id}>
                   <TableCell className='font-medium'>
                     <div className='font-medium'>
-                      <p>{program.program}</p>
+                      <p>{program.programName}</p>
                       <p className='text-xs italic opacity-50 -mt-1'>
-                        {program.department}
+                        {program.departmentName}
                       </p>
                     </div>
                   </TableCell>

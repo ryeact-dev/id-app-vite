@@ -41,12 +41,12 @@ async function addSemesterDates(req, res, next) {
 
     const foundSemester = await prisma.semester.findFirst({
       where: {
-        AND: [{ semester: req.body.semester }, { schoolYearId }],
+        AND: [{ semesterName: req.body.semesterName }, { schoolYearId }],
       },
     });
 
     if (foundSemester !== null)
-      return res.status(400).send(`${req.body.semester} already exists`);
+      return res.status(400).send(`${req.body.semesterName} already exists`);
 
     await prisma.semester.create({
       data: {
@@ -56,7 +56,7 @@ async function addSemesterDates(req, res, next) {
       },
     });
 
-    res.status(200).send(`${req.body.semester} successfully set`);
+    res.status(200).send(`${req.body.semesterName} successfully set`);
   } catch (err) {
     err.title = 'POST Semester Dates';
     next(err);
@@ -78,7 +78,7 @@ async function updateSemesterDates(req, res, next) {
       data: req.body,
     });
 
-    res.status(200).send(`${req.body.semester} successfully updated`);
+    res.status(200).send(`${req.body.semesterName} successfully updated`);
   } catch (err) {
     err.title = 'POST Semester Dates';
     next(err);

@@ -31,7 +31,7 @@ export default function Semester({
 }) {
   const activeSchoolYearId = listOfSchoolYear?.find(
     (schoolYear) => schoolYear.isActive === true
-  ).id;
+  )?.id;
 
   const handleToggleSemesterStatusMutation = useSemesterToggleStatus();
   const { data: semesterDates = [] } = useGetSemesterDates(activeSchoolYearId);
@@ -49,10 +49,17 @@ export default function Semester({
     handleToggleSemesterStatusMutation.mutate({ forUpdatingData });
   };
 
-  const handleSetSemesterDatesClick = (semester, semesterData) => {
+  const handleSetSemesterDatesClick = (semesterName, semesterData) => {
+    if (listOfSchoolYear?.length === 0 || !activeSchoolYearId) {
+      return ToastNotification(
+        'error',
+        'Please set and activate a school year first'
+      );
+    }
+
     const payload = semesterData
       ? semesterData
-      : { semester, schoolYearId: activeSchoolYearId };
+      : { semesterName, schoolYearId: activeSchoolYearId };
 
     const modalData = {
       confirmationType: null,
@@ -92,7 +99,7 @@ export default function Semester({
                 <TableCell className='font-medium'>
                   <div className='font-medium'>{sem}</div>
                   <div className='text-xs text-muted-foreground italic'>
-                    {semesterDates[index]?.semester === sem
+                    {semesterDates[index]?.semesterName === sem
                       ? `${format(
                           semesterDates[index].semestralDateStart,
                           'MMM dd, yyyy'

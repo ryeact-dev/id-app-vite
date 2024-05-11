@@ -28,11 +28,11 @@ export const INITIAL_SCHOOL_YEAR_OBJ = {
 };
 
 export const INITIAL_DEPARTMENT_OBJ = {
-  department: '',
+  departmentName: '',
 };
 
 export const INITIAL_PROGRAM_OBJ = {
-  program: '',
+  programName: '',
   departmentId: '',
 };
 

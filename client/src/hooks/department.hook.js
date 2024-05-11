@@ -16,7 +16,7 @@ export function useGetAllDepartments() {
         return {
           ...department,
           value: department.id,
-          label: department.department,
+          label: department.departmentName,
         };
       });
     },

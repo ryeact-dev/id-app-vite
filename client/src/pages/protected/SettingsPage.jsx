@@ -3,6 +3,7 @@ import Departments from '@/features/settings/departments/Departments';
 import Programs from '@/features/settings/programs/Programs';
 import SchoolYear from '@/features/settings/school-year/SchoolYear';
 import Semester from '@/features/settings/semester/Semester';
+import { useGetAllDepartments } from '@/hooks/department.hook';
 import { useGetListOfSchoolYear } from '@/hooks/schoolyear.hook';
 import { useCurrentUser } from '@/hooks/user.hook';
 import { useState } from 'react';
@@ -19,7 +20,8 @@ export default function SettingsPage() {
     size: null,
   });
 
-  const { data: listOfSchoolYear } = useGetListOfSchoolYear();
+  const { data: listOfSchoolYear = [] } = useGetListOfSchoolYear();
+  const { data: listOfDepartments = [] } = useGetAllDepartments();
 
   if (!isLoading && !currentUser) {
     return <Navigate to='/login' replace />;
@@ -38,6 +40,7 @@ export default function SettingsPage() {
           <Departments
             setModalSetting={setModalSetting}
             setIsOpen={setIsOpen}
+            listOfDepartments={listOfDepartments}
           />
         </div>
         <div className='flex-1 space-y-4'>
@@ -46,7 +49,11 @@ export default function SettingsPage() {
             setIsOpen={setIsOpen}
             listOfSchoolYear={listOfSchoolYear}
           />
-          <Programs setModalSetting={setModalSetting} setIsOpen={setIsOpen} />
+          <Programs
+            setModalSetting={setModalSetting}
+            setIsOpen={setIsOpen}
+            listOfDepartments={listOfDepartments}
+          />
         </div>
       </div>
 

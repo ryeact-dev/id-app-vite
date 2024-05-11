@@ -1,18 +1,17 @@
-import { addEditStudent } from '@/api/student.api';
+import { addEditStudent, getPaginatedStudents } from '@/api/student.api';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 // Queries
-// export function useGetSemesterDates(activeSchoolYearId) {
-//   return useQuery({
-//     queryKey: ['list-of-semester', activeSchoolYearId],
-//     queryFn: () => getAllSemesterDates(),
-//     select: ({ data }) => {
-//       return data;
-//     },
-//     enabled: !!activeSchoolYearId,
-//   });
-// }
+export function useGetPaginatedStudents(searchQuery, limit, page) {
+  return useQuery({
+    queryKey: ['list-of-students', searchQuery, limit, page],
+    queryFn: () => getPaginatedStudents({ searchQuery, limit, page }),
+    select: ({ data }) => {
+      return data;
+    },
+  });
+}
 
 // Mutations
 export function useAddStudent(closeModal) {

@@ -23,18 +23,42 @@ export default function AddStudentModalBody({ payload, closeModal }) {
   });
 
   const onSubmit = (values) => {
-    let forAddingData = {
+    // const data = {
+    //   id: student ? student.id : null,
+    //   current_photo: student ? student.photo : null,
+    //   current_esign: student ? student.e_sign : null,
+    //   schoolYear: activeSchoolYear,
+    //   id_number,
+    //   full_name,
+    //   esign,
+    //   photo,
+    //   addedBy: currentUser.fullName,
+    // };
+
+    // const studentData = new FormData();
+
+    // for (const name in data) {
+    //   studentData.append(name, data[name]);
+    // }
+
+    let data = {
       ...values,
       esignUrl: esign,
       photoUrl: photo,
     };
+
+    const forAddingData = new FormData();
+
+    for (const name in data) {
+      forAddingData.append(name, data[name]);
+    }
+
     let isNew = payload ? false : true;
 
     if (payload) {
-      forAddingData = {
-        ...forAddingData,
-        id: payload.id,
-      };
+      forAddingData.append('id', payload.id);
+      forAddingData.append('current_photo', payload.photoUrl);
+      forAddingData.append('current_esign', payload.esignUrl);
       handleAddEditStudentMutation.mutate({ forAddingData, isNew });
     } else {
       handleAddEditStudentMutation.mutate({ forAddingData, isNew });

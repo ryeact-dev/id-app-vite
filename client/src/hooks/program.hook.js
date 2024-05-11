@@ -11,7 +11,7 @@ export function useGetAllPrograms() {
       return data.map((program) => {
         return {
           ...program,
-          department: program.department?.department,
+          departmentName: program.department?.departmentName,
         };
       });
     },

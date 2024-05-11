@@ -1,7 +1,13 @@
 import axios from 'axios';
 
-export async function getAllUsers({ fullName }) {
-  return await axios.get(`/api/user/all?fullname=${fullName}`);
+export async function getPaginatedStudents({
+  searchQuery = '',
+  page = 0,
+  limit = 10,
+}) {
+  return await axios.get(
+    `/api/student/all?searchQuery=${searchQuery}&page=${page}&limit=${limit}`
+  );
 }
 
 export async function addEditStudent({ forAddingData, isNew }) {

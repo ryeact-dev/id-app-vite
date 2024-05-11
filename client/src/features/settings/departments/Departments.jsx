@@ -15,12 +15,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
-import { useGetAllDepartments } from '@/hooks/department.hook';
 import { PenBox, Trash } from 'lucide-react';
 
-export default function Departments({ setIsOpen, setModalSetting }) {
-  const { data: listOfDepartments = [] } = useGetAllDepartments();
-
+export default function Departments({
+  setIsOpen,
+  setModalSetting,
+  listOfDepartments,
+}) {
   const handleAddDepartment = (departmentData) => {
     const payload = departmentData ? departmentData : null;
 
@@ -39,7 +40,7 @@ export default function Departments({ setIsOpen, setModalSetting }) {
   const handleDeleteDepartment = (department) => {
     const modalData = {
       confirmationType: 'delete-department',
-      title: `Delete ${department.department}?`,
+      title: `Delete ${department.departmentName}?`,
       size: 'max-w-lg',
       modalType: 'confirmation',
       payload: department.id,

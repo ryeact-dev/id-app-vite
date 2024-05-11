@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
+import { useGetPaginatedStudents } from '@/hooks/student.hook';
 
 const DUMMY_DATA = [
   {
@@ -94,6 +95,10 @@ const DUMMY_DATA = [
 ];
 
 export default function StudentTable() {
+  const { data: listOfStudents } = useGetPaginatedStudents();
+
+  console.log(listOfStudents);
+
   return (
     <Card>
       <CardContent className='mt-6'>

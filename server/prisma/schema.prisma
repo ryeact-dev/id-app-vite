@@ -49,7 +49,7 @@ model SchoolYear {
 
 model Semester {
   id                 String       @id @default(uuid())
-  semester           String
+  semesterName       String
   semestralDateStart DateTime
   semestralDateEnd   DateTime
   isActive           Boolean      @default(false)
@@ -63,17 +63,17 @@ model Semester {
 }
 
 model Department {
-  id         String    @id @default(uuid())
-  department String
-  userId     String
-  user       User      @relation(fields: [userId], references: [id])
-  createdAt  DateTime  @default(now())
-  program    Program[]
+  id             String    @id @default(uuid())
+  departmentName String
+  userId         String
+  user           User      @relation(fields: [userId], references: [id])
+  createdAt      DateTime  @default(now())
+  program        Program[]
 }
 
 model Program {
   id           String     @id @default(uuid())
-  program      String
+  programName  String
   departmentId String
   department   Department @relation(fields: [departmentId], references: [id])
   userId       String

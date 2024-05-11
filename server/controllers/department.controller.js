@@ -23,7 +23,7 @@ async function addDepartment(req, res, next) {
   try {
     const foundDepartment = await prisma.department.findFirst({
       where: {
-        department: req.body.department,
+        departmentName: req.body.departmentName,
       },
     });
 
@@ -32,12 +32,12 @@ async function addDepartment(req, res, next) {
 
     await prisma.department.create({
       data: {
-        department: req.body.department,
+        departmentName: req.body.departmentName,
         userId,
       },
     });
 
-    res.status(200).send(`${req.body.department} successfully added`);
+    res.status(200).send(`${req.body.departmentName} successfully added`);
   } catch (err) {
     err.title = 'POST Department';
     next(err);
