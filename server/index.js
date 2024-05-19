@@ -15,6 +15,7 @@ const programRoute = require('./routes/program.route');
 const schoolyearRoute = require('./routes/schoolyear.route');
 const semesterRoute = require('./routes/semester.route');
 const studentRoute = require('./routes/student.route');
+const printingRoute = require('./routes/printing.route');
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use('/api/program', programRoute);
 app.use('/api/school-year', schoolyearRoute);
 app.use('/api/semester', semesterRoute);
 app.use('/api/student', studentRoute);
+app.use('/api/printing', printingRoute);
 
 // Disconnect Prisma when the server exit
 process.on('SIGINT', shutdownPrisma);
