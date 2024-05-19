@@ -1,7 +1,14 @@
 import { Button } from '../ui/button';
 import { Pagination, PaginationContent } from '../ui/pagination';
 
-export default function PaginationBlock({ studentsCount, totalStudents }) {
+export default function PaginationBlock({
+  studentsCount,
+  totalStudents,
+  page,
+  hasMore,
+  onPageClick,
+  isPlaceholderData,
+}) {
   return (
     <Pagination className='flex items-center justify-between'>
       <div className='text-xs text-muted-foreground'>
@@ -13,16 +20,24 @@ export default function PaginationBlock({ studentsCount, totalStudents }) {
           <Button
             variant='outline'
             size='sm'
-            // onClick={() => table.previousPage()}
-            // disabled={!table.getCanPreviousPage()}
+            onClick={() => {
+              const oldPage = Math.max(Number(page) - 1, 0);
+              onPageClick(oldPage);
+            }}
+            disabled={Number(page) === 1}
           >
             Previous
           </Button>
           <Button
             variant='outline'
             size='sm'
-            // onClick={() => table.nextPage()}
-            // disabled={!table.getCanNextPage()}
+            onClick={() => {
+              if (!isPlaceholderData && hasMore) {
+                const nextPage = Number(page) + 1;
+                onPageClick(nextPage);
+              }
+            }}
+            disabled={isPlaceholderData || !hasMore}
           >
             Next
           </Button>

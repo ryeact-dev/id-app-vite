@@ -49,11 +49,13 @@ async function getPaginatedStudents(req, res, next) {
       prisma.student.count(),
     ]);
 
-    const studentsCount = Number(page + 1) * Number(limit);
+    const hasMore = paginatedStudents.length === Number(limit);
 
-    res.json({ paginatedStudents, studentsCount, totalStudents });
+    const studentsCount = Number(page) + Number(limit);
+
+    res.json({ paginatedStudents, studentsCount, totalStudents, hasMore });
   } catch (err) {
-    err.title = 'GET all departments';
+    err.title = 'GET Paginated Students';
     next(err);
   }
 }

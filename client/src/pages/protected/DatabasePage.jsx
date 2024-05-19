@@ -30,11 +30,8 @@ export default function DatabasePage() {
     size: null,
   });
 
-  const { data: listOfStudents = [] } = useGetPaginatedStudents(
-    searchQuery,
-    Number(page - 1),
-    2
-  );
+  const { data: listOfStudents = [], isPlaceholderData } =
+    useGetPaginatedStudents(searchQuery, Number(page - 1), 2);
 
   if (!isLoading && !currentUser) {
     return <Navigate to='/login' replace />;
@@ -50,6 +47,13 @@ export default function DatabasePage() {
   const onSearchValueChange = (value) => {
     setSearchParams((prev) => {
       prev.set('query', value);
+      return prev;
+    });
+  };
+
+  const onPageClick = (pageNumber) => {
+    setSearchParams((prev) => {
+      prev.set('page', pageNumber);
       return prev;
     });
   };
@@ -105,6 +109,9 @@ export default function DatabasePage() {
           <StudentTable
             handleAddEditStudent={handleAddEditStudent}
             listOfStudents={listOfStudents}
+            page={page}
+            onPageClick={onPageClick}
+            isPlaceholderData={isPlaceholderData}
           />
         </TabsContent>
 

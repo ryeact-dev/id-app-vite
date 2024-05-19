@@ -1,11 +1,17 @@
 import { addEditStudent, getPaginatedStudents } from '@/api/student.api';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 // Queries
 export function useGetPaginatedStudents(searchQuery, page, limit) {
   return useQuery({
     queryKey: ['list-of-students', searchQuery, limit, page],
+    placeholderData: keepPreviousData,
     queryFn: () => getPaginatedStudents({ searchQuery, limit, page }),
     select: ({ data }) => {
       return data;

@@ -12,7 +12,13 @@ import {
 import { addDays, format } from 'date-fns';
 import { PenBox } from 'lucide-react';
 
-export default function StudentTable({ handleAddEditStudent, listOfStudents }) {
+export default function StudentTable({
+  handleAddEditStudent,
+  listOfStudents,
+  page,
+  onPageClick,
+  isPlaceholderData,
+}) {
   return (
     <Card>
       <CardContent className='mt-6'>
@@ -103,6 +109,10 @@ export default function StudentTable({ handleAddEditStudent, listOfStudents }) {
         <PaginationBlock
           studentsCount={listOfStudents?.studentsCount}
           totalStudents={listOfStudents?.totalStudents}
+          hasMore={listOfStudents?.hasMore}
+          page={page}
+          onPageClick={onPageClick}
+          isPlaceholderData={isPlaceholderData}
         />
       </CardFooter>
     </Card>
