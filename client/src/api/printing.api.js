@@ -6,7 +6,7 @@ export async function getPaginatedPrintedIds({
   limit = 10,
 }) {
   return await axios.get(
-    `/api/student/all?searchQuery=${searchQuery}&page=${page}&limit=${limit}`
+    `/api/printing/all?searchQuery=${searchQuery}&page=${page}&limit=${limit}`
   );
 }
 

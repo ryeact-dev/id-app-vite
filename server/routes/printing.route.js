@@ -1,9 +1,5 @@
 const express = require('express');
 const {
-  addUser,
-  loginUser,
-  getCurrentUser,
-  getAllUsers,
   updateUser,
   toggleUserStatus,
   deleteUser,
@@ -15,11 +11,9 @@ const {
 
 const router = express.Router();
 
-router.get('/current', verifyToken, getCurrentUser);
-router.get('/all', verifyToken, getAllUsers);
+router.get('/all', verifyToken, getPaginatedPrintedIds);
 
 router.post('/print', verifyToken, getPaginatedPrintedIds);
-router.post('/login', loginUser);
 
 router.patch('/update', verifyToken, updateUser);
 router.patch('/toggle-status', verifyToken, toggleUserStatus);

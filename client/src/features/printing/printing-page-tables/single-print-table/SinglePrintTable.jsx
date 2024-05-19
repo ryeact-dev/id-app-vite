@@ -13,82 +13,16 @@ import { Input } from '@/common/ui/input';
 import { Search } from 'lucide-react';
 import StudentPrintTable from './components/student-print-table/StudentPrintTable';
 
-const DUMMY_DATA = [
-  {
-    printedDate: 'Sep 09, 2023',
-    printedBy: [
-      {
-        fullName: 'Stap Morning',
-      },
-    ],
-    printType: 'Reprint',
-    releasedDate: 'Sep 09, 2023',
-    releasedBy: [
-      {
-        fullName: 'Stap Morning',
-      },
-    ],
-    reprintReason: 'Lost ID',
-    studentRef: [
-      {
-        idNumber: 147489,
-        lastName: 'Montoya',
-        firstName: 'Ryan',
-        middleInitial: 'P',
-        birthDate: 'Jan 09, 1990',
-        address: '123 Main St. Anytown USA',
-        program: 'BS - Tourism Management',
-        deparment: 'Dept. of Business Administration Education',
-      },
-    ],
-  },
-  {
-    printedDate: 'Sep 09, 2023',
-    printedBy: [
-      {
-        fullName: 'Stap Morning',
-      },
-    ],
-    printType: 'New ID',
-    reprintReason: null,
-    releasedDate: null,
-    releasedBy: [],
-    studentRef: [
-      {
-        idNumber: 143255,
-        lastName: 'Ayotnom',
-        firstName: 'Nayr',
-        middleInitial: 'E',
-        birthDate: 'Jan 09, 1980',
-        address: '123 Main St. Anytown USA',
-        program: 'BS - Criminology',
-        deparment: 'Dept. of Criminal Justice Education',
-      },
-    ],
-  },
-  {
-    printedDate: null,
-    printedBy: [],
-    printType: 'New ID',
-    reprintReason: null,
-    releasedDate: null,
-    releasedBy: [],
-    studentRef: [
-      {
-        idNumber: 95532,
-        lastName: 'Oldies',
-        firstName: 'Nako',
-        middleInitial: 'E',
-        birthDate: 'Jan 09, 1950',
-        address: '123 Main St. Anytown USA',
-        program: 'BSED - Mathematics',
-        deparment: 'Dept. of Teacher Education',
-      },
-    ],
-  },
-];
-
-export default function SinglePrintTable() {
+export default function SinglePrintTable({
+  listOfStudents,
+  hasMore,
+  totalStudents,
+  studentsCount,
+  isPlaceholderData,
+  page,
+  setModalSetting,
+  onPageClick,
+}) {
   return (
     <Card>
       <div className='flex items-center justify-between'>
@@ -111,10 +45,20 @@ export default function SinglePrintTable() {
         </div>
       </div>
       <CardContent>
-        <StudentPrintTable DUMMY_DATA={DUMMY_DATA} />
+        <StudentPrintTable
+          listOfStudents={listOfStudents}
+          setModalSetting={setModalSetting}
+        />
       </CardContent>
       <CardFooter>
-        <PaginationBlock />
+        <PaginationBlock
+          studentsCount={studentsCount}
+          totalStudents={totalStudents}
+          page={page}
+          hasMore={hasMore}
+          onPageClick={onPageClick}
+          isPlaceholderData={isPlaceholderData}
+        />
       </CardFooter>
     </Card>
   );

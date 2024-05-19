@@ -18,34 +18,55 @@ async function getPaginatedPrintedIds(req, res, next) {
   const { searchQuery, page, limit } = req.query;
 
   try {
-    const [paginatedStudents, totalStudents] = await prisma.$transaction([
-      prisma.student.findMany({
+    const [students, totalStudents] = await prisma.$transaction([
+      prisma.printing.findMany({
         where: {
-          OR: [
-            { firstName: { contains: searchQuery } },
-            { lastName: { contains: searchQuery } },
-            { studentIdNumber: { contains: searchQuery } },
-          ],
+          studentIdNumber: { contains: searchQuery },
         },
+
         skip: Number(page) * Number(limit),
         take: Number(limit),
         // Include the program name, user name, and updated user name
         include: {
-          printing: {
-            orderBy: {
-              releasedBy: 'desc',
+          student: {
+            include: {
+              program: {
+                select: {
+                  programName: true,
+                },
+              },
             },
           },
+          printedBy: {
+            select: {
+              fullName: true,
+            },
+          },
+          releasedBy: {
+            select: {
+              fullName: true,
+            },
+          },
+        },
+        orderBy: {
+          releasedDate: 'desc',
         },
       }),
       prisma.student.count(),
     ]);
 
-    const hasMore = paginatedStudents.length === Number(limit);
+    const hasMore = students.length === Number(limit);
 
-    const studentsCount = Number(page) + Number(limit);
+    const studentsCount = !hasMore
+      ? students.length
+      : Number(page) + Number(limit);
 
-    res.json({ paginatedStudents, studentsCount, totalStudents, hasMore });
+    res.json({
+      paginatedStudents: students,
+      studentsCount,
+      totalStudents,
+      hasMore,
+    });
   } catch (err) {
     err.title = 'GET Paginated of Printed Ids';
     next(err);

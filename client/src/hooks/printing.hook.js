@@ -11,9 +11,9 @@ import {
 // Queries
 export function useGetPaginatedPrintedIds(searchQuery, page, limit) {
   return useQuery({
-    queryKey: ['list-of-printed-ids', searchQuery, limit, page],
+    queryKey: ['list-of-printed-ids', searchQuery, page, limit],
     placeholderData: keepPreviousData,
-    queryFn: () => getPaginatedPrintedIds({ searchQuery, limit, page }),
+    queryFn: () => getPaginatedPrintedIds({ searchQuery, page, limit }),
     select: ({ data }) => {
       return data;
     },

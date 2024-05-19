@@ -114,21 +114,22 @@ model StudentUpdate {
 }
 
 model Printing {
-  id               Int        @id @default(autoincrement())
-  reprintReason    String
-  printType        String
+  id               Int         @id @default(autoincrement())
+  reprintReason    String?
+  printType        String?
+  studentIdNumber  String
   studentId        String
-  student          Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  printedByUserId  String
-  printedBy        User       @relation("PrintedBy", fields: [printedByUserId], references: [id])
-  printedDate      DateTime   @default(now())
-  releasedByUserId String
-  releasedBy       User       @relation("ReleasedBy", fields: [releasedByUserId], references: [id])
-  releasedDate     DateTime   @default(now())
-  schoolYearId     String
-  schoolYear       SchoolYear @relation(fields: [schoolYearId], references: [id])
-  semesterId       String
-  semester         Semester   @relation(fields: [semesterId], references: [id])
+  student          Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  printedByUserId  String?
+  printedBy        User?       @relation("PrintedBy", fields: [printedByUserId], references: [id])
+  printedDate      DateTime?
+  releasedByUserId String?
+  releasedBy       User?       @relation("ReleasedBy", fields: [releasedByUserId], references: [id])
+  releasedDate     DateTime?
+  schoolYearId     String?
+  schoolYear       SchoolYear? @relation(fields: [schoolYearId], references: [id])
+  semesterId       String?
+  semester         Semester?   @relation(fields: [semesterId], references: [id])
 }
 
 model Validation {

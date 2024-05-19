@@ -6,18 +6,59 @@ import SinglePrintTable from '@/features/printing/printing-page-tables/single-pr
 import ValidationTable from '@/features/printing/printing-page-tables/validation-table/ValidationTable';
 import PrintHeader from '@/features/printing/printing-header/PrintingHeader';
 import { useCurrentUser } from '@/hooks/user.hook';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
+import { useGetPaginatedPrintedIds } from '@/hooks/printing.hook';
+import ModalContainer from '@/containers/ModalContainer';
 
 export default function PrintingPage() {
-  const [tabValue, setTabValue] = useState('single-print');
   const { isLoading, data: currentUser } = useCurrentUser();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalSetting, setModalSetting] = useState({
+    modalType: null,
+    confirmationType: null,
+    title: null,
+    payload: null,
+    size: null,
+  });
+
+  const [searchParams, setSearchParams] = useSearchParams({
+    query: '',
+    page: '1',
+    tab: 'single-print',
+  });
+
+  const tabValue = searchParams.get('tab');
+  const page = searchParams.get('page');
+  const searchQuery = searchParams.get('query');
+
+  const handleTabValueChange = (tabValue) => {
+    setSearchParams((prev) => {
+      prev.set('tab', tabValue);
+      return prev;
+    });
+  };
+
+  const onSearchValueChange = (value) => {
+    setSearchParams((prev) => {
+      prev.set('query', value);
+      return prev;
+    });
+  };
+
+  const onPageClick = (pageNumber) => {
+    setSearchParams((prev) => {
+      prev.set('page', pageNumber);
+      return prev;
+    });
+  };
+
+  const { data: listOfPrintedIds = [], isPlaceholderData } =
+    useGetPaginatedPrintedIds(searchQuery, Number(page - 1), 2);
 
   if (!isLoading && !currentUser) {
     return <Navigate to='/login' replace />;
   }
-  const handleTabValueChange = (tabValue) => {
-    setTabValue(tabValue);
-  };
 
   return (
     <div className='max-w-7xl mx-auto space-y-4'>
@@ -50,7 +91,16 @@ export default function PrintingPage() {
         </div>
 
         <TabsContent value='single-print' className='space-y-4'>
-          <SinglePrintTable />
+          <SinglePrintTable
+            listOfStudents={listOfPrintedIds?.paginatedStudents}
+            hasMore={listOfPrintedIds?.hasMore}
+            totalStudents={listOfPrintedIds?.totalStudents}
+            studentsCount={listOfPrintedIds?.studentsCount}
+            isPlaceholderData={isPlaceholderData}
+            onPageClick={onPageClick}
+            page={page}
+            setModalSetting={setModalSetting}
+          />
         </TabsContent>
 
         {/* <TabsContent value='print-many'>
@@ -61,6 +111,15 @@ export default function PrintingPage() {
           <ValidationTable />
         </TabsContent>
       </Tabs>
+
+      {/* Modal Container */}
+      {isOpen === true && (
+        <ModalContainer
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          modalSetting={modalSetting}
+        />
+      )}
     </div>
   );
 }
