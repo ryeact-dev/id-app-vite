@@ -14,6 +14,7 @@ import { Search } from 'lucide-react';
 import StudentPrintTable from './components/student-print-table/StudentPrintTable';
 
 export default function SinglePrintTable({
+  handleAddEditStudent,
   listOfStudents,
   hasMore,
   totalStudents,
@@ -32,20 +33,25 @@ export default function SinglePrintTable({
         </CardHeader>
         <div className='m-4 flex items-center gap-2'>
           <div className='relative'>
-            <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
+            <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground ' />
             <Input
               type='search'
               placeholder='Search ID number...'
-              className='pl-8 sm:w-[200px]'
+              className='pl-8 sm:w-[200px] lg:w-[300px]'
             />
           </div>
-          <Button type='button' className='font-semibold'>
+          {/* <Button
+            type='button'
+            onClick={() => handleAddEditStudent(null)}
+            className='font-semibold'
+          >
             Add Student
-          </Button>
+          </Button> */}
         </div>
       </div>
       <CardContent>
         <StudentPrintTable
+          handleAddEditStudent={handleAddEditStudent}
           listOfStudents={listOfStudents}
           setModalSetting={setModalSetting}
         />

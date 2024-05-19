@@ -8,7 +8,11 @@ import {
   TableRow,
 } from '@/common/ui/table';
 
-export default function StudentPrintTable({ listOfStudents, setModalSetting }) {
+export default function StudentPrintTable({
+  listOfStudents,
+  setModalSetting,
+  handleAddEditStudent,
+}) {
   return (
     <Table>
       <TableHeader>
@@ -61,7 +65,11 @@ export default function StudentPrintTable({ listOfStudents, setModalSetting }) {
               </TableCell>
               <TableCell>
                 <div className='flex space-x-2'>
-                  <Button size='sm' variant='outline'>
+                  <Button
+                    size='sm'
+                    onClick={() => handleAddEditStudent(printInfo.student)}
+                    variant='outline'
+                  >
                     Edit
                   </Button>
                   <Button size='sm' className='w-16'>

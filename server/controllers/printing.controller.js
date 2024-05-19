@@ -49,7 +49,10 @@ async function getPaginatedPrintedIds(req, res, next) {
           },
         },
         orderBy: {
-          releasedDate: 'desc',
+          releasedDate: {
+            sort: 'desc',
+            nulls: 'first',
+          },
         },
       }),
       prisma.student.count(),

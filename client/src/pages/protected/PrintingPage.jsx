@@ -56,6 +56,27 @@ export default function PrintingPage() {
   const { data: listOfPrintedIds = [], isPlaceholderData } =
     useGetPaginatedPrintedIds(searchQuery, Number(page - 1), 2);
 
+  const handleAddEditStudent = (studentData) => {
+    const reMapStudentData = {
+      ...studentData,
+      // Convert to a date object because the date is coming in as a string
+      birthDate: new Date(studentData?.birthDate),
+    };
+
+    const payload = studentData ? reMapStudentData : null;
+
+    const modalData = {
+      confirmationType: null,
+      title: 'Student Details',
+      size: 'max-w-2xl',
+      modalType: 'add-student',
+      payload,
+    };
+
+    setModalSetting(modalData);
+    setIsOpen(true);
+  };
+
   if (!isLoading && !currentUser) {
     return <Navigate to='/login' replace />;
   }
@@ -100,6 +121,7 @@ export default function PrintingPage() {
             onPageClick={onPageClick}
             page={page}
             setModalSetting={setModalSetting}
+            handleAddEditStudent={handleAddEditStudent}
           />
         </TabsContent>
 
