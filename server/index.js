@@ -19,6 +19,7 @@ const printingRoute = require('./routes/printing.route');
 
 const app = express();
 
+app.set('trust proxy', true); // So the req.ip will reveal the client's real IP
 app.use(express.json());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(cookieParser());

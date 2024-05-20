@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWTSECRET;
 
 function verifyToken(req, res, next) {
+  // Show the IP address of the client
+  // console.log(req.ip);
+
   const token = req.cookies.umtcid_user;
 
   try {

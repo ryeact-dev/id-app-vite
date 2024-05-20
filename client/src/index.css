@@ -57,3 +57,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Barcode Background  */
+
+#barcodecontent {
+  background-color: transparent !important;
+}
+
+/* Barcode Hide Text  */
+#barcodecontent text {
+  /* background-color: transparent !important; */
+  display: none;
+}

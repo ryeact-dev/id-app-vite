@@ -2,6 +2,12 @@ import { RouterProvider } from 'react-router-dom';
 import initializeApp from './setup/init';
 import { router } from './setup/routes';
 import { Toaster } from 'sonner';
+import { registerLicense } from '@syncfusion/ej2-base';
+
+// Registering Syncfusion license key
+registerLicense(
+  'Ngo9BigBOggjHTQxAR8/V1NBaF1cWWhIfEx1RHxQdld5ZFRHallYTnNWUj0eQnxTdEFjXH5XcnZQRmJUVEVzWg=='
+);
 
 // Initializing different libraries
 initializeApp();

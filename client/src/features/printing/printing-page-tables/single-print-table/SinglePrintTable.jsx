@@ -14,14 +14,13 @@ import { Search } from 'lucide-react';
 import StudentPrintTable from './components/student-print-table/StudentPrintTable';
 
 export default function SinglePrintTable({
-  handleAddEditStudent,
   listOfStudents,
   hasMore,
   totalStudents,
   studentsCount,
   isPlaceholderData,
   page,
-  setModalSetting,
+
   onPageClick,
 }) {
   return (
@@ -40,21 +39,10 @@ export default function SinglePrintTable({
               className='pl-8 sm:w-[200px] lg:w-[300px]'
             />
           </div>
-          {/* <Button
-            type='button'
-            onClick={() => handleAddEditStudent(null)}
-            className='font-semibold'
-          >
-            Add Student
-          </Button> */}
         </div>
       </div>
       <CardContent>
-        <StudentPrintTable
-          handleAddEditStudent={handleAddEditStudent}
-          listOfStudents={listOfStudents}
-          setModalSetting={setModalSetting}
-        />
+        <StudentPrintTable listOfStudents={listOfStudents} />
       </CardContent>
       <CardFooter>
         <PaginationBlock

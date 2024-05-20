@@ -28,6 +28,7 @@ export function useAddStudent(closeModal) {
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: ({ data }) => {
       queryClient.invalidateQueries({ queryKey: ['list-of-students'] });
+      queryClient.invalidateQueries({ queryKey: ['list-of-printed-ids'] });
       ToastNotification('success', data);
       closeModal();
     },

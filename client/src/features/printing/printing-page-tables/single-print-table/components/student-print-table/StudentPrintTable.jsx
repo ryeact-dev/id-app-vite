@@ -1,4 +1,3 @@
-import { Button } from '@/common/ui/button';
 import {
   Table,
   TableBody,
@@ -7,12 +6,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
+import PrintTableOptions from '../print-table-options/PrintTableOptions';
 
-export default function StudentPrintTable({
-  listOfStudents,
-  setModalSetting,
-  handleAddEditStudent,
-}) {
+export default function StudentPrintTable({ listOfStudents }) {
   return (
     <Table>
       <TableHeader>
@@ -64,25 +60,11 @@ export default function StudentPrintTable({
                 </div>
               </TableCell>
               <TableCell>
-                <div className='flex space-x-2'>
-                  <Button
-                    size='sm'
-                    onClick={() => handleAddEditStudent(printInfo.student)}
-                    variant='outline'
-                  >
-                    Edit
-                  </Button>
-                  <Button size='sm' className='w-16'>
-                    {printInfo.printedDate ? 'Reprint' : 'Print'}
-                  </Button>
-                  <Button
-                    size='sm'
-                    disabled={printInfo.releasedDate}
-                    variant='secondary'
-                  >
-                    Release
-                  </Button>
-                </div>
+                <PrintTableOptions
+                  printedDate={printInfo.printedDate}
+                  student={printInfo.student}
+                  releasedDate={printInfo.releasedDate}
+                />
               </TableCell>
             </TableRow>
           );
