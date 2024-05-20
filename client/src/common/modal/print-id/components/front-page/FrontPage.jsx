@@ -40,8 +40,8 @@ export default function FrontPage({ payload }) {
           </div>
 
           {/* Student ID Number */}
-          <div className='flex items-center justify-center text-lg font-bold tracking-tighter'>
-            <p>ID No.:{payload?.studentIdNumber}</p>
+          <div className='flex items-center justify-center text-lg font-extrabold tracking-tighter '>
+            <p>ID No.: {payload?.studentIdNumber}</p>
           </div>
 
           {/* ID Title */}
@@ -50,17 +50,17 @@ export default function FrontPage({ payload }) {
           </div>
 
           {/* Student Last name */}
-          <div className='flex items-center justify-center text-3xl font-bold uppercase mt-1'>
+          <div className='flex items-center justify-center text-3xl font-extrabold uppercase -mt-0.5 px-2 h-10'>
             <p>{payload?.lastName}</p>
           </div>
 
           {/* Student First name and MI */}
-          <div className='flex items-center justify-center text-2xl font-bold uppercase -mt-2'>
-            <p>{`${payload?.firstName} ${payload?.middleInitial}`}</p>
+          <div className='flex items-center justify-center text-xl font-extrabold uppercase -mt-1 px-2 h-10 '>
+            <p className='text-center leading-5'>{`${payload?.firstName} ${payload?.middleInitial}`}</p>
           </div>
 
           {/* Validation Sticker */}
-          <div className='flex items-center justify-center text-lg font-bold uppercase  mt-7 opacity-80'>
+          <div className='flex items-center justify-center text-lg font-bold uppercase mt-4 opacity-80'>
             <p>Validation Sticker</p>
           </div>
         </div>

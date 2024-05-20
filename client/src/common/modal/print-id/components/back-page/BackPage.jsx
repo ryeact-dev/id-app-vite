@@ -6,14 +6,14 @@ export default function BackPage({ payload }) {
       <div className='w-[320px] h-[508px] bg-white p-2 flex flex-col items-center'>
         {/* Student Department */}
         <div className='flex items-center justify-center border-2 border-black w-full h-10'>
-          <p className='text-center leading-4 p-1 text-sm font-semibold'>
+          <p className='text-center leading-4 p-1 text-sm font-bold'>
             {payload?.program.department.departmentName || ''}
           </p>
         </div>
 
         {/* Student Birthday */}
         <div className='flex items-center justify-center border-2 border-black mt-1 w-full h-8'>
-          <p className='text-center leading-4 p-2 text-sm font-semibold'>
+          <p className='text-center leading-4 p-2 text-sm font-bold'>
             Birthday:{' '}
             {format(new Date(payload?.birthDate), 'MMM dd, yyyy') || ''}
           </p>
@@ -44,14 +44,14 @@ export default function BackPage({ payload }) {
         </div>
 
         {/* Incase of Emergency */}
-        <div className='relative flex flex-col mt-1 w-full h-36 border-2 border-black '>
+        <div className='relative flex flex-col mt-1 w-full h-40 border-2 border-black '>
           <div className='absolute top-0 left-0 object-cover object-center w-full h-6 bg-black'>
             <p className='uppercase text-white text-center text-sm'>
               Incase of Emergency
             </p>
           </div>
           <div className='mt-6 font-medium'>
-            <p className='leading-5 p-2'>{payload?.guardian}</p>
+            <p className='leading-5 p-2 font-bold'>{payload?.guardian}</p>
             <p className='p-2 -my-4'>{payload?.guardianContact}</p>
             <p className='leading-5 p-2'>{payload?.address}</p>
           </div>

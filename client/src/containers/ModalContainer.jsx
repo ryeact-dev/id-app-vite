@@ -89,18 +89,11 @@ export default function ModalContainer({ isOpen, setIsOpen, modalSetting }) {
     <Dialog open={isOpen} onOpenChange={close}>
       <DialogContent className={`${size}`}>
         <DialogHeader>
-          <Card
-            className={`rounded-md ${
-              modalType === 'confirmation' &&
-              'shadow-none bg-transparent border-none'
-            } `}
-          >
-            <DialogTitle className='text-center text-2xl p-1'>
-              {modalType === 'confirmation' ? 'Confirmation' : title}
-            </DialogTitle>
-          </Card>
+          <DialogTitle className='absolute rounded-t-lg top-0 left-0 w-full h-16 bg-accent text-center text-2xl p-1 flex justify-center items-center text-white'>
+            <p>{modalType === 'confirmation' ? 'Confirmation' : title}</p>
+          </DialogTitle>
         </DialogHeader>
-        <div>{modalComponent}</div>
+        <div className='mt-10'>{modalComponent}</div>
       </DialogContent>
     </Dialog>
   );
