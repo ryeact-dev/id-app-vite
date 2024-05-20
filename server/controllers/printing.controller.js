@@ -30,9 +30,15 @@ async function getPaginatedPrintedIds(req, res, next) {
         include: {
           student: {
             include: {
+              // Connect to student program
               program: {
-                select: {
-                  programName: true,
+                include: {
+                  // Connect the program department
+                  department: {
+                    select: {
+                      departmentName: true,
+                    },
+                  },
                 },
               },
             },
