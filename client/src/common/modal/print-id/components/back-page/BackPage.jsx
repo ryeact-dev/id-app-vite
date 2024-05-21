@@ -61,7 +61,7 @@ export default function BackPage({ payload }) {
         <div className='flex flex-col items-center justify-center mt-2 w-full text-justify font-semibold'>
           <img
             src={import.meta.env.VITE_LOCAL_BASE_URL + payload?.esignUrl}
-            alt='registrar-esign'
+            alt='student-esign'
             className='object-contain object-center w-full h-14'
           />
 

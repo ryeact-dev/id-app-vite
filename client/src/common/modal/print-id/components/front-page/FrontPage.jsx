@@ -22,7 +22,7 @@ export default function FrontPage({ payload }) {
 
           <img
             src={import.meta.env.VITE_LOCAL_BASE_URL + payload?.photoUrl}
-            alt='umtc-logo'
+            alt='student-photo'
             className='object-cover object-center mt-2 size-40 border-2 border-red-600 '
           />
 

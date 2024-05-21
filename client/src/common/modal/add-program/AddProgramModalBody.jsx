@@ -114,7 +114,7 @@ export default function AddProgramModalBody({ payload, closeModal }) {
                           className='h-9'
                         />
                         <CommandList>
-                          <CommandEmpty>No framework found.</CommandEmpty>
+                          <CommandEmpty>No Department found.</CommandEmpty>
                           <CommandGroup>
                             {listOfDepartments.map((department) => (
                               <CommandItem

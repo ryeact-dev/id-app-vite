@@ -2,8 +2,29 @@ import FrontPage from './components/front-page/FrontPage';
 import BackPage from './components/back-page/BackPage';
 import { Printer, XCircle } from 'lucide-react';
 import { Button } from '@/common/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/common/ui/select';
+import { useState } from 'react';
+
+const REPRINT_REASONS = [
+  { value: 'Printer Error', label: 'Printer Error' },
+  { value: 'Lost ID', label: 'Lost ID' },
+  { value: 'Details Changed', label: 'Details Changed' },
+  { value: 'Damaged ID', label: 'Damaged ID' },
+];
 
 export default function PrintIdModalBody({ payload, closeModal }) {
+  const [reprintReason, setReprintReason] = useState(REPRINT_REASONS[0].value);
+
+  const onReasonChange = (value) => {
+    setReprintReason(value);
+  };
+
   return (
     <>
       <div className='flex gap-4 items-center justify-around border-2 px-1 py-3 rounded-lg'>
@@ -12,7 +33,20 @@ export default function PrintIdModalBody({ payload, closeModal }) {
       </div>
       {/* Footer Buttons */}
       <div className='flex flex-col sm:flex-row gap-4 md:mt-6'>
-        <div className='flex-1' />
+        <div className='flex-1'>
+          <Select defaultValue={reprintReason} onValueChange={onReasonChange}>
+            <SelectTrigger className='w-[80%]'>
+              <SelectValue placeholder='Reason for Reprint' />
+            </SelectTrigger>
+            <SelectContent>
+              {REPRINT_REASONS.map((reason) => (
+                <SelectItem key={reason.value} value={reason.value}>
+                  {reason.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         <div className='flex-1 flex items-center gap-2'>
           <Button
             type='button'
