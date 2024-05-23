@@ -10,7 +10,7 @@ export default function ReportsPage() {
   const [tabValue, setTabValue] = useState('print');
   const { isLoading, data: currentUser } = useCurrentUser();
 
-  if (!isLoading && !currentUser) {
+  if (!isLoading && !currentUser?.userInfo) {
     return <Navigate to='/login' replace />;
   }
   const handleTabValueChange = (tabValue) => {

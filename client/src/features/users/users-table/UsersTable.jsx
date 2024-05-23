@@ -85,7 +85,6 @@ export default function UsersTable({
                 <TableRow key={user.id}>
                   <TableCell className='font-medium'>
                     <div className='font-medium -mb-1 capitalize'>
-                      {' '}
                       {user.fullName}
                     </div>
                   </TableCell>

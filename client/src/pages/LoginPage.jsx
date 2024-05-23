@@ -15,7 +15,7 @@ export function LoginPage() {
     defaultValues: INITIAL_LOGIN_OBJ,
   });
 
-  if (!isLoading && !currentUser) {
+  if (!isLoading && !currentUser?.userInfo) {
     <Navigate to='/dashboard' replace />;
   }
 

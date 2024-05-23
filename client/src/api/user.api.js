@@ -1,11 +1,7 @@
 import axios from 'axios';
 
 export async function getCurrentUser() {
-  try {
-    return await axios.get('/api/user/current');
-  } catch (err) {
-    console.log(err);
-  }
+  return await axios.get('/api/user/current');
 }
 
 export async function getAllUsers({ fullName }) {

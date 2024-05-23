@@ -23,7 +23,7 @@ export default function SettingsPage() {
   const { data: listOfSchoolYear = [] } = useGetListOfSchoolYear();
   const { data: listOfDepartments = [] } = useGetAllDepartments();
 
-  if (!isLoading && !currentUser) {
+  if (!isLoading && !currentUser?.userInfo) {
     return <Navigate to='/login' replace />;
   }
 

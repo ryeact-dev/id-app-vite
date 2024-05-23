@@ -17,7 +17,21 @@ const expirationDate = new Date(
 async function getCurrentUser(req, res, next) {
   const { password, isActive, createdAt, ...rest } = req.user;
 
-  res.json(rest);
+  const activeSemster = await prisma.semester.findFirst({
+    where: {
+      isActive: true,
+    },
+    include: {
+      schoolYear: true,
+    },
+  });
+
+  const currentData = {
+    userInfo: rest,
+    activeSem: activeSemster,
+  };
+
+  res.json(currentData);
 }
 
 // Get All Users
@@ -42,7 +56,13 @@ async function getAllUsers(req, res, next) {
     }
 
     const users = await prisma.user.findMany(query);
-    res.json(users);
+
+    const usersWithoutPassword = users.map((user) => {
+      const { password, createdAt, ...rest } = user;
+      return rest;
+    });
+
+    res.json(usersWithoutPassword);
   } catch (err) {
     err.title = 'GET All Users';
     next(err);

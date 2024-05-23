@@ -13,9 +13,9 @@ const router = express.Router();
 
 router.get('/all', verifyToken, getPaginatedPrintedIds);
 
-router.post('/print', verifyToken, getPaginatedPrintedIds);
-
+router.post('/add', verifyToken, getPaginatedPrintedIds);
 router.patch('/update', verifyToken, updateUser);
+
 router.patch('/toggle-status', verifyToken, toggleUserStatus);
 
 router.delete('/delete/:id', verifyToken, deleteUser);

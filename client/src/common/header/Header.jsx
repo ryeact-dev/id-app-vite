@@ -30,7 +30,7 @@ export default function Header() {
             <span className='sr-only'>Acme Inc</span>
           </NavLink>
         </div>
-        {currentUser && (
+        {currentUser?.userInfo && (
           <>
             <NavLinks />
             <Sheet>
@@ -99,8 +99,10 @@ export default function Header() {
                 <DropdownMenuContent align='end'>
                   <DropdownMenuLabel>
                     <>
-                      <p>{currentUser.fullName}</p>
-                      <p className='text-xs font-normal'>{currentUser.role}</p>
+                      <p>{currentUser?.userInfo.fullName}</p>
+                      <p className='text-xs font-normal'>
+                        {currentUser?.userInfo.role}
+                      </p>
                     </>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />

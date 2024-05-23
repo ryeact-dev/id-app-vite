@@ -1,6 +1,5 @@
 import Header from '@/common/header/Header';
 import LoadingSpinner from '@/common/loading-spinner/LoadingSpinner';
-import { useCurrentUser } from '@/hooks/user.hook';
 import { Suspense, useEffect, useRef } from 'react';
 import { Navigate, Outlet, useRouteLoaderData } from 'react-router-dom';
 

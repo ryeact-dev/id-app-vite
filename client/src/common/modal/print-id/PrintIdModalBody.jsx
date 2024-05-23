@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from '@/common/ui/select';
 import { useState } from 'react';
+import { useCurrentUser } from '@/hooks/user.hook';
 
 const REPRINT_REASONS = [
   { value: 'Printer Error', label: 'Printer Error' },
@@ -21,12 +22,25 @@ const REPRINT_REASONS = [
 export default function PrintIdModalBody({ payload, closeModal }) {
   const [reprintReason, setReprintReason] = useState('');
 
+  const { data: currentData } = useCurrentUser();
+
   const onReasonChange = (value) => {
     setReprintReason(value);
   };
 
+  console.log(currentData);
+
+  const onSubmitPrintId = (evt) => {
+    evt.preventDefault();
+    if (!payload?.releasedDate) {
+      // Update Here
+    } else {
+      // Add New Print Here
+    }
+  };
+
   return (
-    <>
+    <form onSubmit={onSubmitPrintId}>
       <div className='flex gap-4 items-center justify-around border-2 px-1 py-3 rounded-lg'>
         <FrontPage payload={payload?.student} />
         <BackPage payload={payload?.student} />
@@ -73,6 +87,6 @@ export default function PrintIdModalBody({ payload, closeModal }) {
           </Button>
         </div>
       </div>
-    </>
+    </form>
   );
 }

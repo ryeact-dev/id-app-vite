@@ -25,7 +25,7 @@ export default function UsersPage() {
 
   const { isLoading, data: currentUser } = useCurrentUser();
 
-  if (!isLoading && !currentUser) {
+  if (!isLoading && !currentUser?.userInfo) {
     return <Navigate to='/login' replace />;
   }
 
@@ -40,7 +40,7 @@ export default function UsersPage() {
         />
       </div>
       <UsersTable
-        currentUser={currentUser}
+        currentUser={currentUser?.userInfo}
         fullName={fullName}
         setModalSetting={setModalSetting}
         setIsOpen={setIsOpen}

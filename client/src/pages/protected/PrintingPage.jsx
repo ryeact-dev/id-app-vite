@@ -47,7 +47,7 @@ export default function PrintingPage() {
   const { data: listOfPrintedIds = [], isPlaceholderData } =
     useGetPaginatedPrintedIds(searchQuery, Number(page - 1), 2);
 
-  if (!isLoading && !currentUser) {
+  if (!isLoading && !currentUser?.userInfo) {
     return <Navigate to='/login' replace />;
   }
 
