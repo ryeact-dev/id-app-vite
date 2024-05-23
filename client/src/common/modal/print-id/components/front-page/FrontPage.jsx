@@ -5,7 +5,7 @@ import { BarcodeGeneratorComponent } from '@syncfusion/ej2-react-barcode-generat
 export default function FrontPage({ payload }) {
   return (
     <>
-      <div className={`relative w-[320px] h-[508px]`}>
+      <div className={`relative w-[320px] h-[508px] break-after-page`}>
         {/* Background */}
         <img
           src={bgID}

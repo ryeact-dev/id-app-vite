@@ -8,7 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 uploads
-db_backup
+dbbackup
 prisma/migrations/*
 node_modules
 dist

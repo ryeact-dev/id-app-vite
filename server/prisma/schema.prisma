@@ -116,7 +116,7 @@ model StudentUpdate {
 model Printing {
   id               Int         @id @default(autoincrement())
   reprintReason    String?
-  printType        String?
+  printType        String      @default("New ID")
   studentIdNumber  String
   studentId        String
   student          Student     @relation(fields: [studentId], references: [id], onDelete: Cascade)

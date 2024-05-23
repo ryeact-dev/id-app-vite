@@ -7,6 +7,7 @@ export default function PrintTableOptions({
   printedDate,
   student,
   releasedDate,
+  printId,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalSetting, setModalSetting] = useState({
@@ -44,7 +45,7 @@ export default function PrintTableOptions({
       title: 'Student ID Details',
       size: 'max-w-3xl',
       modalType: 'print-student-id',
-      payload: student,
+      payload: { student, releasedDate, printId },
     };
 
     setModalSetting(modalData);

@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import registrarEsign from '@/assets/registrar_esign.png';
 
 export default function BackPage({ payload }) {
   return (
@@ -34,7 +35,7 @@ export default function BackPage({ payload }) {
         {/* University Registrar */}
         <div className='flex flex-col items-center justify-center mt-1 w-full text-justify font-semibold '>
           <img
-            src={import.meta.env.VITE_LOCAL_BASE_URL + payload?.esignUrl}
+            src={registrarEsign}
             alt='registrar-esign'
             className='object-contain object-center w-full h-8 -mb-4 '
           />

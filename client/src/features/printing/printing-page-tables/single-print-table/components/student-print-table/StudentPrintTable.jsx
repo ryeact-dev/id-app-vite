@@ -52,9 +52,7 @@ export default function StudentPrintTable({ listOfStudents }) {
                 </div>
               </TableCell>
               <TableCell className='font-medium'>
-                <div className='font-medium -mb-1'>
-                  {printInfo.printType || 'New ID'}
-                </div>{' '}
+                <div className='font-medium -mb-1'>{printInfo.printType}</div>
                 <div className='hidden text-xs text-muted-foreground md:inline'>
                   {printInfo.reprintReason || ''}
                 </div>
@@ -64,6 +62,7 @@ export default function StudentPrintTable({ listOfStudents }) {
                   printedDate={printInfo.printedDate}
                   student={printInfo.student}
                   releasedDate={printInfo.releasedDate}
+                  printId={printInfo.id}
                 />
               </TableCell>
             </TableRow>

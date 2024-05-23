@@ -19,7 +19,7 @@ const REPRINT_REASONS = [
 ];
 
 export default function PrintIdModalBody({ payload, closeModal }) {
-  const [reprintReason, setReprintReason] = useState(REPRINT_REASONS[0].value);
+  const [reprintReason, setReprintReason] = useState('');
 
   const onReasonChange = (value) => {
     setReprintReason(value);
@@ -28,13 +28,17 @@ export default function PrintIdModalBody({ payload, closeModal }) {
   return (
     <>
       <div className='flex gap-4 items-center justify-around border-2 px-1 py-3 rounded-lg'>
-        <FrontPage payload={payload} />
-        <BackPage payload={payload} />
+        <FrontPage payload={payload?.student} />
+        <BackPage payload={payload?.student} />
       </div>
       {/* Footer Buttons */}
       <div className='flex flex-col sm:flex-row gap-4 md:mt-6'>
         <div className='flex-1'>
-          <Select defaultValue={reprintReason} onValueChange={onReasonChange}>
+          <Select
+            defaultValue={reprintReason}
+            onValueChange={onReasonChange}
+            disabled={!payload?.releasedDate}
+          >
             <SelectTrigger className='w-[80%]'>
               <SelectValue placeholder='Reason for Reprint' />
             </SelectTrigger>
