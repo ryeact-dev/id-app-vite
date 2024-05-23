@@ -82,10 +82,19 @@ async function getPaginatedPrintedIds(req, res, next) {
   }
 }
 
-// Add User
+// Add Print Transaction
 async function addPrintId(req, res, next) {
-  console.log(req.body);
+  const { id } = req.user;
+
   try {
+    const currentDate = new Date();
+    await prisma.printing.create({
+      data: {
+        ...req.body,
+        printedDate: currentDate,
+        printedByUserId: id,
+      },
+    });
     res.status(200).send('User successfully added');
   } catch (err) {
     err.title = 'POST Print ID';
@@ -93,7 +102,7 @@ async function addPrintId(req, res, next) {
   }
 }
 
-// Update User
+// Update Print Transaction
 async function updatePrintId(req, res, next) {
   const { id } = req.user;
 
@@ -121,75 +130,51 @@ async function updatePrintId(req, res, next) {
   }
 }
 
-// Toggle User Status
-async function toggleUserStatus(req, res, next) {
+// Release Student ID
+async function releaseId(req, res, next) {
+  const { id } = req.user;
+
   try {
-    const updatedUser = await prisma.user.update({
+    const currentDate = new Date();
+
+    await prisma.printing.update({
       where: {
-        id: req.body.id,
+        id: Number(req.params.id),
       },
       data: {
-        isActive: req.body.isActive,
+        releasedDate: currentDate,
+        releasedBy: {
+          connect: {
+            id,
+          },
+        },
       },
     });
-    res
-      .status(200)
-      .send(`${updatedUser.fullName}'s status successfully updated`);
+    res.json();
   } catch (err) {
-    err.title = 'PATCH/PUT User Status';
-    next(err);
-  }
-}
-
-// Login User
-async function loginUser(req, res, next) {
-  const { password, username } = req.body;
-
-  try {
-    const foundUser = await prisma.user.findFirst({
-      where: { username },
-    });
-
-    if (foundUser === null) return res.status(404).send('Username not found');
-
-    if (foundUser.isActive === false)
-      return res.status(404).send('This account was deactivated');
-
-    const passOk = bcrypt.compareSync(password, foundUser.password);
-
-    if (passOk) {
-      const token = jwt.sign({ id: foundUser.id }, jwtSecret);
-
-      res.cookie('umtcid_user', token, {
-        maxAge: expirationDate,
-        httpOnly: true,
-      });
-      res.json();
-    } else return res.status(401).send('Wrong password');
-  } catch (err) {
-    err.title = 'POST Loggin-in User';
+    err.title = 'PATCH/PUT Released ID';
     next(err);
   }
 }
 
 // Delete User
-async function deleteUser(req, res, next) {
+async function deleteTransaction(req, res, next) {
   const { fullName } = req.user;
 
   try {
-    const deletedUser = await prisma.user.delete({
+    const deletedRecord = await prisma.printing.delete({
       where: {
-        id: req.params.id,
+        id: Number(req.params.id),
       },
     });
 
     console.log(
-      `${
-        deletedUser.fullName
-      }'s profile successfully deleted by ${fullName} :: ${new Date().toDateString()}`
+      `${deletedRecord.studentIdNumber}'s transaction on ${new Date(
+        deletedRecord.printedDate
+      ).toDateString()} successfully deleted by ${fullName} :: ${new Date().toDateString()}`
     );
 
-    res.status(200).send(`${deletedUser.fullName}'s data successfully deleted`);
+    res.json();
   } catch (err) {
     err.title = 'DELETE User';
     next(err);
@@ -199,6 +184,5 @@ async function deleteUser(req, res, next) {
 exports.getPaginatedPrintedIds = getPaginatedPrintedIds;
 exports.addPrintId = addPrintId;
 exports.updatePrintId = updatePrintId;
-exports.toggleUserStatus = toggleUserStatus;
-exports.loginUser = loginUser;
-exports.deleteUser = deleteUser;
+exports.releaseId = releaseId;
+exports.deleteTransaction = deleteTransaction;

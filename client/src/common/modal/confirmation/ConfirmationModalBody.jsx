@@ -1,5 +1,6 @@
 import { Button } from '@/common/ui/button';
 import { useDeleteDepartment } from '@/hooks/department.hook';
+import { useDeletePrintTransaction, useReleaseId } from '@/hooks/printing.hook';
 import { useDeleteProgram } from '@/hooks/program.hook';
 import { useDeleteSchoolYear } from '@/hooks/schoolyear.hook';
 import { useDeleteUser } from '@/hooks/user.hook';
@@ -18,6 +19,8 @@ export default function ConfirmationModalBody({
   const handleDeleteDepartmentMutation = useDeleteDepartment(closeModal);
   const handleDeleteProgramMutation = useDeleteProgram(closeModal);
   const handleDeleteSchoolYearMutation = useDeleteSchoolYear(closeModal);
+  const handleReleaseIdMutation = useReleaseId(closeModal);
+  const handleDeletePrintTransaction = useDeletePrintTransaction(closeModal);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -38,6 +41,14 @@ export default function ConfirmationModalBody({
       case 'delete-school-year':
         handleDeleteSchoolYearMutation.mutate({ id: payload });
         isLoading = handleDeleteSchoolYearMutation.isPending;
+        break;
+      case 'delete-print-transaction':
+        handleDeletePrintTransaction.mutate({ printId: payload });
+        isLoading = handleDeletePrintTransaction.isPending;
+        break;
+      case 'release-id':
+        handleReleaseIdMutation.mutate({ printId: payload });
+        isLoading = handleReleaseIdMutation.isPending;
         break;
       default:
         break;

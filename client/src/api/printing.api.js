@@ -16,6 +16,10 @@ export async function addUpdatePrintId({ forAddingData, isNew }) {
   } else return await axios.patch('/api/printing/update', forAddingData);
 }
 
-export async function deleteUser({ userId }) {
-  return await axios.delete(`/api/printing/delete/${userId}`);
+export async function releaseID({ printId }) {
+  return await axios.patch(`/api/printing/release/${printId}`);
+}
+
+export async function deletePrintTransaction({ printId }) {
+  return await axios.delete(`/api/printing/delete/${printId}`);
 }

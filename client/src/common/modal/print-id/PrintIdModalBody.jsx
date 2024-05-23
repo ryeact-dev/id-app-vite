@@ -52,7 +52,9 @@ export default function PrintIdModalBody({ payload, closeModal }) {
         schoolYearId: payload?.schoolYearId,
         semesterId: payload?.semesterId,
         studentIdNumber: payload?.student?.studentIdNumber,
+        studentId: payload?.student?.id,
         printType: 'Reprint ID',
+        reprintReason,
       };
 
       printIdMutation({ forAddingData, isNew: true });

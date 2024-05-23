@@ -1,5 +1,9 @@
-import { addUpdatePrintId, getPaginatedPrintedIds } from '@/api/printing.api';
-import { addEditStudent, getPaginatedStudents } from '@/api/student.api';
+import {
+  addUpdatePrintId,
+  deletePrintTransaction,
+  getPaginatedPrintedIds,
+  releaseID,
+} from '@/api/printing.api';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import {
   keepPreviousData,
@@ -30,20 +34,35 @@ export function usePrintId(closeModal) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['list-of-printed-ids'] });
       ToastNotification('success', 'ID sent to printer');
-      // closeModal();
+      closeModal();
     },
   });
 }
 
-// export function useSemesterToggleStatus() {
-//   const queryClient = useQueryClient();
+export function useReleaseId(closeModal) {
+  const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: toggleSemesterStatus,
-//     onError: ({ response }) => ToastNotification('error', response.data),
-//     onSuccess: ({ data }) => {
-//       queryClient.invalidateQueries({ queryKey: ['list-of-semester'] });
-//       ToastNotification('success', data);
-//     },
-//   });
-// }
+  return useMutation({
+    mutationFn: releaseID,
+    onError: ({ response }) => ToastNotification('error', response.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['list-of-printed-ids'] });
+      ToastNotification('success', 'ID Released');
+      closeModal();
+    },
+  });
+}
+
+export function useDeletePrintTransaction(closeModal) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deletePrintTransaction,
+    onError: ({ response }) => ToastNotification('error', response.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['list-of-printed-ids'] });
+      ToastNotification('success', 'Transaction successfully deleted');
+      closeModal();
+    },
+  });
+}

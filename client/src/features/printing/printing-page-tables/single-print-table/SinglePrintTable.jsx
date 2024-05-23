@@ -1,5 +1,4 @@
 import PaginationBlock from '@/common/pagination-block/PaginationBlock';
-import { Button } from '@/common/ui/button';
 import {
   Card,
   CardContent,
@@ -22,6 +21,7 @@ export default function SinglePrintTable({
   page,
   activeSem,
   onPageClick,
+  onSearchValueChange,
 }) {
   return (
     <Card>
@@ -34,6 +34,7 @@ export default function SinglePrintTable({
           <div className='relative'>
             <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground ' />
             <Input
+              onChange={onSearchValueChange}
               type='search'
               placeholder='Search ID number...'
               className='pl-8 sm:w-[200px] lg:w-[300px]'

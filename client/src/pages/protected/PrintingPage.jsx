@@ -1,14 +1,12 @@
-import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/common/ui/tabs';
+import { Navigate, useSearchParams } from 'react-router-dom';
 
 import PrintManyTable from '@/features/printing/printing-page-tables/print-many-table/PrintManyTable';
 import SinglePrintTable from '@/features/printing/printing-page-tables/single-print-table/SinglePrintTable';
 import ValidationTable from '@/features/printing/printing-page-tables/validation-table/ValidationTable';
 import PrintHeader from '@/features/printing/printing-header/PrintingHeader';
 import { useCurrentUser } from '@/hooks/user.hook';
-import { Navigate, useSearchParams } from 'react-router-dom';
 import { useGetPaginatedPrintedIds } from '@/hooks/printing.hook';
-import ModalContainer from '@/containers/ModalContainer';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/common/ui/tabs';
 
 export default function PrintingPage() {
   const { isLoading, data: currentUser } = useCurrentUser();
@@ -30,7 +28,9 @@ export default function PrintingPage() {
     });
   };
 
-  const onSearchValueChange = (value) => {
+  const onSearchValueChange = (evt) => {
+    const value = evt.target.value;
+    // TODO: need debounce
     setSearchParams((prev) => {
       prev.set('query', value);
       return prev;
@@ -45,7 +45,7 @@ export default function PrintingPage() {
   };
 
   const { data: listOfPrintedIds = [], isPlaceholderData } =
-    useGetPaginatedPrintedIds(searchQuery, Number(page - 1), 2);
+    useGetPaginatedPrintedIds(searchQuery, Number(page - 1), 10);
 
   if (!isLoading && !currentUser?.userInfo) {
     return <Navigate to='/login' replace />;
@@ -71,7 +71,7 @@ export default function PrintingPage() {
               Validate
             </TabsTrigger>
           </TabsList>
-          <PrintHeader />
+          <PrintHeader activeSem={currentUser?.activeSem} />
         </div>
 
         <TabsContent value='single-print' className='space-y-4'>
@@ -84,6 +84,7 @@ export default function PrintingPage() {
             isPlaceholderData={isPlaceholderData}
             onPageClick={onPageClick}
             page={page}
+            onSearchValueChange={onSearchValueChange}
           />
         </TabsContent>
 

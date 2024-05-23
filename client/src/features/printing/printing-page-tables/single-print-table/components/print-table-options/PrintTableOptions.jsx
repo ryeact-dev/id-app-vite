@@ -14,14 +14,14 @@ export default function PrintTableOptions({ student, activeSem, printInfo }) {
     size: null,
   });
 
-  const handleEditStudent = (studentData) => {
+  const handleEditStudent = () => {
     const reMapStudentData = {
-      ...studentData,
+      ...student,
       // Convert to a date object because the date is coming in as a string
-      birthDate: new Date(studentData?.birthDate),
+      birthDate: new Date(student?.birthDate),
     };
 
-    const payload = studentData ? reMapStudentData : null;
+    const payload = student ? reMapStudentData : null;
 
     const modalData = {
       confirmationType: null,
@@ -35,16 +35,16 @@ export default function PrintTableOptions({ student, activeSem, printInfo }) {
     setIsOpen(true);
   };
 
-  const onPrintStudentID = (student) => {
+  const handlePrintStudentID = () => {
     const schoolYearId = activeSem.schoolYearId;
     const semesterId = activeSem.id;
 
-    if (printInfo.printedDate && !printInfo.releasedDate) {
-      return ToastNotification(
-        'error',
-        'Please release the student ID before re-printing'
-      );
-    }
+    // if (printInfo.printedDate && !printInfo.releasedDate) {
+    //   return ToastNotification(
+    //     'error',
+    //     'Please release the student ID before re-printing'
+    //   );
+    // }
 
     const payload = {
       student,
@@ -66,31 +66,67 @@ export default function PrintTableOptions({ student, activeSem, printInfo }) {
     setIsOpen(true);
   };
 
+  const handleReleaseID = () => {
+    const title = `Release ${student?.firstName} ${student?.lastName}'s ID?`;
+
+    const modalData = {
+      confirmationType: 'release-id',
+      title,
+      size: 'max-w-md',
+      modalType: 'confirmation',
+      payload: printInfo?.id,
+    };
+
+    setModalSetting(modalData);
+    setIsOpen(true);
+  };
+
+  const handleDeletePrintedRecord = () => {
+    const title = `Delete ${student?.firstName} ${student?.lastName}'s printed transaction?`;
+
+    const modalData = {
+      confirmationType: 'delete-print-transaction',
+      title,
+      size: 'max-w-md',
+      modalType: 'confirmation',
+      payload: printInfo?.id,
+    };
+
+    setModalSetting(modalData);
+    setIsOpen(true);
+  };
+
   return (
     <>
       <div className='flex space-x-2'>
-        <Button
-          size='sm'
-          onClick={() => handleEditStudent(student)}
-          variant='outline'
-        >
+        {/* <Button size='sm' onClick={handleEditStudent} variant='outline'>
           <PenBox className='size-4 mr-1' /> Edit
-        </Button>
+        </Button> */}
         <Button
           size='sm'
-          className='w-24'
-          onClick={() => onPrintStudentID(student)}
+          className='w-20 bg-blue-500 hover:bg-blue-500/90 text-white'
+          onClick={handlePrintStudentID}
         >
-          <Printer className='size-4 mr-1' />
+          {/* <Printer className='size-4 mr-1' /> */}
           {printInfo?.printedDate ? 'Reprint' : 'Print'}
         </Button>
         <Button
           size='sm'
           disabled={printInfo?.releasedDate}
-          variant='secondary'
+          className={'bg-green-500 hover:bg-green-500/90 text-white w-20'}
+          onClick={handleReleaseID}
         >
-          Release
+          {printInfo?.releasedDate ? 'Released' : 'Release'}
         </Button>
+        {!printInfo?.releasedDate && (
+          <Button
+            size='sm'
+            className={'px-4'}
+            onClick={handleDeletePrintedRecord}
+          >
+            Delete
+          </Button>
+        )}
       </div>
       {/* Modal Container */}
       {isOpen === true && (
