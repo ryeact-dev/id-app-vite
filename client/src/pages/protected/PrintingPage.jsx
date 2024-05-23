@@ -76,6 +76,7 @@ export default function PrintingPage() {
 
         <TabsContent value='single-print' className='space-y-4'>
           <SinglePrintTable
+            activeSem={currentUser?.activeSem}
             listOfStudents={listOfPrintedIds?.paginatedStudents}
             hasMore={listOfPrintedIds?.hasMore}
             totalStudents={listOfPrintedIds?.totalStudents}

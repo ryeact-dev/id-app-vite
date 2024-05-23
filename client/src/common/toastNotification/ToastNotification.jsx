@@ -1,9 +1,11 @@
 import { toast } from 'sonner';
 
 export const ToastNotification = (toastType, message) => {
+  const toastMessage = <span className='leading-4'>{message}</span>;
+
   switch (toastType) {
     case 'success':
-      return toast.success(message, {
+      return toast.success(toastMessage, {
         style: {
           background: 'rgba( 26, 178, 26, 0.8)',
           borderStyle: 'solid',
@@ -17,7 +19,7 @@ export const ToastNotification = (toastType, message) => {
         duration: 3000,
       });
     case 'error':
-      return toast.error(message, {
+      return toast.error(toastMessage, {
         style: {
           background: 'rgba( 255, 52, 52, 0.8)',
           borderStyle: 'solid',
@@ -31,7 +33,7 @@ export const ToastNotification = (toastType, message) => {
         duration: 3000,
       });
     case 'info':
-      return toast.info(message, {
+      return toast.info(toastMessage, {
         style: {
           background: 'rgba( 25, 96, 170, 0.8)',
           borderStyle: 'solid',
@@ -45,7 +47,7 @@ export const ToastNotification = (toastType, message) => {
         duration: 3000,
       });
     case 'warning':
-      return toast.warning(message, {
+      return toast.warning(toastMessage, {
         style: {
           background: 'rgba( 255, 238, 50, 0.8)',
           borderStyle: 'solid',

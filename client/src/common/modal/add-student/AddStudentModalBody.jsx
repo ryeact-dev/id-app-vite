@@ -10,11 +10,13 @@ import { useAddStudent } from '@/hooks/student.hook';
 import StudentFormInputs from './components/student-form-inputs/StudentFormInputs';
 import StudentImageInputs from './components/student-image-inputs/StudentImageInputs';
 import { Send, XCircle } from 'lucide-react';
+import { useCurrentUser } from '@/hooks/user.hook';
 
 export default function AddStudentModalBody({ payload, closeModal }) {
   const [photo, setPhoto] = useState(payload?.photoUrl || null);
   const [esign, setEsign] = useState(payload?.esignUrl || null);
 
+  const { data: currentData } = useCurrentUser();
   const handleAddEditStudentMutation = useAddStudent(closeModal);
 
   const form = useForm({
@@ -61,6 +63,12 @@ export default function AddStudentModalBody({ payload, closeModal }) {
       // forAddingData.append('current_esign', payload.esignUrl);
       handleAddEditStudentMutation.mutate({ forAddingData, isNew });
     } else {
+      const schoolYearId = currentData?.activeSem?.schoolYearId;
+      const semesterId = currentData?.activeSem?.id;
+
+      forAddingData.append('schoolYearId', schoolYearId);
+      forAddingData.append('semesterId', semesterId);
+
       handleAddEditStudentMutation.mutate({ forAddingData, isNew });
     }
   };

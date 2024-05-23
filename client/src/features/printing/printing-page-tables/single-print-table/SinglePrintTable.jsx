@@ -20,7 +20,7 @@ export default function SinglePrintTable({
   studentsCount,
   isPlaceholderData,
   page,
-
+  activeSem,
   onPageClick,
 }) {
   return (
@@ -42,7 +42,10 @@ export default function SinglePrintTable({
         </div>
       </div>
       <CardContent>
-        <StudentPrintTable listOfStudents={listOfStudents} />
+        <StudentPrintTable
+          activeSem={activeSem}
+          listOfStudents={listOfStudents}
+        />
       </CardContent>
       <CardFooter>
         <PaginationBlock

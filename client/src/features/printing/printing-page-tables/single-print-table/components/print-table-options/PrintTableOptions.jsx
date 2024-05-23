@@ -1,14 +1,10 @@
+import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { Button } from '@/common/ui/button';
 import ModalContainer from '@/containers/ModalContainer';
 import { PenBox, Printer } from 'lucide-react';
 import { useState } from 'react';
 
-export default function PrintTableOptions({
-  printedDate,
-  student,
-  releasedDate,
-  printId,
-}) {
+export default function PrintTableOptions({ student, activeSem, printInfo }) {
   const [isOpen, setIsOpen] = useState(false);
   const [modalSetting, setModalSetting] = useState({
     modalType: null,
@@ -40,12 +36,30 @@ export default function PrintTableOptions({
   };
 
   const onPrintStudentID = (student) => {
+    const schoolYearId = activeSem.schoolYearId;
+    const semesterId = activeSem.id;
+
+    if (printInfo.printedDate && !printInfo.releasedDate) {
+      return ToastNotification(
+        'error',
+        'Please release the student ID before re-printing'
+      );
+    }
+
+    const payload = {
+      student,
+      releasedDate: printInfo?.releasedDate,
+      printId: printInfo?.id,
+      schoolYearId,
+      semesterId,
+    };
+
     const modalData = {
       confirmationType: null,
       title: 'Student ID Details',
       size: 'max-w-3xl',
       modalType: 'print-student-id',
-      payload: { student, releasedDate, printId },
+      payload,
     };
 
     setModalSetting(modalData);
@@ -64,13 +78,17 @@ export default function PrintTableOptions({
         </Button>
         <Button
           size='sm'
-          className='w-20'
+          className='w-24'
           onClick={() => onPrintStudentID(student)}
         >
-          <Printer className='size-4 mr-1' />{' '}
-          {printedDate ? 'Reprint' : 'Print'}
+          <Printer className='size-4 mr-1' />
+          {printInfo?.printedDate ? 'Reprint' : 'Print'}
         </Button>
-        <Button size='sm' disabled={releasedDate} variant='secondary'>
+        <Button
+          size='sm'
+          disabled={printInfo?.releasedDate}
+          variant='secondary'
+        >
           Release
         </Button>
       </div>

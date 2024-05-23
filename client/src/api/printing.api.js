@@ -10,12 +10,12 @@ export async function getPaginatedPrintedIds({
   );
 }
 
-export async function addEditStudent({ forAddingData, isNew }) {
+export async function addUpdatePrintId({ forAddingData, isNew }) {
   if (isNew) {
-    return await axios.post('/api/student/add', forAddingData);
-  } else return await axios.patch('/api/student/update', forAddingData);
+    return await axios.post('/api/printing/add', forAddingData);
+  } else return await axios.patch('/api/printing/update', forAddingData);
 }
 
 export async function deleteUser({ userId }) {
-  return await axios.delete(`/api/student/delete/${userId}`);
+  return await axios.delete(`/api/printing/delete/${userId}`);
 }

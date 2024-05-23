@@ -1,20 +1,21 @@
 const express = require('express');
 const {
-  updateUser,
   toggleUserStatus,
   deleteUser,
 } = require('../controllers/user.controller');
 const { verifyToken } = require('../lib/helpers/verifyToken');
 const {
   getPaginatedPrintedIds,
+  addPrintId,
+  updatePrintId,
 } = require('../controllers/printing.controller');
 
 const router = express.Router();
 
 router.get('/all', verifyToken, getPaginatedPrintedIds);
 
-router.post('/add', verifyToken, getPaginatedPrintedIds);
-router.patch('/update', verifyToken, updateUser);
+router.post('/add', verifyToken, addPrintId);
+router.patch('/update', verifyToken, updatePrintId);
 
 router.patch('/toggle-status', verifyToken, toggleUserStatus);
 

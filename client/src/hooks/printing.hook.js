@@ -1,4 +1,4 @@
-import { getPaginatedPrintedIds } from '@/api/printing.api';
+import { addUpdatePrintId, getPaginatedPrintedIds } from '@/api/printing.api';
 import { addEditStudent, getPaginatedStudents } from '@/api/student.api';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import {
@@ -21,16 +21,16 @@ export function useGetPaginatedPrintedIds(searchQuery, page, limit) {
 }
 
 // Mutations
-export function useAddStudent(closeModal) {
+export function usePrintId(closeModal) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: addEditStudent,
+    mutationFn: addUpdatePrintId,
     onError: ({ response }) => ToastNotification('error', response.data),
-    onSuccess: ({ data }) => {
-      queryClient.invalidateQueries({ queryKey: ['list-of-students'] });
-      ToastNotification('success', data);
-      closeModal();
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['list-of-printed-ids'] });
+      ToastNotification('success', 'ID sent to printer');
+      // closeModal();
     },
   });
 }

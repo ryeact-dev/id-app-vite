@@ -10,7 +10,8 @@ import {
   SelectValue,
 } from '@/common/ui/select';
 import { useState } from 'react';
-import { useCurrentUser } from '@/hooks/user.hook';
+import { ToastNotification } from '@/common/toastNotification/ToastNotification';
+import { usePrintId } from '@/hooks/printing.hook';
 
 const REPRINT_REASONS = [
   { value: 'Printer Error', label: 'Printer Error' },
@@ -22,19 +23,39 @@ const REPRINT_REASONS = [
 export default function PrintIdModalBody({ payload, closeModal }) {
   const [reprintReason, setReprintReason] = useState('');
 
-  const { data: currentData } = useCurrentUser();
+  const { mutate: printIdMutation, isPending } = usePrintId(closeModal);
 
   const onReasonChange = (value) => {
     setReprintReason(value);
   };
 
-  console.log(currentData);
-
   const onSubmitPrintId = (evt) => {
     evt.preventDefault();
+
+    if (payload?.releasedDate && !reprintReason) {
+      return ToastNotification(
+        'error',
+        'Please select a reason for reprinting'
+      );
+    }
+
+    let forAddingData;
+
     if (!payload?.releasedDate) {
       // Update Here
+      forAddingData = {
+        id: payload?.printId,
+      };
+      printIdMutation({ forAddingData, isNew: false });
     } else {
+      forAddingData = {
+        schoolYearId: payload?.schoolYearId,
+        semesterId: payload?.semesterId,
+        studentIdNumber: payload?.student?.studentIdNumber,
+        printType: 'Reprint ID',
+      };
+
+      printIdMutation({ forAddingData, isNew: true });
       // Add New Print Here
     }
   };
@@ -77,13 +98,10 @@ export default function PrintIdModalBody({ payload, closeModal }) {
           <Button
             type='submit'
             className='flex-1 bg-accent hover:bg-accent/90 px-4 w-44 '
-            //   disabled={handleAddEditStudentMutation.isPending}
+            disabled={isPending}
           >
             <Printer size={16} className='mr-1' />
-            {/* {handleAddEditStudentMutation.isPending
-                ? 'Submitting...'
-                : 'Submit'} */}
-            Printing...
+            {isPending ? 'Printing...' : 'Print'}
           </Button>
         </div>
       </div>

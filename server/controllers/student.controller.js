@@ -113,10 +113,12 @@ async function addStudent(req, res, next) {
         )
       : esignUrl;
 
+    const { schoolYearId, semesterId, ...rest } = req.body;
+
     await prisma.$transaction(async (tx) => {
       const addStudent = await tx.student.create({
         data: {
-          ...req.body,
+          ...rest,
           birthDate: new Date(req.body.birthDate),
           esignUrl: multerEsign,
           photoUrl: multerPhoto,
@@ -130,6 +132,14 @@ async function addStudent(req, res, next) {
           studentIdNumber: addStudent.studentIdNumber,
           student: {
             connect: { id: addStudent.id },
+          },
+          schoolYear: {
+            connect: { id: schoolYearId },
+          },
+          semester: {
+            connect: {
+              id: semesterId,
+            },
           },
         },
       });

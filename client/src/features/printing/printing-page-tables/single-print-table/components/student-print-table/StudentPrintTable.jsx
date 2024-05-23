@@ -7,8 +7,9 @@ import {
   TableRow,
 } from '@/common/ui/table';
 import PrintTableOptions from '../print-table-options/PrintTableOptions';
+import { format } from 'date-fns';
 
-export default function StudentPrintTable({ listOfStudents }) {
+export default function StudentPrintTable({ listOfStudents, activeSem }) {
   return (
     <Table>
       <TableHeader>
@@ -29,7 +30,7 @@ export default function StudentPrintTable({ listOfStudents }) {
             <TableRow key={printInfo.id}>
               <TableCell className='font-medium'>
                 <div className='font-medium -mb-1'>
-                  {`${printInfo.student.studentIdNumber} - ${printInfo.student.firstName} ${printInfo.student.middleInitial}. ${printInfo.student.lastName}`}
+                  {`${printInfo.student.studentIdNumber} - ${printInfo.student.firstName} ${printInfo.student.middleInitial} ${printInfo.student.lastName}`}
                 </div>
                 <div className='hidden text-xs text-muted-foreground md:inline'>
                   {printInfo.student.program.programName}
@@ -37,7 +38,9 @@ export default function StudentPrintTable({ listOfStudents }) {
               </TableCell>
               <TableCell>
                 <div className='font-medium -mb-1'>
-                  {printInfo?.releasedDate || 'Not Release'}
+                  {printInfo.releasedDate
+                    ? format(new Date(printInfo.releasedDate), 'MMM dd, yyyy')
+                    : 'Not Release'}
                 </div>{' '}
                 <div className='hidden text-xs text-muted-foreground md:inline'>
                   {printInfo.releasedBy?.fullName || ''}
@@ -45,7 +48,9 @@ export default function StudentPrintTable({ listOfStudents }) {
               </TableCell>
               <TableCell className='font-medium'>
                 <div className='font-medium -mb-1'>
-                  {printInfo.printedDate || 'Not Printed'}
+                  {printInfo.printedDate
+                    ? format(new Date(printInfo.printedDate), 'MMM dd, yyyy')
+                    : 'Not Printed'}
                 </div>
                 <div className='hidden text-xs text-muted-foreground md:inline'>
                   {printInfo.printedBy?.fullName || ''}
@@ -59,10 +64,9 @@ export default function StudentPrintTable({ listOfStudents }) {
               </TableCell>
               <TableCell>
                 <PrintTableOptions
-                  printedDate={printInfo.printedDate}
+                  printInfo={printInfo}
+                  activeSem={activeSem}
                   student={printInfo.student}
-                  releasedDate={printInfo.releasedDate}
-                  printId={printInfo.id}
                 />
               </TableCell>
             </TableRow>

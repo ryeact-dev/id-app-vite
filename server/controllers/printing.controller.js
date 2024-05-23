@@ -83,67 +83,40 @@ async function getPaginatedPrintedIds(req, res, next) {
 }
 
 // Add User
-async function printId(req, res, next) {
+async function addPrintId(req, res, next) {
+  console.log(req.body);
   try {
-    const foundUser = await prisma.user.findFirst({
-      where: {
-        email: req.body.email,
-      },
-    });
-
-    if (foundUser !== null) return res.status(400).send('Email already exists');
-
-    const hashedPassword = bcrypt.hashSync(defaultPassword, bcryptSalt);
-    await prisma.user.create({
-      data: {
-        ...req.body,
-        password: hashedPassword,
-        fullName: req.body.fullName.toLowerCase(),
-        email: req.body.email.toLowerCase(),
-      },
-    });
     res.status(200).send('User successfully added');
   } catch (err) {
-    if (err.code === 'P2002')
-      return res.status(400).send('Username already exists');
-    err.title = 'POST User';
+    err.title = 'POST Print ID';
     next(err);
   }
 }
 
 // Update User
-async function updateUser(req, res, next) {
-  const { fullName } = req.user;
+async function updatePrintId(req, res, next) {
+  const { id } = req.user;
+
   try {
-    const foundUserByUsername = await prisma.user.findUnique({
-      where: {
-        username: req.body.username,
-      },
-    });
+    const currentDate = new Date();
 
-    if (foundUserByUsername !== null) {
-      if (foundUserByUsername.id !== req.body.id)
-        return res.status(400).send('Username already exists');
-    }
-
-    const updatedUser = await prisma.user.update({
+    await prisma.printing.update({
       where: {
         id: req.body.id,
       },
-      data: req.body,
+      data: {
+        printedDate: currentDate,
+        printedBy: {
+          connect: {
+            id,
+          },
+        },
+      },
     });
 
-    console.log(
-      `${
-        updatedUser.fullName
-      }'s profile successfully updated by ${fullName} :: ${new Date().toDateString()}`
-    );
-
-    res
-      .status(200)
-      .send(`${updatedUser.fullName}'s profile successfully updated`);
+    res.json();
   } catch (err) {
-    err.title = 'PATCH/PUT User';
+    err.title = 'PATCH/PUT Print ID';
     next(err);
   }
 }
@@ -224,8 +197,8 @@ async function deleteUser(req, res, next) {
 }
 
 exports.getPaginatedPrintedIds = getPaginatedPrintedIds;
-exports.printId = printId;
-exports.updateUser = updateUser;
+exports.addPrintId = addPrintId;
+exports.updatePrintId = updatePrintId;
 exports.toggleUserStatus = toggleUserStatus;
 exports.loginUser = loginUser;
 exports.deleteUser = deleteUser;
