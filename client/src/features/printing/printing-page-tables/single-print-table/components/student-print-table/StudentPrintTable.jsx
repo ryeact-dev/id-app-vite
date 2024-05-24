@@ -9,7 +9,12 @@ import {
 import PrintTableOptions from '../print-table-options/PrintTableOptions';
 import { format } from 'date-fns';
 
-export default function StudentPrintTable({ listOfStudents, activeSem }) {
+export default function StudentPrintTable({
+  listOfStudents,
+  activeSem,
+  setModalSetting,
+  setIsOpen,
+}) {
   return (
     <Table>
       <TableHeader>
@@ -67,6 +72,8 @@ export default function StudentPrintTable({ listOfStudents, activeSem }) {
                   printInfo={printInfo}
                   activeSem={activeSem}
                   student={printInfo.student}
+                  setModalSetting={setModalSetting}
+                  setIsOpen={setIsOpen}
                 />
               </TableCell>
             </TableRow>

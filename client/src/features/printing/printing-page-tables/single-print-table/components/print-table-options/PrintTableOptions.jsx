@@ -1,19 +1,13 @@
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { Button } from '@/common/ui/button';
-import ModalContainer from '@/containers/ModalContainer';
-import { PenBox, Printer } from 'lucide-react';
-import { useState } from 'react';
 
-export default function PrintTableOptions({ student, activeSem, printInfo }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [modalSetting, setModalSetting] = useState({
-    modalType: null,
-    confirmationType: null,
-    title: null,
-    payload: null,
-    size: null,
-  });
-
+export default function PrintTableOptions({
+  student,
+  activeSem,
+  printInfo,
+  setIsOpen,
+  setModalSetting,
+}) {
   const handleEditStudent = () => {
     const reMapStudentData = {
       ...student,
@@ -128,14 +122,6 @@ export default function PrintTableOptions({ student, activeSem, printInfo }) {
           </Button>
         )}
       </div>
-      {/* Modal Container */}
-      {isOpen === true && (
-        <ModalContainer
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          modalSetting={modalSetting}
-        />
-      )}
     </>
   );
 }

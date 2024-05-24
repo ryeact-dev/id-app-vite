@@ -6,6 +6,7 @@ import AddUserModalBody from '@/common/modal/add-user/AddUserModalBody';
 import ConfirmationModalBody from '@/common/modal/confirmation/ConfirmationModalBody';
 import PrintIdModalBody from '@/common/modal/print-id/PrintIdModalBody';
 import SetSemesterDatesModalBody from '@/common/modal/set-semester-dates/SetSemesterDatesModalBody';
+import ValidateStudentIdModalBody from '@/common/modal/validate-student-id/ValidateStudentIdModalBody';
 import { Card } from '@/common/ui/card';
 import {
   Dialog,
@@ -69,6 +70,11 @@ export default function ModalContainer({ isOpen, setIsOpen, modalSetting }) {
     case 'print-student-id':
       modalComponent = (
         <PrintIdModalBody payload={payload} closeModal={close} />
+      );
+      break;
+    case 'validate-student-id':
+      modalComponent = (
+        <ValidateStudentIdModalBody payload={payload} closeModal={close} />
       );
       break;
     case 'confirmation':

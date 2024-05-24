@@ -22,6 +22,8 @@ export default function SinglePrintTable({
   activeSem,
   onPageClick,
   onSearchValueChange,
+  setModalSetting,
+  setIsOpen,
 }) {
   return (
     <Card>
@@ -46,6 +48,8 @@ export default function SinglePrintTable({
         <StudentPrintTable
           activeSem={activeSem}
           listOfStudents={listOfStudents}
+          setModalSetting={setModalSetting}
+          setIsOpen={setIsOpen}
         />
       </CardContent>
       <CardFooter>

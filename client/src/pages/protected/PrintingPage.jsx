@@ -7,9 +7,19 @@ import PrintHeader from '@/features/printing/printing-header/PrintingHeader';
 import { useCurrentUser } from '@/hooks/user.hook';
 import { useGetPaginatedPrintedIds } from '@/hooks/printing.hook';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/common/ui/tabs';
+import { useState } from 'react';
+import ModalContainer from '@/containers/ModalContainer';
 
 export default function PrintingPage() {
   const { isLoading, data: currentUser } = useCurrentUser();
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalSetting, setModalSetting] = useState({
+    modalType: null,
+    confirmationType: null,
+    title: null,
+    payload: null,
+    size: null,
+  });
 
   const [searchParams, setSearchParams] = useSearchParams({
     query: '',
@@ -85,6 +95,8 @@ export default function PrintingPage() {
             onPageClick={onPageClick}
             page={page}
             onSearchValueChange={onSearchValueChange}
+            setModalSetting={setModalSetting}
+            setIsOpen={setIsOpen}
           />
         </TabsContent>
 
@@ -93,9 +105,22 @@ export default function PrintingPage() {
         </TabsContent> */}
 
         <TabsContent value='validate'>
-          <ValidationTable />
+          <ValidationTable
+            setModalSetting={setModalSetting}
+            setIsOpen={setIsOpen}
+            activeSem={currentUser?.activeSem}
+          />
         </TabsContent>
       </Tabs>
+
+      {/* Modal Container */}
+      {isOpen === true && (
+        <ModalContainer
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          modalSetting={modalSetting}
+        />
+      )}
     </div>
   );
 }

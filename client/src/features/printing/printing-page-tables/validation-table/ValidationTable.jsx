@@ -19,7 +19,7 @@ import {
   TableRow,
 } from '@/common/ui/table';
 
-import { Search } from 'lucide-react';
+import { CheckCircle, Search } from 'lucide-react';
 
 const DUMMY_DATA = [
   {
@@ -84,25 +84,48 @@ const DUMMY_DATA = [
   },
 ];
 
-export default function ValidationTable() {
+export default function ValidationTable({
+  setModalSetting,
+  setIsOpen,
+  activeSem,
+}) {
+  const handleValidateID = () => {
+    const modalData = {
+      confirmationType: null,
+      title: 'Validate Student ID',
+      size: 'max-w-2xl',
+      modalType: 'validate-student-id',
+      payload: activeSem,
+    };
+
+    setModalSetting(modalData);
+    setIsOpen(true);
+  };
+
   return (
     <Card>
       <div className='flex items-center justify-between gap-4'>
         <CardHeader className='space-y-0'>
-          <CardTitle>Printed ID Transactions</CardTitle>
-          <CardDescription>List of Printed ID per transaction</CardDescription>
+          <CardTitle>ID Validation Transactions</CardTitle>
+          <CardDescription>
+            List of ID Validations per transaction
+          </CardDescription>
         </CardHeader>
         <div className='m-4 flex items-center gap-2'>
-          <div className='relative'>
+          {/* <div className='relative'>
             <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
             <Input
               type='search'
               placeholder='Search ID number...'
               className='pl-8 sm:w-[200px]'
             />
-          </div>
-          <Button type='button' className='font-semibold' variant='outline'>
-            Manual Validate
+          </div> */}
+          <Button
+            type='button'
+            className='font-semibold px-6'
+            onClick={handleValidateID}
+          >
+            <CheckCircle className='mr-2 h-4 w-4' /> Validate ID
           </Button>
         </div>
       </div>
@@ -112,7 +135,6 @@ export default function ValidationTable() {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Validated Date</TableHead>
-              <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -134,9 +156,6 @@ export default function ValidationTable() {
                   <div className='text-xs text-muted-foreground md:inline'>
                     {student.validatedBy[0]?.fullName}
                   </div>
-                </TableCell>
-                <TableCell className='font-medium'>
-                  <Button size='sm'>Validate</Button>
                 </TableCell>
               </TableRow>
             ))}
