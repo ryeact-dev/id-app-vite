@@ -22,10 +22,12 @@ const REPRINT_REASONS = [
 
 export default function PrintIdModalBody({ payload, closeModal }) {
   const [reprintReason, setReprintReason] = useState('');
+  const [error, setError] = useState(false);
 
   const { mutate: printIdMutation, isPending } = usePrintId(closeModal);
 
   const onReasonChange = (value) => {
+    setError(false);
     setReprintReason(value);
   };
 
@@ -33,6 +35,7 @@ export default function PrintIdModalBody({ payload, closeModal }) {
     evt.preventDefault();
 
     if (payload?.releasedDate && !reprintReason) {
+      setError(true);
       return ToastNotification(
         'error',
         'Please select a reason for reprinting'
@@ -76,7 +79,9 @@ export default function PrintIdModalBody({ payload, closeModal }) {
             onValueChange={onReasonChange}
             disabled={!payload?.releasedDate}
           >
-            <SelectTrigger className='w-[80%]'>
+            <SelectTrigger
+              className={`w-[80%] ${error && 'border-2 border-red-600'} `}
+            >
               <SelectValue placeholder='Reason for Reprint' />
             </SelectTrigger>
             <SelectContent>

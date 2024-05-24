@@ -24,11 +24,11 @@ export default function FrontPage({ payload }) {
         <img
           src={import.meta.env.VITE_LOCAL_BASE_URL + payload?.photoUrl}
           alt='student-photo'
-          className='object-cover object-center mt-2 size-40 border-2 border-red-600 '
+          className='object-cover object-center mt-2 size-40 border-2 border-red-600 rounded-sm '
         />
 
         <div className='flex items-center justify-center mt-1'>
-          <div className='bg-white h-[55px]'>
+          <div className='bg-white h-[55px] rounded-sm'>
             <BarcodeGeneratorComponent
               id='barcode'
               width={'160px'}
