@@ -55,8 +55,17 @@ export default function PrintingPage() {
     });
   };
 
+  const schoolYearId = currentUser?.activeSem.schoolYearId;
+  const semesterId = currentUser?.activeSem.id;
+
   const { data: listOfPrintedIds = [], isPlaceholderData } =
-    useGetPaginatedPrintedIds(searchQuery, Number(page - 1), 10);
+    useGetPaginatedPrintedIds(
+      schoolYearId,
+      semesterId,
+      searchQuery,
+      Number(page - 1),
+      10
+    );
 
   if (!isLoading && !currentUser?.userInfo) {
     return <Navigate to='/login' replace />;

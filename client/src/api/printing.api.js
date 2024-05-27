@@ -1,12 +1,14 @@
 import axios from 'axios';
 
 export async function getPaginatedPrintedIds({
+  schoolYearId,
+  semesterId,
   searchQuery = '',
   page = 0,
   limit = 10,
 }) {
   return await axios.get(
-    `/api/printing/all?searchQuery=${searchQuery}&page=${page}&limit=${limit}`
+    `/api/printing/all?searchQuery=${searchQuery}&schoolYearId=${schoolYearId}&semesterId=${semesterId}&page=${page}&limit=${limit}`
   );
 }
 

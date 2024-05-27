@@ -2,13 +2,17 @@ const { prisma } = require('../lib/utils/prismaClient');
 
 // Get All Users
 async function getPaginatedPrintedIds(req, res, next) {
-  const { searchQuery, page, limit } = req.query;
+  const { searchQuery, page, limit, schoolYearId, semesterId } = req.query;
 
   try {
     const [students, totalStudents] = await prisma.$transaction([
       prisma.printing.findMany({
         where: {
-          studentIdNumber: { contains: searchQuery },
+          AND: [
+            { studentIdNumber: { contains: searchQuery } },
+            { schoolYearId },
+            { semesterId },
+          ],
         },
 
         skip: Number(page) * Number(limit),

@@ -13,11 +13,31 @@ import {
 } from '@tanstack/react-query';
 
 // Queries
-export function useGetPaginatedPrintedIds(searchQuery, page, limit) {
+export function useGetPaginatedPrintedIds(
+  schoolYearId,
+  semesterId,
+  searchQuery,
+  page,
+  limit
+) {
   return useQuery({
-    queryKey: ['list-of-printed-ids', searchQuery, page, limit],
+    queryKey: [
+      'list-of-printed-ids',
+      schoolYearId,
+      semesterId,
+      searchQuery,
+      page,
+      limit,
+    ],
     placeholderData: keepPreviousData,
-    queryFn: () => getPaginatedPrintedIds({ searchQuery, page, limit }),
+    queryFn: () =>
+      getPaginatedPrintedIds({
+        schoolYearId,
+        semesterId,
+        searchQuery,
+        page,
+        limit,
+      }),
     select: ({ data }) => {
       return data;
     },
