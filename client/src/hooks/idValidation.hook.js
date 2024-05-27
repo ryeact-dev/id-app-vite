@@ -1,9 +1,8 @@
 import {
-  addUpdatePrintId,
-  deletePrintTransaction,
-  getPaginatedPrintedIds,
-  releaseID,
-} from '@/api/printing.api';
+  addValidatedID,
+  getPaginatedValidations,
+} from '@/api/id_validation.api';
+import { deletePrintTransaction, releaseID } from '@/api/printing.api';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import {
   keepPreviousData,
@@ -13,11 +12,11 @@ import {
 } from '@tanstack/react-query';
 
 // Queries
-export function useGetPaginatedPrintedIds(searchQuery, page, limit) {
+export function useGetPaginatedValidations(searchQuery, page, limit) {
   return useQuery({
-    queryKey: ['list-of-printed-ids', searchQuery, page, limit],
+    queryKey: ['list-of-validated-ids', searchQuery, page, limit],
     placeholderData: keepPreviousData,
-    queryFn: () => getPaginatedPrintedIds({ searchQuery, page, limit }),
+    queryFn: () => getPaginatedValidations({ searchQuery, page, limit }),
     select: ({ data }) => {
       return data;
     },
@@ -25,16 +24,20 @@ export function useGetPaginatedPrintedIds(searchQuery, page, limit) {
 }
 
 // Mutations
-export function usePrintId(closeModal) {
+export function useValidateID(setIDBarcode) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: addUpdatePrintId,
+    mutationFn: addValidatedID,
     onError: ({ response }) => ToastNotification('error', response.data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['list-of-printed-ids'] });
-      ToastNotification('success', 'ID sent to printer');
-      // closeModal();
+    onSuccess: ({ data }) => {
+      queryClient.invalidateQueries({ queryKey: ['list-of-validated-ids'] });
+      ToastNotification(
+        'success',
+        `${data.studentIdNumber}'s ID Validated successfully`
+      );
+      setIDBarcode('');
+      return data;
     },
   });
 }

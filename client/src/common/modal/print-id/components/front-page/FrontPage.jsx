@@ -5,7 +5,7 @@ import { BarcodeGeneratorComponent } from '@syncfusion/ej2-react-barcode-generat
 export default function FrontPage({ payload }) {
   return (
     <div
-      className={`relative w-[320px] h-[508px] break-before-page rounded-md overflow-hidden shadow-lg`}
+      className={`print-card relative w-[300px] h-[473px] rounded-md overflow-hidden shadow-lg`}
     >
       {/* Background */}
       <img
@@ -18,7 +18,7 @@ export default function FrontPage({ payload }) {
         <img
           src={umtcLogo}
           alt='umtc-logo'
-          className='object-cover object-center mt-2'
+          className='object-cover object-center my-2 size-16'
         />
 
         <img
@@ -27,11 +27,11 @@ export default function FrontPage({ payload }) {
           className='object-cover object-center mt-2 size-40 border-2 border-red-600 rounded-sm '
         />
 
-        <div className='flex items-center justify-center mt-1'>
-          <div className='bg-white h-[55px] rounded-sm'>
+        <div className='flex items-center justify-center'>
+          <div className='h-[55px] rounded-sm'>
             <BarcodeGeneratorComponent
               id='barcode'
-              width={'160px'}
+              width={'175px'}
               height={'70px'}
               type='Code128'
               value={`S${payload?.studentIdNumber}`}
@@ -41,7 +41,7 @@ export default function FrontPage({ payload }) {
         </div>
 
         {/* Student ID Number */}
-        <div className='flex items-center justify-center text-lg font-extrabold tracking-tighter '>
+        <div className='flex items-center justify-center text-lg font-extrabold tracking-tighter -mt-2'>
           <p>ID No.: {payload?.studentIdNumber}</p>
         </div>
 
@@ -61,7 +61,7 @@ export default function FrontPage({ payload }) {
         </div>
 
         {/* Validation Sticker */}
-        <div className='flex items-center justify-center text-lg font-bold uppercase mt-3 opacity-80'>
+        <div className='flex items-center justify-center text-lg font-bold uppercase mt-1 opacity-80'>
           <p>Validation Sticker</p>
         </div>
       </div>

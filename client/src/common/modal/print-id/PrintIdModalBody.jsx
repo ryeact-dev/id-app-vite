@@ -9,9 +9,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/common/ui/select';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { usePrintId } from '@/hooks/printing.hook';
+import { useReactToPrint } from 'react-to-print';
 
 const REPRINT_REASONS = [
   { value: 'Printer Error', label: 'Printer Error' },
@@ -21,6 +22,7 @@ const REPRINT_REASONS = [
 ];
 
 export default function PrintIdModalBody({ payload, closeModal }) {
+  const componentToPrintRef = useRef();
   const [reprintReason, setReprintReason] = useState('');
   const [error, setError] = useState(false);
 
@@ -30,6 +32,10 @@ export default function PrintIdModalBody({ payload, closeModal }) {
     setError(false);
     setReprintReason(value);
   };
+
+  const handlePrint = useReactToPrint({
+    content: () => componentToPrintRef.current,
+  });
 
   const onSubmitPrintId = (evt) => {
     evt.preventDefault();
@@ -49,8 +55,9 @@ export default function PrintIdModalBody({ payload, closeModal }) {
       forAddingData = {
         id: payload?.printId,
       };
-      printIdMutation({ forAddingData, isNew: false });
+      // printIdMutation({ forAddingData, isNew: false });
     } else {
+      // Add New Print Here
       forAddingData = {
         schoolYearId: payload?.schoolYearId,
         semesterId: payload?.semesterId,
@@ -60,14 +67,17 @@ export default function PrintIdModalBody({ payload, closeModal }) {
         reprintReason,
       };
 
-      printIdMutation({ forAddingData, isNew: true });
-      // Add New Print Here
+      // printIdMutation({ forAddingData, isNew: true });
     }
+    handlePrint();
   };
 
   return (
     <form onSubmit={onSubmitPrintId}>
-      <div className='flex gap-4 items-center justify-around border-2 px-1 py-3 rounded-lg'>
+      <div
+        ref={componentToPrintRef}
+        className='flex gap-4 items-center justify-around border-2 px-1 py-3 rounded-lg for-printing'
+      >
         <FrontPage payload={payload?.student} />
         <BackPage payload={payload?.student} />
       </div>

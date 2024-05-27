@@ -18,82 +18,27 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
+import { useGetPaginatedValidations } from '@/hooks/idValidation.hook';
+import { format } from 'date-fns';
 
 import { CheckCircle, Search } from 'lucide-react';
-
-const DUMMY_DATA = [
-  {
-    studentRef: [
-      {
-        idNumber: 147489,
-        lastName: 'Montoya',
-        firstName: 'Ryan',
-        middleInitial: 'P',
-        birthDate: 'Jan 09, 1990',
-        address: '123 Main St. Anytown USA',
-        program: 'BS - Tourism Management',
-        deparment: 'Dept. of Business Administration Education',
-      },
-    ],
-    validationDate: 'Sep 09, 2023',
-    validatedBy: [
-      {
-        fullName: 'Stap Morning',
-      },
-    ],
-  },
-  {
-    studentRef: [
-      {
-        idNumber: 147466,
-        lastName: 'Ayotnom',
-        firstName: 'Nayr',
-        middleInitial: 'E',
-        birthDate: 'Jan 09, 1990',
-        address: '123 Main St. Anytown USA',
-        program: 'BS - Tourism Management',
-        deparment: 'Dept. of Business Administration Education',
-      },
-    ],
-    validationDate: 'Sep 09, 2023',
-    validatedBy: [
-      {
-        fullName: 'Stap Afternoon',
-      },
-    ],
-  },
-  {
-    studentRef: [
-      {
-        idNumber: 47488,
-        lastName: 'Oldies',
-        firstName: 'Kaayo',
-        middleInitial: 'N',
-        birthDate: 'Jan 09, 1980',
-        address: '123 Main St. Anytown USA',
-        program: 'BS - Tourism Management',
-        deparment: 'Dept. of Business Administration Education',
-      },
-    ],
-    validationDate: 'Sep 09, 2023',
-    validatedBy: [
-      {
-        fullName: 'Stap Morning',
-      },
-    ],
-  },
-];
 
 export default function ValidationTable({
   setModalSetting,
   setIsOpen,
   activeSem,
+  page,
+  onPageClick,
 }) {
+  // TODO: ADD SCHOOL YEAR AND SEMESTER TO ONLY SHOW VALIDATIONS FOR THE ACTIVE SCHOOL YEAR AND SEMESTER
+  const { data: validationTransactions, isPlaceholderData } =
+    useGetPaginatedValidations('', Number(page - 1), 10);
+
   const handleValidateID = () => {
     const modalData = {
       confirmationType: null,
       title: 'Validate Student ID',
-      size: 'max-w-2xl',
+      size: 'max-w-xl',
       modalType: 'validate-student-id',
       payload: activeSem,
     };
@@ -138,32 +83,44 @@ export default function ValidationTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {DUMMY_DATA.map((student) => (
-              <TableRow key={student.studentRef[0].idNumber}>
-                <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>
-                    {`${student.studentRef[0].idNumber} - ${student.studentRef[0].firstName} ${student.studentRef[0].middleInitial}. ${student.studentRef[0].lastName}`}
-                  </div>
-                  <div className='text-xs text-muted-foreground md:inline'>
-                    {student.studentRef[0].program}
-                  </div>
-                </TableCell>
+            {validationTransactions?.paginatedValidations?.map(
+              (validationInfo) => (
+                <TableRow key={validationInfo.id}>
+                  <TableCell className='font-medium'>
+                    <div className='-mb-1 font-semibold'>
+                      {`${validationInfo.student.studentIdNumber} - ${validationInfo.student.firstName} ${validationInfo.student.middleInitial} ${validationInfo.student.lastName}`}
+                    </div>
+                    <div className='hidden text-xs text-muted-foreground md:inline'>
+                      {validationInfo.student.program.programName}
+                    </div>
+                  </TableCell>
 
-                <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>
-                    {student.validationDate}
-                  </div>
-                  <div className='text-xs text-muted-foreground md:inline'>
-                    {student.validatedBy[0]?.fullName}
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+                  <TableCell className='font-medium'>
+                    <div className='font-medium -mb-1'>
+                      {format(
+                        new Date(validationInfo.dateValidated),
+                        'MMM dd, yyyy'
+                      )}
+                    </div>
+                    <div className='text-xs text-muted-foreground md:inline'>
+                      {validationInfo.user.fullName}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )
+            )}
           </TableBody>
         </Table>
       </CardContent>
       <CardFooter>
-        <PaginationBlock />
+        <PaginationBlock
+          studentsCount={validationTransactions?.validationsCount}
+          totalStudents={validationTransactions?.totalValidations}
+          page={page}
+          hasMore={validationTransactions?.hasMore}
+          onPageClick={onPageClick}
+          isPlaceholderData={isPlaceholderData}
+        />
       </CardFooter>
     </Card>
   );

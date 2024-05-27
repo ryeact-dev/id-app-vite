@@ -71,3 +71,20 @@
   /* background-color: transparent !important; */
   display: none;
 }
+
+@media print {
+  @page {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .for-printing {
+    display: block;
+    padding: 0;
+    border-radius: 0px;
+  }
+
+  .print-card {
+    border-radius: 0px;
+  }
+}

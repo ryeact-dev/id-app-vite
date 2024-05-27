@@ -34,6 +34,7 @@ export default function PrintingPage() {
   const handleTabValueChange = (tabValue) => {
     setSearchParams((prev) => {
       prev.set('tab', tabValue);
+      prev.set('page', '1');
       return prev;
     });
   };
@@ -109,6 +110,8 @@ export default function PrintingPage() {
             setModalSetting={setModalSetting}
             setIsOpen={setIsOpen}
             activeSem={currentUser?.activeSem}
+            page={page}
+            onPageClick={onPageClick}
           />
         </TabsContent>
       </Tabs>

@@ -4,11 +4,15 @@ import { Badge } from '@/common/ui/badge';
 import { Button } from '@/common/ui/button';
 import { Card, CardContent, CardFooter } from '@/common/ui/card';
 import { Input } from '@/common/ui/input';
+import { useValidateID } from '@/hooks/idValidation.hook';
 import { Search, XCircle } from 'lucide-react';
 import { useState } from 'react';
 
 export default function ValidateStudentIdModalBody({ payload, closeModal }) {
   const [IDBarcode, setIDBarcode] = useState('');
+
+  const { data: validatedID, mutate: validateIDMutation } =
+    useValidateID(setIDBarcode);
 
   const onIDNumberChange = (evt) => {
     const value = evt.target.value;
@@ -22,7 +26,13 @@ export default function ValidateStudentIdModalBody({ payload, closeModal }) {
       const removedSOnIDBarcode = IDBarcode.toUpperCase().split('S')[1];
       const IDNumber = removedSOnIDBarcode ? removedSOnIDBarcode : IDBarcode;
 
-      setIDBarcode('');
+      const forAddingData = {
+        studentIdNumber: IDNumber,
+        schoolYearId: payload?.schoolYearId,
+        semesterId: payload?.id,
+      };
+
+      validateIDMutation({ forAddingData });
     }
   };
 
@@ -37,6 +47,7 @@ export default function ValidateStudentIdModalBody({ payload, closeModal }) {
           type='number'
           id='barcode'
           value={IDBarcode || ''}
+          min={0}
           placeholder='Enter ID number...'
           onKeyDown={handleBarcodeKeyDown}
           onChange={onIDNumberChange}
@@ -46,23 +57,33 @@ export default function ValidateStudentIdModalBody({ payload, closeModal }) {
       </div>
       <Card className='overflow-hidden rounded-md'>
         <CardContent className='p-2 flex items-start gap-2'>
-          <div className='relative rounded-md size-48 shrink-0 flex items-center justify-center m-1 border border-dashed'>
+          <div className='relative overflow-hidden rounded-lg size-48 shrink-0 flex items-center justify-center m-1 border border-dashed shadow-md'>
             <ImageComponent
               alt='StudentPhoto'
               className='object-contain object-center h-full w-full'
-              src={null}
+              src={validatedID?.data.photoUrl || null}
             />
           </div>
           <div className='w-full'>
             <div>
-              <Badge className='text-base font-semibold my-1 px-6'>
-                ID Number
+              <Badge className='text-base font-semibold my-1 w-28 justify-center tracking-wider bg-blue-500 hover:bg-blue-500'>
+                {validatedID?.data.studentIdNumber || 'ID No.'}
               </Badge>
-              <p className='text-2xl font-bold'>Last Name</p>
-              <p className='text-xl font-semibold'>First Name</p>
-              <p className='text-xl font-semibold'>MI</p>
-              <p className='font-bold mt-1'>Course</p>
-              <p className='font-bold'>Department</p>
+              <p className='text-2xl font-bold'>
+                {validatedID?.data.lastName || 'Last Name'}
+              </p>
+              <p className='text-xl font-semibold -mt-1'>
+                {validatedID?.data.firstName || 'First Name'}{' '}
+                {validatedID?.data.middleInitial || 'MI'}
+              </p>
+              <p className='text-xl font-semibold'></p>
+              <p className='font-bold mt-2'>
+                {validatedID?.data.program.programName || 'Program'}
+              </p>
+              <p className='font-bold leading-5 text-sm'>
+                {validatedID?.data.program.department.departmentName ||
+                  'Department'}
+              </p>
             </div>
           </div>
         </CardContent>
