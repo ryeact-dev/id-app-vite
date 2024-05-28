@@ -1,8 +1,12 @@
 import PaginationBlock from '@/common/pagination-block/PaginationBlock';
-import { Badge } from '@/common/ui/badge';
-import { Button } from '@/common/ui/button';
-import { Card, CardContent, CardFooter } from '@/common/ui/card';
-import { Input } from '@/common/ui/input';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/common/ui/card';
 import {
   Table,
   TableBody,
@@ -11,85 +15,24 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
+import { useGetPaginatedValidatedIdsReport } from '@/hooks/reports.hook';
+import { format } from 'date-fns';
 
-import { Search } from 'lucide-react';
+export default function ValidationReportTable({ date, page, onPageClick }) {
+  const { data, isPlaceholderData } = useGetPaginatedValidatedIdsReport(
+    date,
+    Number(page) - 1,
+    10
+  );
 
-const DUMMY_DATA = [
-  {
-    studentRef: [
-      {
-        idNumber: 147489,
-        lastName: 'Montoya',
-        firstName: 'Ryan',
-        middleInitial: 'P',
-        birthDate: 'Jan 09, 1990',
-        address: '123 Main St. Anytown USA',
-        program: 'BS - Tourism Management',
-        deparment: 'Dept. of Business Administration Education',
-      },
-    ],
-    validationDate: 'Sep 09, 2023',
-    validatedBy: [
-      {
-        fullName: 'Stap Morning',
-      },
-    ],
-  },
-  {
-    studentRef: [
-      {
-        idNumber: 147466,
-        lastName: 'Ayotnom',
-        firstName: 'Nayr',
-        middleInitial: 'E',
-        birthDate: 'Jan 09, 1990',
-        address: '123 Main St. Anytown USA',
-        program: 'BS - Tourism Management',
-        deparment: 'Dept. of Business Administration Education',
-      },
-    ],
-    validationDate: 'Sep 09, 2023',
-    validatedBy: [
-      {
-        fullName: 'Stap Afternoon',
-      },
-    ],
-  },
-  {
-    studentRef: [
-      {
-        idNumber: 47488,
-        lastName: 'Oldies',
-        firstName: 'Kaayo',
-        middleInitial: 'N',
-        birthDate: 'Jan 09, 1980',
-        address: '123 Main St. Anytown USA',
-        program: 'BS - Tourism Management',
-        deparment: 'Dept. of Business Administration Education',
-      },
-    ],
-    validationDate: 'Sep 09, 2023',
-    validatedBy: [
-      {
-        fullName: 'Stap Morning',
-      },
-    ],
-  },
-];
-
-export default function ValidationReportTable() {
   return (
     <Card>
-      <div className='flex items-center justify-between gap-4 p-4'>
-        <div className='relative'>
-          <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
-          <Input
-            type='search'
-            placeholder='Search ID number...'
-            className='pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]'
-          />
-        </div>
-      </div>
+      <CardHeader className='space-y-0'>
+        <CardTitle>ID Validation Transactions</CardTitle>
+        <CardDescription>
+          List of ID Validations per transaction
+        </CardDescription>
+      </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
@@ -99,23 +42,26 @@ export default function ValidationReportTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {DUMMY_DATA.map((student) => (
-              <TableRow key={student.studentRef[0].idNumber}>
+            {data?.paginatedValidations.map((validationInfo) => (
+              <TableRow key={validationInfo.id}>
                 <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>
-                    {`${student.studentRef[0].idNumber} - ${student.studentRef[0].firstName} ${student.studentRef[0].middleInitial}. ${student.studentRef[0].lastName}`}
+                  <div className='-mb-1 font-semibold'>
+                    {`${validationInfo.student.studentIdNumber} - ${validationInfo.student.firstName} ${validationInfo.student.middleInitial} ${validationInfo.student.lastName}`}
                   </div>
-                  <div className='text-xs text-muted-foreground md:inline'>
-                    {student.studentRef[0].program}
+                  <div className='hidden text-xs text-muted-foreground md:inline'>
+                    {validationInfo.student.program.programName}
                   </div>
                 </TableCell>
 
                 <TableCell className='font-medium'>
                   <div className='font-medium -mb-1'>
-                    {student.validationDate}
+                    {format(
+                      new Date(validationInfo.dateValidated),
+                      'MMM dd, yyyy'
+                    )}
                   </div>
                   <div className='text-xs text-muted-foreground md:inline'>
-                    {student.validatedBy[0]?.fullName}
+                    {validationInfo.user.fullName}
                   </div>
                 </TableCell>
               </TableRow>
@@ -124,7 +70,14 @@ export default function ValidationReportTable() {
         </Table>
       </CardContent>
       <CardFooter>
-        <PaginationBlock />
+        <PaginationBlock
+          studentsCount={data?.validationsCount}
+          totalStudents={data?.totalValidations}
+          page={page}
+          hasMore={data?.hasMore}
+          onPageClick={onPageClick}
+          isPlaceholderData={isPlaceholderData}
+        />
       </CardFooter>
     </Card>
   );

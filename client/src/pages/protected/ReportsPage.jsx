@@ -71,7 +71,11 @@ export default function ReportsPage() {
         </TabsContent>
 
         <TabsContent value='validate'>
-          <ValidationReportTable />
+          <ValidationReportTable
+            page={page}
+            onPageClick={onPageClick}
+            date={date}
+          />
         </TabsContent>
       </Tabs>
     </div>

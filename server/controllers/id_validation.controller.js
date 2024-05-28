@@ -62,11 +62,9 @@ async function getPaginatedValidations(req, res, next) {
       }),
     ]);
 
-    const hasMore = validations.length === Number(limit);
-
-    const validationsCount = !hasMore
-      ? validations.length
-      : Number(page) + Number(limit);
+    const validationsCount = Number(page + 1) * validations.length;
+    const hasMore =
+      validationsCount < totalValidations && validations.length > 0;
 
     res.json({
       paginatedValidations: validations,
