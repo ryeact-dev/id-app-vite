@@ -25,6 +25,13 @@ export default function UsersPage() {
 
   const { isLoading, data: currentUser } = useCurrentUser();
 
+  const onPageClick = (pageNumber) => {
+    setSearchParams((prev) => {
+      prev.set('page', pageNumber);
+      return prev;
+    });
+  };
+
   if (!isLoading && !currentUser?.userInfo) {
     return <Navigate to='/login' replace />;
   }
@@ -44,6 +51,8 @@ export default function UsersPage() {
         fullName={fullName}
         setModalSetting={setModalSetting}
         setIsOpen={setIsOpen}
+        page={page}
+        onPageClick={onPageClick}
       />
 
       {/* Modal Container */}

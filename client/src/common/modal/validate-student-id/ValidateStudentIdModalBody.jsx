@@ -67,22 +67,22 @@ export default function ValidateStudentIdModalBody({ payload, closeModal }) {
           <div className='w-full'>
             <div>
               <Badge className='text-base font-semibold my-1 w-28 justify-center tracking-wider bg-blue-500 hover:bg-blue-500'>
-                {validatedID?.data.studentIdNumber || 'ID No.'}
+                {validatedID?.data.studentIdNumber || '000001'}
               </Badge>
               <p className='text-2xl font-bold'>
-                {validatedID?.data.lastName || 'Last Name'}
+                {validatedID?.data.lastName || 'Dela Cruz'}
               </p>
               <p className='text-xl font-semibold -mt-1'>
-                {validatedID?.data.firstName || 'First Name'}{' '}
-                {validatedID?.data.middleInitial || 'MI'}
+                {validatedID?.data.firstName || 'Juan'}{' '}
+                {validatedID?.data.middleInitial || 'P.'}
               </p>
               <p className='text-xl font-semibold'></p>
               <p className='font-bold mt-2'>
-                {validatedID?.data.program.programName || 'Program'}
+                {validatedID?.data.program.programName || 'BS in Psychology'}
               </p>
-              <p className='font-bold leading-5 text-sm'>
+              <p className='font-bold leading-4 text-sm'>
                 {validatedID?.data.program.department.departmentName ||
-                  'Department'}
+                  'Department of Arts and Sciences Education'}
               </p>
             </div>
           </div>

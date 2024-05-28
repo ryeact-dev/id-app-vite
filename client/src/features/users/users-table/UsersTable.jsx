@@ -20,8 +20,15 @@ export default function UsersTable({
   setModalSetting,
   setIsOpen,
   fullName,
+  page,
+  onPageClick,
 }) {
-  const { isLoading, data: users } = useGetAllUsers(currentUser, fullName);
+  const { isLoading, data, isPlaceholderData } = useGetAllUsers(
+    currentUser,
+    fullName,
+    Number(page) - 1,
+    10
+  );
 
   const onToggleUserStatusMutation = useToggleUserStatus();
 
@@ -81,7 +88,7 @@ export default function UsersTable({
           </TableHeader>
           <TableBody>
             {!isLoading &&
-              users?.map((user) => (
+              data?.paginatedUsers.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell className='font-medium'>
                     <div className='font-medium -mb-1 capitalize'>
@@ -104,7 +111,7 @@ export default function UsersTable({
                           user.isActive
                             ? 'bg-green-500 hover:bg-green-700'
                             : 'bg-gray-700 hover:bg-gray-500'
-                        } w-20 justify-center `}
+                        } w-20 justify-center hover:cursor-pointer `}
                         onClick={() =>
                           handleToggleUserStatus(user.id, user.isActive)
                         }
@@ -145,13 +152,20 @@ export default function UsersTable({
         {isLoading ? (
           <LoadingSpinner />
         ) : (
-          users?.length === 0 && (
+          data?.paginatedUsers.length === 0 && (
             <NoRecordsFound>No Records Found.</NoRecordsFound>
           )
         )}
       </CardContent>
       <CardFooter>
-        <PaginationBlock />
+        <PaginationBlock
+          studentsCount={data?.usersCount}
+          totalStudents={data?.totalUsers}
+          page={page}
+          hasMore={data?.hasMore}
+          onPageClick={onPageClick}
+          isPlaceholderData={isPlaceholderData}
+        />
       </CardFooter>
     </Card>
   );

@@ -21,10 +21,10 @@ export function useCurrentUser() {
   });
 }
 
-export function useGetAllUsers(currentUser, fullName) {
+export function useGetAllUsers(currentUser, fullName, page, limit) {
   return useQuery({
-    queryKey: ['all-users', fullName],
-    queryFn: () => getAllUsers({ fullName }),
+    queryKey: ['all-users', fullName, page, limit],
+    queryFn: () => getAllUsers({ fullName, page, limit }),
     select: ({ data }) => {
       return data;
     },

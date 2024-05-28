@@ -4,8 +4,10 @@ export async function getCurrentUser() {
   return await axios.get('/api/user/current');
 }
 
-export async function getAllUsers({ fullName }) {
-  return await axios.get(`/api/user/all?fullname=${fullName}`);
+export async function getAllUsers({ fullName, page, limit }) {
+  return await axios.get(
+    `/api/user/all?fullname=${fullName}&page=${page}&limit=${limit}`
+  );
 }
 
 export async function loginUser({ forLoginData }) {

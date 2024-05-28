@@ -36,33 +36,47 @@ async function getCurrentUser(req, res, next) {
 
 // Get All Users
 async function getAllUsers(req, res, next) {
+  const { fullname, page, limit } = req.query;
+
   try {
     let query = {
+      skip: Number(page) * Number(limit),
+      take: Number(limit),
       orderBy: {
         fullName: 'asc',
       },
     };
-    if (req.query.fullname !== '') {
+
+    if (fullname !== '') {
       query = {
+        skip: Number(page) * Number(limit),
+        take: Number(limit),
         orderBy: {
           fullName: 'asc',
         },
         where: {
           fullName: {
-            contains: req.query.fullname,
+            contains: fullname,
+            mode: 'insensitive',
           },
         },
       };
     }
 
-    const users = await prisma.user.findMany(query);
+    const [users, totalUsers] = await prisma.$transaction([
+      prisma.user.findMany(query),
+      prisma.user.count(query),
+    ]);
 
-    const usersWithoutPassword = users.map((user) => {
+    const paginatedUsers = users.map((user) => {
       const { password, createdAt, ...rest } = user;
       return rest;
     });
 
-    res.json(usersWithoutPassword);
+    const usersCount = Number(page + 1) * users.length;
+    const hasMore = usersCount < totalUsers && users.length > 0;
+
+    res.json({ paginatedUsers, usersCount, totalUsers, hasMore });
   } catch (err) {
     err.title = 'GET All Users';
     next(err);

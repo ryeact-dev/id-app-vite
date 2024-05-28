@@ -57,11 +57,9 @@ async function getPaginatedStudents(req, res, next) {
       }),
     ]);
 
-    const hasMore = paginatedStudents.length === Number(limit);
-
-    const studentsCount = !hasMore
-      ? paginatedStudents.length
-      : Number(page) + Number(limit);
+    const studentsCount = Number(page + 1) * paginatedStudents.length;
+    const hasMore =
+      studentsCount < totalStudents && paginatedStudents.length > 0;
 
     res.json({ paginatedStudents, studentsCount, totalStudents, hasMore });
   } catch (err) {
