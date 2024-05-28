@@ -29,10 +29,18 @@ export default function ValidationTable({
   activeSem,
   page,
   onPageClick,
+  schoolYearId,
+  semesterId,
 }) {
   // TODO: ADD SCHOOL YEAR AND SEMESTER TO ONLY SHOW VALIDATIONS FOR THE ACTIVE SCHOOL YEAR AND SEMESTER
   const { data: validationTransactions, isPlaceholderData } =
-    useGetPaginatedValidations('', Number(page - 1), 10);
+    useGetPaginatedValidations(
+      schoolYearId,
+      semesterId,
+      '',
+      Number(page - 1),
+      10
+    );
 
   const handleValidateID = () => {
     const modalData = {

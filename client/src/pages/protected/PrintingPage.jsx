@@ -116,6 +116,8 @@ export default function PrintingPage() {
 
         <TabsContent value='validate'>
           <ValidationTable
+            schoolYearId={schoolYearId}
+            semesterId={semesterId}
             setModalSetting={setModalSetting}
             setIsOpen={setIsOpen}
             activeSem={currentUser?.activeSem}

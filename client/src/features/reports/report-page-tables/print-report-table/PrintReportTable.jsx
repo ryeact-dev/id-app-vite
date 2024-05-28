@@ -1,8 +1,12 @@
 import PaginationBlock from '@/common/pagination-block/PaginationBlock';
-import { Badge } from '@/common/ui/badge';
-import { Button } from '@/common/ui/button';
-import { Card, CardContent, CardFooter } from '@/common/ui/card';
-import { Input } from '@/common/ui/input';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/common/ui/card';
 import {
   Table,
   TableBody,
@@ -11,151 +15,95 @@ import {
   TableHeader,
   TableRow,
 } from '@/common/ui/table';
+import { useGetPaginatedPrintedIdsReport } from '@/hooks/reports.hook';
+import { format } from 'date-fns';
 
-import { Search } from 'lucide-react';
+export default function PrintReportTable({ page, date, onPageClick }) {
+  const { data, isPlaceholderData } = useGetPaginatedPrintedIdsReport(
+    date,
+    Number(page) - 1,
+    10
+  );
 
-const DUMMY_DATA = [
-  {
-    printedDate: 'Sep 09, 2023',
-    printedBy: [
-      {
-        fullName: 'Stap Morning',
-      },
-    ],
-    printType: 'Reprint',
-    releasedDate: 'Sep 09, 2023',
-    releasedBy: [
-      {
-        fullName: 'Stap Morning',
-      },
-    ],
-    reprintReason: 'Lost ID',
-    studentRef: [
-      {
-        idNumber: 147489,
-        lastName: 'Montoya',
-        firstName: 'Ryan',
-        middleInitial: 'P',
-        birthDate: 'Jan 09, 1990',
-        address: '123 Main St. Anytown USA',
-        program: 'BS - Tourism Management',
-        deparment: 'Dept. of Business Administration Education',
-      },
-    ],
-  },
-  {
-    printedDate: 'Sep 09, 2023',
-    printedBy: [
-      {
-        fullName: 'Stap Morning',
-      },
-    ],
-    printType: 'New ID',
-    reprintReason: null,
-    releasedDate: null,
-    releasedBy: [],
-    studentRef: [
-      {
-        idNumber: 143255,
-        lastName: 'Ayotnom',
-        firstName: 'Nayr',
-        middleInitial: 'E',
-        birthDate: 'Jan 09, 1980',
-        address: '123 Main St. Anytown USA',
-        program: 'BS - Criminology',
-        deparment: 'Dept. of Criminal Justice Education',
-      },
-    ],
-  },
-  {
-    printedDate: 'Sep 18, 2023',
-    printedBy: [
-      {
-        fullName: 'Stap Morning',
-      },
-    ],
-    printType: 'New ID',
-    reprintReason: null,
-    releasedDate: null,
-    releasedBy: [],
-    studentRef: [
-      {
-        idNumber: 95532,
-        lastName: 'Oldies',
-        firstName: 'Nako',
-        middleInitial: 'E',
-        birthDate: 'Jan 09, 1950',
-        address: '123 Main St. Anytown USA',
-        program: 'BSED - Mathematics',
-        deparment: 'Dept. of Teacher Education',
-      },
-    ],
-  },
-];
-
-export default function PrintReportTable() {
   return (
     <Card>
-      <div className='flex items-center p-4'>
-        <div className='relative'>
-          <Search className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
-          <Input
-            type='search'
-            placeholder='Search ID number...'
-            className='pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]'
-          />
-        </div>
-      </div>
+      <CardHeader className='space-y-0'>
+        <CardTitle>Printed ID Transactions</CardTitle>
+        <CardDescription>List of Printed ID per transaction</CardDescription>
+      </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Printed Date</TableHead>
               <TableHead>Print Type</TableHead>
+              <TableHead>Printed Date</TableHead>
               <TableHead>Released Date</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {DUMMY_DATA.map((student) => (
-              <TableRow key={student.studentRef[0].idNumber}>
-                <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>
-                    {`${student.studentRef[0].idNumber} - ${student.studentRef[0].firstName} ${student.studentRef[0].middleInitial}. ${student.studentRef[0].lastName}`}
-                  </div>
-                  <div className='hidden text-xs text-muted-foreground md:inline'>
-                    {student.studentRef[0].program}
-                  </div>
-                </TableCell>
-                <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>
-                    {student.printedDate || 'Not Printed'}
-                  </div>
-                  <div className='hidden text-xs text-muted-foreground md:inline'>
-                    {student.printedBy[0]?.fullName || ''}
-                  </div>
-                </TableCell>
-                <TableCell className='font-medium'>
-                  <div className='font-medium -mb-1'>{student.printType}</div>{' '}
-                  <div className='hidden text-xs text-muted-foreground md:inline'>
-                    {student.reprintReason || ''}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className='font-medium -mb-1'>
-                    {student?.releasedDate || 'Not Release'}
-                  </div>{' '}
-                  <div className='hidden text-xs text-muted-foreground md:inline'>
-                    {student.releasedBy[0]?.fullName || ''}
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+            {data?.paginatedStudents.map((printInfo) => {
+              return (
+                <TableRow key={printInfo.id}>
+                  <TableCell className='font-medium'>
+                    <div className='font-medium -mb-1'>
+                      {`${printInfo.student.studentIdNumber} - ${printInfo.student.firstName} ${printInfo.student.middleInitial} ${printInfo.student.lastName}`}
+                    </div>
+                    <div className='hidden text-xs text-muted-foreground md:inline'>
+                      {printInfo.student.program.programName}
+                    </div>
+                  </TableCell>
+
+                  <TableCell className='font-medium'>
+                    <div className='font-medium -mb-1'>
+                      {printInfo.printType}
+                    </div>
+                    <div className='hidden text-xs text-muted-foreground md:inline'>
+                      {printInfo.reprintReason || ''}
+                    </div>
+                  </TableCell>
+
+                  <TableCell>
+                    <div className='font-medium -mb-1'>
+                      {printInfo.releasedDate
+                        ? format(
+                            new Date(printInfo.releasedDate),
+                            'MMM dd, yyyy'
+                          )
+                        : 'Not Release'}
+                    </div>{' '}
+                    <div className='hidden text-xs text-muted-foreground md:inline'>
+                      {printInfo.releasedBy?.fullName || ''}
+                    </div>
+                  </TableCell>
+                  <TableCell className='font-medium'>
+                    <div className='font-medium -mb-1'>
+                      {printInfo.printedDate
+                        ? format(
+                            new Date(printInfo.printedDate),
+                            'MMM dd, yyyy'
+                          )
+                        : 'Not Printed'}
+                    </div>
+                    <div className='hidden text-xs text-muted-foreground md:inline'>
+                      {printInfo.printedBy?.fullName || ''}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </CardContent>
       <CardFooter>
-        <PaginationBlock />
+        <PaginationBlock
+          studentsCount={data?.studentsCount}
+          totalStudents={data?.totalStudents}
+          page={page}
+          hasMore={data?.hasMore}
+          onPageClick={onPageClick}
+          isPlaceholderData={isPlaceholderData}
+        />
       </CardFooter>
     </Card>
   );

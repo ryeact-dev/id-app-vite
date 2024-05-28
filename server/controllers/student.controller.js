@@ -46,12 +46,22 @@ async function getPaginatedStudents(req, res, next) {
         // Sort Student ID Numbers in ascending order
         orderBy: { studentIdNumber: 'asc' },
       }),
-      prisma.student.count(),
+      prisma.student.count({
+        where: {
+          OR: [
+            { firstName: { contains: searchQuery } },
+            { lastName: { contains: searchQuery } },
+            { studentIdNumber: { contains: searchQuery } },
+          ],
+        },
+      }),
     ]);
 
     const hasMore = paginatedStudents.length === Number(limit);
 
-    const studentsCount = Number(page) + Number(limit);
+    const studentsCount = !hasMore
+      ? paginatedStudents.length
+      : Number(page) + Number(limit);
 
     res.json({ paginatedStudents, studentsCount, totalStudents, hasMore });
   } catch (err) {

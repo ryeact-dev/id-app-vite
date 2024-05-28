@@ -1,8 +1,10 @@
 import {
-  addValidatedID,
-  getPaginatedValidations,
-} from '@/api/id_validation.api';
-import { deletePrintTransaction, releaseID } from '@/api/printing.api';
+  addUpdatePrintId,
+  deletePrintTransaction,
+  getPaginatedPrintedIds,
+  releaseID,
+} from '@/api/printing.api';
+import { getPaginatedPrintedIdsReport } from '@/api/reports.api';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import {
   keepPreviousData,
@@ -12,30 +14,15 @@ import {
 } from '@tanstack/react-query';
 
 // Queries
-export function useGetPaginatedValidations(
-  schoolYearId,
-  semesterId,
-  searchQuery,
-  page,
-  limit
-) {
+export function useGetPaginatedPrintedIdsReport(date, page, limit) {
+  const forQueryingData = { ...date, page, limit };
+
   return useQuery({
-    queryKey: [
-      'list-of-validated-ids',
-      schoolYearId,
-      semesterId,
-      searchQuery,
-      page,
-      limit,
-    ],
+    queryKey: ['list-of-printed-ids-report', page, limit, date],
     placeholderData: keepPreviousData,
     queryFn: () =>
-      getPaginatedValidations({
-        schoolYearId,
-        semesterId,
-        searchQuery,
-        page,
-        limit,
+      getPaginatedPrintedIdsReport({
+        forQueryingData,
       }),
     select: ({ data }) => {
       return data;
@@ -44,20 +31,16 @@ export function useGetPaginatedValidations(
 }
 
 // Mutations
-export function useValidateID(setIDBarcode) {
+export function usePrintId(closeModal) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: addValidatedID,
+    mutationFn: addUpdatePrintId,
     onError: ({ response }) => ToastNotification('error', response.data),
-    onSuccess: ({ data }) => {
-      queryClient.invalidateQueries({ queryKey: ['list-of-validated-ids'] });
-      ToastNotification(
-        'success',
-        `${data.studentIdNumber}'s ID Validated successfully`
-      );
-      setIDBarcode('');
-      return data;
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['list-of-printed-ids'] });
+      ToastNotification('success', 'ID sent to printer');
+      // closeModal();
     },
   });
 }

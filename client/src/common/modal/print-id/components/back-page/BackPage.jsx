@@ -4,7 +4,7 @@ import registrarEsign from '@/assets/registrar_esign.png';
 export default function BackPage({ payload }) {
   return (
     <div
-      className={`print-card relative w-[300px] h-[473px] rounded-md overflow-hidden shadow-lg p-1`}
+      className={`print-card relative w-[300px] h-[473px] bg-white rounded-md overflow-hidden shadow-lg p-1`}
     >
       {/* Student Department */}
       <div className='flex items-center justify-center border-2 border-black w-full h-10 rounded-sm'>

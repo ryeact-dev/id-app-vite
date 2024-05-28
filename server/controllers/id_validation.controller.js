@@ -2,14 +2,18 @@ const { prisma } = require('../lib/utils/prismaClient');
 
 // Get All Users
 async function getPaginatedValidations(req, res, next) {
-  const { searchQuery, page, limit } = req.query;
+  const { searchQuery, page, limit, schoolYearId, semesterId } = req.query;
 
   try {
     const [validations, totalValidations] = await prisma.$transaction([
       prisma.validation.findMany({
-        // where: {
-        //   studentIdNumber: { contains: searchQuery },
-        // },
+        where: {
+          AND: [
+            // { studentIdNumber: { contains: searchQuery } },
+            { schoolYearId },
+            { semesterId },
+          ],
+        },
 
         skip: Number(page) * Number(limit),
         take: Number(limit),
@@ -51,7 +55,11 @@ async function getPaginatedValidations(req, res, next) {
           dateValidated: 'desc',
         },
       }),
-      prisma.validation.count(),
+      prisma.validation.count({
+        where: {
+          AND: [{ schoolYearId }, { semesterId }],
+        },
+      }),
     ]);
 
     const hasMore = validations.length === Number(limit);

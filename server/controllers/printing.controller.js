@@ -1,6 +1,6 @@
 const { prisma } = require('../lib/utils/prismaClient');
 
-// Get All Users
+// Get Paginated List of Printed ID for Reports base on selected Date Ranges
 async function getPaginatedPrintedIds(req, res, next) {
   const { searchQuery, page, limit, schoolYearId, semesterId } = req.query;
 
@@ -52,14 +52,19 @@ async function getPaginatedPrintedIds(req, res, next) {
           },
         },
       }),
-      prisma.student.count(),
+      prisma.printing.count({
+        where: {
+          AND: [
+            { studentIdNumber: { contains: searchQuery } },
+            { schoolYearId },
+            { semesterId },
+          ],
+        },
+      }),
     ]);
 
-    const hasMore = students.length === Number(limit);
-
-    const studentsCount = !hasMore
-      ? students.length
-      : Number(page) + Number(limit);
+    const studentsCount = Number(page + 1) * students.length;
+    const hasMore = studentsCount < totalStudents && students.length > 0;
 
     res.json({
       paginatedStudents: students,
