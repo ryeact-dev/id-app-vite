@@ -31,7 +31,7 @@ export default function DatabasePage() {
   });
 
   const { data: listOfStudents = [], isPlaceholderData } =
-    useGetPaginatedStudents(searchQuery, Number(page - 1), 2);
+    useGetPaginatedStudents(searchQuery, Number(page - 1), 50);
 
   if (!isLoading && !currentUser?.userInfo) {
     return <Navigate to='/login' replace />;

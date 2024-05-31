@@ -61,6 +61,13 @@ export default function PrintTableOptions({
   };
 
   const handleReleaseID = () => {
+    if (!printInfo?.printedDate) {
+      return ToastNotification(
+        'error',
+        'Please print the student ID before releasing'
+      );
+    }
+
     const title = `Release ${student?.firstName} ${student?.lastName}'s ID?`;
 
     const modalData = {
@@ -91,37 +98,35 @@ export default function PrintTableOptions({
   };
 
   return (
-    <>
-      <div className='flex space-x-2'>
-        {/* <Button size='sm' onClick={handleEditStudent} variant='outline'>
+    <div className='flex space-x-2 w-60 shrink-0'>
+      {/* <Button size='sm' onClick={handleEditStudent} variant='outline'>
           <PenBox className='size-4 mr-1' /> Edit
         </Button> */}
-        <Button
-          size='sm'
-          className='w-20 bg-blue-500 hover:bg-blue-500/90 text-white'
-          onClick={handlePrintStudentID}
-        >
-          {/* <Printer className='size-4 mr-1' /> */}
-          {printInfo?.printedDate ? 'Reprint' : 'Print'}
-        </Button>
-        <Button
-          size='sm'
-          disabled={printInfo?.releasedDate}
-          className={'bg-green-500 hover:bg-green-500/90 text-white w-20'}
-          onClick={handleReleaseID}
-        >
-          {printInfo?.releasedDate ? 'Released' : 'Release'}
-        </Button>
-        {!printInfo?.releasedDate && (
-          <Button
-            size='sm'
-            className={'px-4'}
-            onClick={handleDeletePrintedRecord}
-          >
-            Delete
-          </Button>
-        )}
-      </div>
-    </>
+      <Button
+        size='sm'
+        className='w-20 bg-blue-500 hover:bg-blue-500/90 text-white'
+        onClick={handlePrintStudentID}
+      >
+        {/* <Printer className='size-4 mr-1' /> */}
+        {printInfo?.printedDate ? 'Reprint' : 'Print'}
+      </Button>
+      <Button
+        size='sm'
+        disabled={printInfo?.releasedDate}
+        className={'bg-green-500 hover:bg-green-500/90 text-white w-24'}
+        onClick={handleReleaseID}
+      >
+        {printInfo?.releasedDate ? 'Released' : 'Release'}
+      </Button>
+
+      <Button
+        size='sm'
+        className={'px-4'}
+        disabled={printInfo?.releasedDate}
+        onClick={handleDeletePrintedRecord}
+      >
+        Delete
+      </Button>
+    </div>
   );
 }

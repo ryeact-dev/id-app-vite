@@ -1,3 +1,4 @@
+import Footer from '@/common/footer/Footer';
 import Header from '@/common/header/Header';
 import LoadingSpinner from '@/common/loading-spinner/LoadingSpinner';
 import { Suspense, useEffect, useRef } from 'react';
@@ -18,14 +19,17 @@ export default function Layout() {
 
   // RENDER SECTION
   return (
-    <main ref={mainContentRef}>
+    <main
+      ref={mainContentRef}
+      className='min-h-screen flex flex-col justify-between items-stretch'
+    >
       <div className='space-y-4'>
         <Header />
         <Suspense fallback={<LoadingSpinner />}>
           <Outlet />
         </Suspense>
       </div>
-      <div>Footer</div>
+      <Footer />
     </main>
   );
 }

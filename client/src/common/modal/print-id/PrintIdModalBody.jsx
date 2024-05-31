@@ -55,7 +55,7 @@ export default function PrintIdModalBody({ payload, closeModal }) {
       forAddingData = {
         id: payload?.printId,
       };
-      // printIdMutation({ forAddingData, isNew: false });
+      printIdMutation({ forAddingData, isNew: false });
     } else {
       // Add New Print Here
       forAddingData = {
@@ -67,9 +67,10 @@ export default function PrintIdModalBody({ payload, closeModal }) {
         reprintReason,
       };
 
-      // printIdMutation({ forAddingData, isNew: true });
+      printIdMutation({ forAddingData, isNew: true });
     }
-    handlePrint();
+    // Browser Print Dailog
+    // handlePrint();
   };
 
   return (

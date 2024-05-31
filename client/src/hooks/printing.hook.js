@@ -54,7 +54,7 @@ export function usePrintId(closeModal) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['list-of-printed-ids'] });
       ToastNotification('success', 'ID sent to printer');
-      // closeModal();
+      closeModal();
     },
   });
 }
