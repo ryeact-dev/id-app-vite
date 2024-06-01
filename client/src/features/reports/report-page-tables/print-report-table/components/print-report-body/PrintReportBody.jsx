@@ -4,13 +4,13 @@ import umtcLogo from '@/assets/UMTC_LOGO.png';
 import PrintReportPrintedStudents from '../printReportPrintedStudents/PrintReportPrintedStudents';
 
 export default function PrintReportBody({ printedLists, index, date }) {
-  let start = 0;
-  let end = 25;
+  // let start = 0;
+  // let end = 25;
 
-  if (index > 0) {
-    start = end + 1;
-    end = end * (index + 1) + 1;
-  }
+  // if (index > 0) {
+  //   start = end + 1;
+  //   end = end * (index + 1) + 1;
+  // }
 
   return (
     <div className='break-before-page'>
@@ -39,9 +39,7 @@ export default function PrintReportBody({ printedLists, index, date }) {
         </div>
 
         {/* List of Students */}
-        <PrintReportPrintedStudents
-          listOfStudents={printedLists?.slice(start, end)}
-        />
+        <PrintReportPrintedStudents listOfStudents={printedLists} />
       </div>
 
       {/* Footer */}

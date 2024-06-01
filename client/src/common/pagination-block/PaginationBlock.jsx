@@ -10,7 +10,7 @@ export default function PaginationBlock({
   isPlaceholderData,
 }) {
   return (
-    <Pagination className='flex items-center justify-between'>
+    <Pagination className='flex items-center justify-end gap-4'>
       <div className='text-xs text-muted-foreground'>
         Showing <strong>{studentsCount}</strong> of{' '}
         <strong>{totalStudents}</strong> students

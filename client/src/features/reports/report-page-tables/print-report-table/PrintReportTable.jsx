@@ -28,18 +28,32 @@ export default function PrintReportTable({
   const { data, isPlaceholderData } = useGetPaginatedPrintedIdsReport(
     date,
     Number(page) - 1,
-    52
+    26
   );
 
-  const pageNumbers = Math.ceil(data?.paginatedStudents.length / 26) || 0;
-  const pageArray = Array(Number(pageNumbers))?.fill();
+  // const pageNumbers = Math.ceil(data?.paginatedStudents.length / 26) || 0;
+  // const pageArray = Array(Number(pageNumbers))?.fill();
 
   return (
     <>
       <Card>
-        <CardHeader className='space-y-0'>
-          <CardTitle>Printed ID Transactions</CardTitle>
-          <CardDescription>List of Printed ID per transaction</CardDescription>
+        <CardHeader className='space-y-0 flex-row justify-between'>
+          <div>
+            <CardTitle>Printed ID Transactions</CardTitle>
+            <CardDescription>
+              List of Printed ID per transaction
+            </CardDescription>
+          </div>
+          <div>
+            <PaginationBlock
+              studentsCount={data?.studentsCount}
+              totalStudents={data?.totalStudents}
+              page={page}
+              hasMore={data?.hasMore}
+              onPageClick={onPageClick}
+              isPlaceholderData={isPlaceholderData}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <Table>
@@ -52,15 +66,15 @@ export default function PrintReportTable({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data?.paginatedStudents.map((printInfo) => {
+              {data?.paginatedStudents.map((printInfo, index) => {
                 return (
-                  <TableRow key={printInfo.id}>
+                  <TableRow key={index}>
                     <TableCell className='font-medium'>
                       <div className='font-medium -mb-1'>
-                        {`${printInfo.student.studentIdNumber} - ${printInfo.student.firstName} ${printInfo.student.middleInitial} ${printInfo.student.lastName}`}
+                        {`${printInfo.student?.studentIdNumber} - ${printInfo.student?.firstName} ${printInfo.student?.middleInitial} ${printInfo.student?.lastName}`}
                       </div>
                       <div className='hidden text-xs text-muted-foreground md:inline'>
-                        {printInfo.student.program.programName}
+                        {printInfo.student?.program.programName}
                       </div>
                     </TableCell>
 
@@ -75,10 +89,11 @@ export default function PrintReportTable({
 
                     <TableCell className='font-medium'>
                       <div className='font-medium -mb-1'>
-                        {format(
-                          new Date(printInfo.printedDate),
-                          'MMM dd, yyyy'
-                        )}
+                        {printInfo.printedDate &&
+                          format(
+                            new Date(printInfo.printedDate),
+                            'MMM dd, yyyy'
+                          )}
                       </div>
                       <div className='hidden text-xs text-muted-foreground md:inline'>
                         {printInfo.printedBy?.fullName || ''}
@@ -104,28 +119,17 @@ export default function PrintReportTable({
             </TableBody>
           </Table>
         </CardContent>
-        <CardFooter>
-          <PaginationBlock
-            studentsCount={data?.studentsCount}
-            totalStudents={data?.totalStudents}
-            page={page}
-            hasMore={data?.hasMore}
-            onPageClick={onPageClick}
-            isPlaceholderData={isPlaceholderData}
-          />
-        </CardFooter>
       </Card>
 
       <div className='bg-white p-1 print-report' ref={componentToPrintRef}>
-        {pageArray?.map((_, index) => (
-          <PrintReportBody
-            key={index}
-            componentToPrint
-            index={index}
-            printedLists={data?.paginatedStudents}
-            date={date}
-          />
-        ))}
+        {/* {pageArray?.map((_, index) => ( */}
+        <PrintReportBody
+          // key={index}
+          // index={index}
+          printedLists={data?.paginatedStudents}
+          date={date}
+        />
+        {/* ))} */}
       </div>
     </>
   );
