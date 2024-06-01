@@ -4,6 +4,7 @@ import {
   getAllUsers,
   getCurrentUser,
   loginUser,
+  logoutUser,
   toggleUserStatus,
 } from '@/api/user.api';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
@@ -56,7 +57,21 @@ export function useLoginUser() {
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['current-user'] });
-      navigate('/dashboard', { replace: true });
+      navigate('/', { replace: true });
+    },
+  });
+}
+
+// LOGOUT USER
+export function useLogoutUser(closeModal) {
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: logoutUser,
+    onError: ({ response }) => ToastNotification('error', response.data),
+    onSuccess: () => {
+      navigate('/login', { replace: true });
+      closeModal();
     },
   });
 }

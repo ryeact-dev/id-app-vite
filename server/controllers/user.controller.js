@@ -225,6 +225,16 @@ async function deleteUser(req, res, next) {
   }
 }
 
+async function logoutUser(req, res, next) {
+  try {
+    res.clearCookie('umtcid_user');
+    res.status(200).send('User logged out successfully.');
+  } catch (err) {
+    err.title = 'POST Logout User';
+    next(err);
+  }
+}
+
 exports.getCurrentUser = getCurrentUser;
 exports.getAllUsers = getAllUsers;
 exports.addUser = addUser;
@@ -232,3 +242,4 @@ exports.updateUser = updateUser;
 exports.toggleUserStatus = toggleUserStatus;
 exports.loginUser = loginUser;
 exports.deleteUser = deleteUser;
+exports.logoutUser = logoutUser;

@@ -14,6 +14,10 @@ export async function loginUser({ forLoginData }) {
   return await axios.post('/api/user/login', forLoginData);
 }
 
+export async function logoutUser() {
+  return await axios.post('/api/user/logout');
+}
+
 export async function addUser({ forAddingData, isNew }) {
   if (!isNew) {
     return await axios.patch('/api/user/update', forAddingData);

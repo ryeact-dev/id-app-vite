@@ -13,9 +13,33 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { useCurrentUser } from '@/hooks/user.hook';
+import { useState } from 'react';
+import ModalContainer from '@/containers/ModalContainer';
 
 export default function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalSetting, setModalSetting] = useState({
+    modalType: null,
+    confirmationType: null,
+    title: null,
+    payload: null,
+    size: null,
+  });
+
   const { isLoading, data: currentUser } = useCurrentUser();
+
+  const handleLogout = () => {
+    const modalData = {
+      confirmationType: 'logout-user',
+      title: 'Logout User?',
+      size: 'max-w-md',
+      modalType: 'confirmation',
+      payload: null,
+    };
+
+    setModalSetting(modalData);
+    setIsOpen(true);
+  };
 
   return (
     <header className='sticky top-0 border-b bg-background/70 z-50 backdrop-blur-sm w-full'>
@@ -33,7 +57,7 @@ export default function Header() {
         {currentUser?.userInfo && (
           <>
             <NavLinks />
-            <Sheet>
+            {/* <Sheet>
               <SheetTrigger asChild>
                 <Button
                   variant='outline'
@@ -82,7 +106,7 @@ export default function Header() {
                   </NavLink>
                 </nav>
               </SheetContent>
-            </Sheet>
+            </Sheet> */}
 
             <div className='flex flex-1 items-center justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4'>
               <DropdownMenu>
@@ -106,16 +130,26 @@ export default function Header() {
                     </>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Settings</DropdownMenuItem>
-                  <DropdownMenuItem>Support</DropdownMenuItem>
+                  <DropdownMenuItem>Change Password</DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Logout</DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>
+                    Logout
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
           </>
         )}
       </div>
+
+      {/* Modal Container */}
+      {isOpen === true && (
+        <ModalContainer
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          modalSetting={modalSetting}
+        />
+      )}
     </header>
   );
 }

@@ -14,11 +14,8 @@ export default function ErrorBoundary() {
       <p className='my-2 font-medium'>{error.message}</p>
       <p>
         Go back to{' '}
-        <a
-          href='/app/dashboard'
-          className='font-medium tracking-wide text-green'
-        >
-          DashboardPage
+        <a href='/' className='font-medium tracking-wide text-green'>
+          Dashboard Page
         </a>
       </p>
     </div>

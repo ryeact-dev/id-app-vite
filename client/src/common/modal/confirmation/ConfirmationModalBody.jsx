@@ -3,7 +3,7 @@ import { useDeleteDepartment } from '@/hooks/department.hook';
 import { useDeletePrintTransaction, useReleaseId } from '@/hooks/printing.hook';
 import { useDeleteProgram } from '@/hooks/program.hook';
 import { useDeleteSchoolYear } from '@/hooks/schoolyear.hook';
-import { useDeleteUser } from '@/hooks/user.hook';
+import { useDeleteUser, useLogoutUser } from '@/hooks/user.hook';
 import { Send, XCircle } from 'lucide-react';
 
 export default function ConfirmationModalBody({
@@ -20,7 +20,9 @@ export default function ConfirmationModalBody({
   const handleDeleteProgramMutation = useDeleteProgram(closeModal);
   const handleDeleteSchoolYearMutation = useDeleteSchoolYear(closeModal);
   const handleReleaseIdMutation = useReleaseId(closeModal);
-  const handleDeletePrintTransaction = useDeletePrintTransaction(closeModal);
+  const handleDeletePrintTransactionMutation =
+    useDeletePrintTransaction(closeModal);
+  const handleLogoutUserMutation = useLogoutUser(closeModal);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -43,12 +45,16 @@ export default function ConfirmationModalBody({
         isLoading = handleDeleteSchoolYearMutation.isPending;
         break;
       case 'delete-print-transaction':
-        handleDeletePrintTransaction.mutate({ printId: payload });
-        isLoading = handleDeletePrintTransaction.isPending;
+        handleDeletePrintTransactionMutation.mutate({ printId: payload });
+        isLoading = handleDeletePrintTransactionMutation.isPending;
         break;
       case 'release-id':
         handleReleaseIdMutation.mutate({ printId: payload });
         isLoading = handleReleaseIdMutation.isPending;
+        break;
+      case 'logout-user':
+        handleLogoutUserMutation.mutate({ printId: payload });
+        isLoading = handleLogoutUserMutation.isPending;
         break;
       default:
         break;

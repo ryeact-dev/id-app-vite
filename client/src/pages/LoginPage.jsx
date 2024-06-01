@@ -3,11 +3,9 @@ import { useForm } from 'react-hook-form';
 import LoginInputForm from '@/features/login/login-input-form/LoginInputForm';
 import { loginSchema } from '@/lib/schema';
 import { INITIAL_LOGIN_OBJ } from '@/lib/globalConstants';
-import { useCurrentUser, useLoginUser } from '@/hooks/user.hook';
-import { Navigate } from 'react-router-dom';
+import { useLoginUser } from '@/hooks/user.hook';
 
 export function LoginPage() {
-  const { isLoading, data: currentUser } = useCurrentUser();
   const onLoginUserMutation = useLoginUser();
 
   const form = useForm({
@@ -15,17 +13,13 @@ export function LoginPage() {
     defaultValues: INITIAL_LOGIN_OBJ,
   });
 
-  if (!isLoading && !currentUser?.userInfo) {
-    <Navigate to='/dashboard' replace />;
-  }
-
   const onSubmit = (values) => {
     onLoginUserMutation.mutate({ forLoginData: values });
   };
 
   return (
-    <div className='max-w-4xl mx-auto'>
-      <div className='flex flex-col justify-center items-center '>
+    <div className='w-full min-h-screen flex items-center justify-center'>
+      <div className='flex flex-col justify-center items-center max-w-4xl'>
         <div className='w-full rounded-md overflow-hidden lg:grid lg:min-h-[400px] lg:grid-cols-2 xl:min-h-[600px] shadow-slate-500'>
           <div className='flex items-center justify-center py-12 bg-card px-4'>
             <div className='mx-auto grid max-w-[350px] gap-6'>
