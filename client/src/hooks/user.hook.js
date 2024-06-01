@@ -6,6 +6,7 @@ import {
   loginUser,
   logoutUser,
   toggleUserStatus,
+  updateUserPassword,
 } from '@/api/user.api';
 import { ToastNotification } from '@/common/toastNotification/ToastNotification';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -71,6 +72,21 @@ export function useLogoutUser(closeModal) {
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: () => {
       navigate('/login', { replace: true });
+      closeModal();
+    },
+  });
+}
+
+export function useUpdateUserPassword(closeModal) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateUserPassword,
+    onError: ({ response }) => ToastNotification('error', response.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['all-users'] });
+      queryClient.invalidateQueries({ queryKey: ['current-user'] });
+      ToastNotification('success', 'Password updated successfully');
       closeModal();
     },
   });

@@ -60,6 +60,13 @@
   }
 }
 
+@layer components {
+  .pass-indicator {
+    @apply before:absolute before:content-['']  before:h-full before:w-1/2 before:rounded
+           before:transition-[width] before:duration-300 before:ease-in-out;
+  }
+}
+
 /* Barcode Background  */
 
 #barcodecontent {

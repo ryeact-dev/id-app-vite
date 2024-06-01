@@ -41,6 +41,19 @@ export default function Header() {
     setIsOpen(true);
   };
 
+  const handleUpdatePassword = () => {
+    const modalData = {
+      confirmationType: null,
+      title: 'Update Password',
+      size: 'max-w-xl',
+      modalType: 'update-password',
+      payload: null,
+    };
+
+    setModalSetting(modalData);
+    setIsOpen(true);
+  };
+
   return (
     <header className='sticky top-0 border-b bg-background/70 z-50 backdrop-blur-sm w-full'>
       <div className='flex items-center gap-4 px-4 h-16 mx-auto md:px-0 max-w-7xl'>
@@ -130,7 +143,9 @@ export default function Header() {
                     </>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Change Password</DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleUpdatePassword}>
+                    Change Password
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>
                     Logout

@@ -5,6 +5,26 @@ export const INITIAL_USER_OBJ = {
   role: '',
 };
 
+export const PASSWORD_REQUIREMENTS = [
+  {
+    id: 1,
+    text: '• At least 8 characters & no special characters',
+    regex: /.{8,}/,
+  },
+  { id: 2, text: '• At least 1 uppercase letter', regex: /[A-Z]/ },
+  {
+    id: 3,
+    text: '• At least 4 numbers',
+    regex: /^(?=(?:\D*\d){4})[a-zA-Z0-9]*$/,
+  },
+];
+
+export const INITIAL_UPDATE_PASSWORD_OBJ = {
+  currentPassword: '',
+  newPassword: '',
+  confirmPassword: '',
+};
+
 export const INITIAL_LOGIN_OBJ = {
   username: '',
   password: '',

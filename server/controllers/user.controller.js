@@ -201,6 +201,41 @@ async function loginUser(req, res, next) {
   }
 }
 
+// Update User Password
+async function updateUserPassword(req, res, next) {
+  const { currentPassword, newPassword, userPassword, userId } = req.body;
+  try {
+    const foundUser = await prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+      select: {
+        password: true,
+      },
+    });
+
+    const passOk = bcrypt.compareSync(currentPassword, foundUser.password);
+
+    if (!passOk)
+      return res.status(401).send('Current Password submitted is wrong');
+
+    const hashedPassword = bcrypt.hashSync(newPassword, bcryptSalt);
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    });
+
+    res.json();
+  } catch (err) {
+    err.title = 'PATCH Update User Password';
+    next(err);
+  }
+}
+
 // Delete User
 async function deleteUser(req, res, next) {
   const { fullName } = req.user;
@@ -241,5 +276,6 @@ exports.addUser = addUser;
 exports.updateUser = updateUser;
 exports.toggleUserStatus = toggleUserStatus;
 exports.loginUser = loginUser;
+exports.updateUserPassword = updateUserPassword;
 exports.deleteUser = deleteUser;
 exports.logoutUser = logoutUser;

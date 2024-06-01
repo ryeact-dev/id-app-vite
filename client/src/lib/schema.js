@@ -111,3 +111,30 @@ export const programSchema = z.object({
     message: 'Department must not be empty.',
   }),
 });
+
+// It Required Input of a combination of Numbers & Strings also length must be greater than 6...
+// example: 123456s | abc123 | 123abc
+const passwordRules = /^(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$/;
+
+// Update Password Schema
+export const updateUserPasswordSchema = z
+  .object({
+    currentPassword: z
+      .string()
+      .trim()
+      .min(1, { message: 'Password is required' }),
+    newPassword: z
+      .string()
+      .trim()
+      .min(8)
+      .regex(passwordRules, 'Must contain letter & numbers [min of 8 chars]')
+      .min(1, { message: 'Password is required' }),
+    confirmPassword: z
+      .string()
+      .trim()
+      .min(1, { message: 'Confirm Password is required' }),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });

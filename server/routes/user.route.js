@@ -8,6 +8,7 @@ const {
   toggleUserStatus,
   deleteUser,
   logoutUser,
+  updateUserPassword,
 } = require('../controllers/user.controller');
 const { verifyToken } = require('../lib/helpers/verifyToken');
 
@@ -21,6 +22,7 @@ router.post('/login', loginUser);
 router.post('/logout', verifyToken, logoutUser);
 
 router.patch('/update', verifyToken, updateUser);
+router.patch('/update-password', verifyToken, updateUserPassword);
 router.patch('/toggle-status', verifyToken, toggleUserStatus);
 
 router.delete('/delete/:id', verifyToken, deleteUser);

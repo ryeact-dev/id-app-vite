@@ -26,6 +26,10 @@ export async function addUser({ forAddingData, isNew }) {
   }
 }
 
+export async function updateUserPassword({ forUpdatingData }) {
+  return await axios.patch('/api/user/update-password', forUpdatingData);
+}
+
 export async function toggleUserStatus({ forUpdatingData }) {
   return await axios.patch('/api/user/toggle-status', forUpdatingData);
 }
