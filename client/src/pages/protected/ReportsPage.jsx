@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/common/ui/tabs';
 import ReportHeader from '@/features/reports/report-header/ReportHeader';
 import PrintReportTable from '@/features/reports/report-page-tables/print-report-table/PrintReportTable';
 import ValidationReportTable from '@/features/reports/report-page-tables/validation-report-table/ValidationReportTable';
 import { useCurrentUser } from '@/hooks/user.hook';
 import { Navigate, useSearchParams } from 'react-router-dom';
-import { subMonths } from 'date-fns';
+import { addDays, subMonths } from 'date-fns';
+import { useReactToPrint } from 'react-to-print';
 
 export default function ReportsPage() {
+  const componentToPrintRef = useRef();
+
   const [date, setDate] = useState({
     from: subMonths(new Date(), 1),
-    to: new Date(),
+    to: addDays(new Date(), 10),
   });
 
   const [searchParams, setSearchParams] = useSearchParams({
@@ -38,6 +41,10 @@ export default function ReportsPage() {
     });
   };
 
+  const handlePrint = useReactToPrint({
+    content: () => componentToPrintRef.current,
+  });
+
   if (!isLoading && !currentUser?.userInfo) {
     return <Navigate to='/login' replace />;
   }
@@ -63,15 +70,25 @@ export default function ReportsPage() {
               Validate
             </TabsTrigger>
           </TabsList>
-          <ReportHeader date={date} setDate={setDate} />
+          <ReportHeader
+            handlePrint={handlePrint}
+            date={date}
+            setDate={setDate}
+          />
         </div>
 
         <TabsContent value='print' className='space-y-4'>
-          <PrintReportTable page={page} onPageClick={onPageClick} date={date} />
+          <PrintReportTable
+            componentToPrintRef={componentToPrintRef}
+            page={page}
+            onPageClick={onPageClick}
+            date={date}
+          />
         </TabsContent>
 
         <TabsContent value='validate'>
           <ValidationReportTable
+            componentToPrintRef={componentToPrintRef}
             page={page}
             onPageClick={onPageClick}
             date={date}

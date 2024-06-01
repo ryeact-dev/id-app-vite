@@ -18,15 +18,20 @@ import {
 import { useGetPaginatedValidatedIdsReport } from '@/hooks/reports.hook';
 import { format } from 'date-fns';
 
-export default function ValidationReportTable({ date, page, onPageClick }) {
+export default function ValidationReportTable({
+  date,
+  page,
+  onPageClick,
+  componentToPrintRef,
+}) {
   const { data, isPlaceholderData } = useGetPaginatedValidatedIdsReport(
     date,
     Number(page) - 1,
-    10
+    50
   );
 
   return (
-    <Card>
+    <Card ref={componentToPrintRef}>
       <CardHeader className='space-y-0'>
         <CardTitle>ID Validation Transactions</CardTitle>
         <CardDescription>

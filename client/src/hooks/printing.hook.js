@@ -53,6 +53,9 @@ export function usePrintId(closeModal) {
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['list-of-printed-ids'] });
+      queryClient.invalidateQueries({
+        queryKey: ['reports-list-of-printed-ids'],
+      });
       ToastNotification('success', 'ID sent to printer');
       closeModal();
     },
@@ -67,6 +70,9 @@ export function useReleaseId(closeModal) {
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['list-of-printed-ids'] });
+      queryClient.invalidateQueries({
+        queryKey: ['reports-list-of-printed-ids'],
+      });
       ToastNotification('success', 'ID Released');
       closeModal();
     },
@@ -81,6 +87,9 @@ export function useDeletePrintTransaction(closeModal) {
     onError: ({ response }) => ToastNotification('error', response.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['list-of-printed-ids'] });
+      queryClient.invalidateQueries({
+        queryKey: ['reports-list-of-printed-ids'],
+      });
       ToastNotification('success', 'Transaction successfully deleted');
       closeModal();
     },

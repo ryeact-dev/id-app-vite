@@ -72,6 +72,10 @@
   display: none;
 }
 
+.print-report {
+  display: none;
+}
+
 @media print {
   @page {
     margin: 0 !important;
@@ -87,5 +91,9 @@
   .print-card {
     border-radius: 0px;
     box-shadow: none;
+  }
+
+  .print-report {
+    display: block;
   }
 }

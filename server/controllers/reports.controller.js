@@ -8,7 +8,7 @@ async function getPagindatedPrintedIDsReport(req, res, next) {
     const [students, totalStudents] = await prisma.$transaction([
       prisma.printing.findMany({
         where: {
-          AND: [{ releasedDate: { lte: dateEnd, gte: dateStart } }],
+          AND: [{ printedDate: { lte: dateEnd, gte: dateStart } }],
         },
         skip: Number(page) * Number(limit),
         take: Number(limit),
@@ -46,7 +46,7 @@ async function getPagindatedPrintedIDsReport(req, res, next) {
       }),
       prisma.printing.count({
         where: {
-          AND: [{ releasedDate: { lte: dateEnd, gte: dateStart } }],
+          AND: [{ printedDate: { lte: dateEnd, gte: dateStart } }],
         },
       }),
     ]);

@@ -9,12 +9,12 @@ export function useGetPaginatedPrintedIdsReport(date, page, limit) {
   const forQueryingData = { ...date, page, limit };
 
   return useQuery({
-    queryKey: ['list-of-printed-ids-report', page, limit, date],
-    placeholderData: keepPreviousData,
+    queryKey: ['reports-list-of-printed-ids', page, limit, date],
     queryFn: () =>
       getPaginatedPrintedIdsReport({
         forQueryingData,
       }),
+    placeholderData: keepPreviousData,
     select: ({ data }) => {
       return data;
     },
@@ -25,12 +25,12 @@ export function useGetPaginatedValidatedIdsReport(date, page, limit) {
   const forQueryingData = { ...date, page, limit };
 
   return useQuery({
-    queryKey: ['list-of-validated-ids-report', page, limit, date],
-    placeholderData: keepPreviousData,
+    queryKey: ['reports-list-of-validated-ids', page, limit, date],
     queryFn: () =>
       getPaginatedValidatedIdsReport({
         forQueryingData,
       }),
+    placeholderData: keepPreviousData,
     select: ({ data }) => {
       return data;
     },

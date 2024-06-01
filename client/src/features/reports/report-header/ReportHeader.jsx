@@ -2,12 +2,16 @@ import { DateRangePicker } from '@/common/date-picker/date-range-picker/DateRang
 import { Button } from '@/common/ui/button';
 import { Printer } from 'lucide-react';
 
-export default function ReportHeader({ tabValue, date, setDate }) {
+export default function ReportHeader({ tabValue, date, setDate, handlePrint }) {
   return (
     <div className='flex items-center gap-3'>
       <div className='flex items-center gap-3'>
         <DateRangePicker date={date} setDate={setDate} />
-        <Button type='button' className='text-white font-semibold px-8'>
+        <Button
+          type='button'
+          className='text-white font-semibold px-8'
+          onClick={handlePrint}
+        >
           <Printer size={16} strokeWidth={3} className='mr-1' /> Print Page
         </Button>
       </div>

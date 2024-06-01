@@ -20,9 +20,9 @@ export default function StudentPrintTable({
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>
-          <TableHead>Released Date</TableHead>
-          <TableHead>Printed Date</TableHead>
           <TableHead>Print Type</TableHead>
+          <TableHead>Printed Date</TableHead>
+          <TableHead>Released Date</TableHead>
           <TableHead>
             Actions
             <span className='sr-only'>Actions</span>
@@ -41,16 +41,14 @@ export default function StudentPrintTable({
                   {printInfo.student.program.programName}
                 </div>
               </TableCell>
-              <TableCell>
-                <div className='font-medium -mb-1'>
-                  {printInfo.releasedDate
-                    ? format(new Date(printInfo.releasedDate), 'MMM dd, yyyy')
-                    : 'Not Release'}
-                </div>{' '}
+
+              <TableCell className='font-medium'>
+                <div className='font-medium -mb-1'>{printInfo.printType}</div>
                 <div className='hidden text-xs text-muted-foreground md:inline'>
-                  {printInfo.releasedBy?.fullName || ''}
+                  {printInfo.reprintReason || ''}
                 </div>
               </TableCell>
+
               <TableCell className='font-medium'>
                 <div className='font-medium -mb-1'>
                   {printInfo.printedDate
@@ -61,12 +59,18 @@ export default function StudentPrintTable({
                   {printInfo.printedBy?.fullName || ''}
                 </div>
               </TableCell>
-              <TableCell className='font-medium'>
-                <div className='font-medium -mb-1'>{printInfo.printType}</div>
+
+              <TableCell>
+                <div className='font-medium -mb-1'>
+                  {printInfo.releasedDate
+                    ? format(new Date(printInfo.releasedDate), 'MMM dd, yyyy')
+                    : 'Not Release'}
+                </div>{' '}
                 <div className='hidden text-xs text-muted-foreground md:inline'>
-                  {printInfo.reprintReason || ''}
+                  {printInfo.releasedBy?.fullName || ''}
                 </div>
               </TableCell>
+
               <TableCell>
                 <PrintTableOptions
                   printInfo={printInfo}
