@@ -1,4 +1,5 @@
 const express = require('express');
+
 const {
   addUser,
   loginUser,
@@ -10,6 +11,7 @@ const {
   logoutUser,
   updateUserPassword,
 } = require('../controllers/user.controller');
+
 const { verifyToken } = require('../lib/helpers/verifyToken');
 
 const router = express.Router();

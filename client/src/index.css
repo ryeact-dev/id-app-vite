@@ -61,6 +61,12 @@
 }
 
 @layer components {
+  .nav-link {
+    @apply after:block after:content-[''] 
+           after:absolute after:h-[3px] after:bg-primary after:w-full after:scale-x-0 after:hover:scale-x-100
+           after:transition after:duration-300 after:origin-center;
+  }
+
   .pass-indicator {
     @apply before:absolute before:content-['']  before:h-full before:w-1/2 before:rounded
            before:transition-[width] before:duration-300 before:ease-in-out;

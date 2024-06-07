@@ -18,6 +18,7 @@ const studentRoute = require('./routes/student.route');
 const printingRoute = require('./routes/printing.route');
 const idValidationRoute = require('./routes/id_validation.route');
 const reportsRoute = require('./routes/reports.route');
+const mySqlRoute = require('./routes/student_info_mysql.route');
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use('/api/student', studentRoute);
 app.use('/api/printing', printingRoute);
 app.use('/api/id-validation', idValidationRoute);
 app.use('/api/reports', reportsRoute);
+app.use('/api/mysql', mySqlRoute);
 
 // Disconnect Prisma when the server exit
 process.on('SIGINT', shutdownPrisma);

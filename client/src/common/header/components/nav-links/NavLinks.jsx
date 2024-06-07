@@ -52,12 +52,14 @@ export default function NavLinks() {
           className={({ isActive }) =>
             `${
               isActive
-                ? 'bg-primary rounded-md text-background text-white '
-                : ''
-            } min-w-24 max-w-fit font-semibold px-3 py-1 text-center my-auto flex gap-1 items-center justify-center  `
+                ? 'bg-primary rounded-md text-background text-white'
+                : 'nav-link'
+            } relative font-semibold text-center my-auto w-fit`
           }
         >
-          {link.icon} {link.title}
+          <div className='flex gap-1 items-center justify-center py-1 px-3'>
+            {link.icon} {link.title}
+          </div>
         </NavLink>
       ))}
     </nav>
