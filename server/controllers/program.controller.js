@@ -8,7 +8,17 @@ async function getAllPrograms(req, res, next) {
     });
     allPrograms.sort((a, b) => a.programName.localeCompare(b.programName));
 
-    res.json(allPrograms);
+    const listOfPrograms = allPrograms.map((program) => {
+      return {
+        id: program.id,
+        departmentId: program.departmentId,
+        programName: program.programName,
+        departmentName: program.department?.departmentName,
+        userId: program.userId,
+      };
+    });
+
+    res.json(listOfPrograms);
   } catch (err) {
     err.title = 'GET all programs';
     next(err);

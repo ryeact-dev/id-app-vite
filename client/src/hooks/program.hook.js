@@ -1,19 +1,14 @@
-import { addProgram, deleteProgram, getAllPrograms } from '@/api/program.api';
-import { ToastNotification } from '@/common/toastNotification/ToastNotification';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { addProgram, deleteProgram, getAllPrograms } from "@/api/program.api";
+import { ToastNotification } from "@/common/toastNotification/ToastNotification";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // Queries
 export function useGetAllPrograms() {
   return useQuery({
-    queryKey: ['all-programs'],
+    queryKey: ["all-programs"],
     queryFn: () => getAllPrograms(),
     select: ({ data }) => {
-      return data.map((program) => {
-        return {
-          ...program,
-          departmentName: program.department?.departmentName,
-        };
-      });
+      return data;
     },
   });
 }
@@ -24,10 +19,10 @@ export function useAddProgram(closeModal) {
 
   return useMutation({
     mutationFn: addProgram,
-    onError: ({ response }) => ToastNotification('error', response.data),
+    onError: ({ response }) => ToastNotification("error", response.data),
     onSuccess: ({ data }) => {
-      queryClient.invalidateQueries({ queryKey: ['all-programs'] });
-      ToastNotification('success', data);
+      queryClient.invalidateQueries({ queryKey: ["all-programs"] });
+      ToastNotification("success", data);
       closeModal();
     },
   });
@@ -38,10 +33,10 @@ export function useDeleteProgram(closeModal) {
 
   return useMutation({
     mutationFn: deleteProgram,
-    onError: ({ response }) => ToastNotification('error', response.data),
+    onError: ({ response }) => ToastNotification("error", response.data),
     onSuccess: ({ data }) => {
-      queryClient.invalidateQueries({ queryKey: ['all-programs'] });
-      ToastNotification('success', data);
+      queryClient.invalidateQueries({ queryKey: ["all-programs"] });
+      ToastNotification("success", data);
       closeModal();
     },
   });

@@ -1,12 +1,12 @@
-import { ToastNotification } from '@/common/toastNotification/ToastNotification';
-import { Button } from '@/common/ui/button';
+import { ToastNotification } from "@/common/toastNotification/ToastNotification";
+import { Button } from "@/common/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/common/ui/card';
+} from "@/common/ui/card";
 import {
   Table,
   TableBody,
@@ -14,9 +14,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/common/ui/table';
-import { useGetAllPrograms } from '@/hooks/program.hook';
-import { PenBox, Trash } from 'lucide-react';
+} from "@/common/ui/table";
+import { useGetAllPrograms } from "@/hooks/program.hook";
+import { PenBox, Trash } from "lucide-react";
 
 export default function Programs({
   setIsOpen,
@@ -27,16 +27,16 @@ export default function Programs({
 
   const handleAddEditProgram = (programData) => {
     if (listOfDepartments?.length === 0) {
-      return ToastNotification('error', 'Please add a department first');
+      return ToastNotification("error", "Please add a department first");
     }
 
     const payload = programData ? programData : null;
 
     const modalData = {
       confirmationType: null,
-      title: 'Program Details',
-      size: 'max-w-lg',
-      modalType: 'add-program',
+      title: "Program Details",
+      size: "max-w-lg",
+      modalType: "add-program",
       payload,
     };
 
@@ -46,10 +46,10 @@ export default function Programs({
 
   const handleDeleteProgram = (program) => {
     const modalData = {
-      confirmationType: 'delete-program',
+      confirmationType: "delete-program",
       title: `Delete ${program.program}?`,
-      size: 'max-w-lg',
-      modalType: 'confirmation',
+      size: "max-w-lg",
+      modalType: "confirmation",
       payload: program.id,
     };
 
@@ -59,18 +59,18 @@ export default function Programs({
 
   return (
     <>
-      <Card className='overflow-hidden'>
-        <div className='p-4 bg-accent text-primary-foreground flex justify-between items-center'>
-          <CardHeader className='p-0 space-y-0'>
+      <Card className="overflow-hidden">
+        <div className="flex items-center justify-between bg-accent p-4 text-primary-foreground">
+          <CardHeader className="space-y-0 p-0">
             <CardTitle>Programs</CardTitle>
-            <CardDescription className='text-primary-foreground'>
+            <CardDescription className="text-primary-foreground">
               List of all candidates for this event
             </CardDescription>
           </CardHeader>
           <div>
             <Button
-              variant='outline'
-              className='hover:bg-background hover:text-secondary-foreground'
+              variant="outline"
+              className="hover:bg-background hover:text-secondary-foreground"
               onClick={() => handleAddEditProgram(null)}
             >
               Add Program
@@ -89,28 +89,28 @@ export default function Programs({
             <TableBody>
               {listOfPrograms?.map((program) => (
                 <TableRow key={program.id}>
-                  <TableCell className='font-medium'>
-                    <div className='font-medium'>
+                  <TableCell className="font-medium">
+                    <div className="font-medium">
                       <p>{program.programName}</p>
-                      <p className='text-xs italic opacity-50 -mt-1'>
+                      <p className="-mt-1 text-xs italic opacity-50">
                         {program.departmentName}
                       </p>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className='flex items-center gap-2'>
+                    <div className="flex items-center gap-2">
                       <Button
                         onClick={() => handleAddEditProgram(program)}
-                        size='sm'
-                        variant='outline'
+                        size="sm"
+                        variant="outline"
                       >
-                        <PenBox className='size-4 mr-1' /> Edit
+                        <PenBox className="mr-1 size-4" /> Edit
                       </Button>
                       <Button
-                        size='sm'
+                        size="sm"
                         onClick={() => handleDeleteProgram(program)}
                       >
-                        <Trash className='size-4 mr-1' />
+                        <Trash className="mr-1 size-4" />
                         Delete
                       </Button>
                     </div>

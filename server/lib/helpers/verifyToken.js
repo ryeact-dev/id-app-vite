@@ -5,7 +5,9 @@ const jwtSecret = process.env.JWTSECRET;
 
 function verifyToken(req, res, next) {
   // Show the IP address of the client
-  // console.log(req.ip);
+  //   console.log(req.ip);
+  //  if (req.ip === '127.0.0.1')
+  //     return res.status(400).send('Unauthorized Network');
 
   const token = req.cookies.umtcid_user;
 

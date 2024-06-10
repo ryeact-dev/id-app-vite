@@ -6,7 +6,7 @@ async function getStudentInfo(req, res, next) {
 
   try {
     const [studentRows, studentFields] = await mySqlPool.query(
-      'SELECT ID_No, FName, LName, MName, Course, BDate, Gender FROM sgis_personal WHERE ID_No = ?',
+      'SELECT ID_No, FName, LName, MName, Course, BDate, Gender, Dept FROM sgis_personal WHERE ID_No = ?',
       [Number(id_number)]
     );
 

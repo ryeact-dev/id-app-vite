@@ -1,5 +1,5 @@
-import { ToastNotification } from '@/common/toastNotification/ToastNotification';
-import { Button } from '@/common/ui/button';
+import { ToastNotification } from "@/common/toastNotification/ToastNotification";
+import { Button } from "@/common/ui/button";
 
 export default function PrintTableOptions({
   student,
@@ -19,9 +19,9 @@ export default function PrintTableOptions({
 
     const modalData = {
       confirmationType: null,
-      title: 'Student Details',
-      size: 'max-w-2xl',
-      modalType: 'add-student',
+      title: "Student Details",
+      size: "max-w-2xl",
+      modalType: "add-student",
       payload,
     };
 
@@ -50,9 +50,9 @@ export default function PrintTableOptions({
 
     const modalData = {
       confirmationType: null,
-      title: 'Student ID Details',
-      size: 'max-w-3xl',
-      modalType: 'print-student-id',
+      title: "Student ID Details",
+      size: "max-w-3xl",
+      modalType: "print-student-id",
       payload,
     };
 
@@ -63,18 +63,18 @@ export default function PrintTableOptions({
   const handleReleaseID = () => {
     if (!printInfo?.printedDate) {
       return ToastNotification(
-        'error',
-        'Please print the student ID before releasing'
+        "error",
+        "Please print the student ID before releasing",
       );
     }
 
     const title = `Release ${student?.firstName} ${student?.lastName}'s ID?`;
 
     const modalData = {
-      confirmationType: 'release-id',
+      confirmationType: "release-id",
       title,
-      size: 'max-w-md',
-      modalType: 'confirmation',
+      size: "max-w-md",
+      modalType: "confirmation",
       payload: printInfo?.id,
     };
 
@@ -86,10 +86,10 @@ export default function PrintTableOptions({
     const title = `Delete ${student?.firstName} ${student?.lastName}'s printed transaction?`;
 
     const modalData = {
-      confirmationType: 'delete-print-transaction',
+      confirmationType: "delete-print-transaction",
       title,
-      size: 'max-w-md',
-      modalType: 'confirmation',
+      size: "max-w-md",
+      modalType: "confirmation",
       payload: printInfo?.id,
     };
 
@@ -98,31 +98,31 @@ export default function PrintTableOptions({
   };
 
   return (
-    <div className='flex space-x-2 w-60 shrink-0'>
+    <div className="flex w-60 shrink-0 space-x-2">
       {/* <Button size='sm' onClick={handleEditStudent} variant='outline'>
           <PenBox className='size-4 mr-1' /> Edit
         </Button> */}
       <Button
-        size='sm'
-        className='w-20 bg-blue-500 hover:bg-blue-500/90 text-white'
+        size="sm"
+        className="w-20 bg-blue-500 text-white hover:bg-blue-500/90"
         onClick={handlePrintStudentID}
       >
         {/* <Printer className='size-4 mr-1' /> */}
-        {printInfo?.printedDate ? 'Reprint' : 'Print'}
+        {printInfo?.printedDate ? "Reprint" : "Print"}
       </Button>
       <Button
-        size='sm'
+        size="sm"
         disabled={printInfo?.releasedDate}
-        className={'bg-green-500 hover:bg-green-500/90 text-white w-24'}
+        className={"w-24 bg-green-500 text-white hover:bg-green-500/90"}
         onClick={handleReleaseID}
       >
-        {printInfo?.releasedDate ? 'Released' : 'Release'}
+        {printInfo?.releasedDate ? "Released" : "Release"}
       </Button>
 
       <Button
-        size='sm'
-        className={'px-4'}
-        disabled={printInfo?.releasedDate}
+        size="sm"
+        className={"px-4"}
+        disabled={printInfo?.releasedDate || printInfo.printType === "New ID"}
         onClick={handleDeletePrintedRecord}
       >
         Delete
