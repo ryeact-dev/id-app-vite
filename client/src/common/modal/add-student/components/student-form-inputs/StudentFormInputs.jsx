@@ -7,14 +7,35 @@ import { Button } from '@/common/ui/button';
 import { Input } from '@/common/ui/input';
 import { Label } from '@/common/ui/label';
 import { Textarea } from '@/common/ui/textarea';
+import { ToastNotification } from '@/common/toastNotification/ToastNotification';
+import { getStudentInfo } from '@/api/student.api';
+import { useGetAllPrograms } from '@/hooks/program.hook';
 
 export default function StudentFormInputs({ form }) {
+  const { data: listOfPrograms = [] } = useGetAllPrograms();
+
   const handleDateChange = (date) => {
     form.setValue('birthDate', new Date(date));
   };
 
   const handleProgramValueChange = (value) => {
     form.setValue('programId', value);
+  };
+
+  const onSearchStudent = async () => {
+    const { studentIdNumber } = form.getValues();
+
+    if (!studentIdNumber) {
+      return ToastNotification('error', 'Please enter a student ID number');
+    }
+
+    const { data } = await getStudentInfo({ studentId: studentIdNumber });
+
+    if (data.message) {
+      return ToastNotification('error', data.message);
+    } else {
+      console.log(data.studentInfo);
+    }
   };
 
   return (
@@ -30,6 +51,7 @@ export default function StudentFormInputs({ form }) {
               <FormControl>
                 <div className='relative sm:w-[300px] md:w-[200px] lg:w-200px]'>
                   <Button
+                    onClick={onSearchStudent}
                     type='button'
                     className='absolute right-0 top-0 rounded-sm rounded-tl-none rounded-bl-none'
                   >
@@ -114,6 +136,7 @@ export default function StudentFormInputs({ form }) {
               Program
             </Label>
             <ProgramOffers
+              listOfPrograms={listOfPrograms}
               handleProgramValueChange={handleProgramValueChange}
               programValue={form.watch('programId')}
             />

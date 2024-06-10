@@ -11,14 +11,13 @@ import {
   CommandItem,
   CommandList,
 } from '@/common/ui/command';
-import { useGetAllPrograms } from '@/hooks/program.hook';
 
 export default function ProgramOffers({
   handleProgramValueChange,
   programValue,
+  listOfPrograms,
 }) {
   const [open, setOpen] = useState(false);
-  const { data: listOfPrograms = [] } = useGetAllPrograms();
 
   const programOffering = listOfPrograms?.map((program) => ({
     value: program.id,
@@ -38,7 +37,7 @@ export default function ProgramOffers({
           }`}
         >
           {programValue
-            ? programOffering.find(
+            ? programOffering?.find(
                 (framework) => framework.value === programValue
               )?.label
             : 'Select Program'}
@@ -51,7 +50,7 @@ export default function ProgramOffers({
           <CommandList>
             <CommandEmpty>Program not found.</CommandEmpty>
             <CommandGroup>
-              {programOffering.map((framework) => (
+              {programOffering?.map((framework) => (
                 <CommandItem
                   key={framework.value}
                   value={framework.value}

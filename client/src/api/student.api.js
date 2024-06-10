@@ -19,3 +19,8 @@ export async function addEditStudent({ forAddingData, isNew }) {
 export async function deleteUser({ userId }) {
   return await axios.delete(`/api/student/delete/${userId}`);
 }
+
+// FETCH STUDENT INFO FROM MYSQL DATABASE
+export async function getStudentInfo({ studentId }) {
+  return await axios.get(`/api/mysql/student-info/${studentId}`);
+}
